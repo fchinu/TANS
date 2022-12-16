@@ -33,11 +33,11 @@ Particle* Particle::SetDirection(double px, double py, double pz)
         norm=TMath::Sqrt(norm);
         cout<< "\033[93mWarning: trying to set direction to ("<<px<<", "<<py<<", "<<pz<<"), which is not normalized, setting the normalised vector ";
         px/=norm; py/=norm; pz/=norm;
-        cout<<"("<<px<<", "<<py<<", "<<pz<<")instead\033[0m";
+        cout<<"("<<px<<", "<<py<<", "<<pz<<") instead \033[0m \n";
     }
     else if (norm < 1e-6)
     {
-        cout<< "\033[93mWarning: trying to set direction to null vector, setting the normalised vector to (1, 0, 0) instead\033[0m";
+        cout<< "\033[93mWarning: trying to set direction to null vector, setting the normalised vector to (1, 0, 0) instead\033[0m \n";
         px=1; py=0; pz=0;
     }
 
