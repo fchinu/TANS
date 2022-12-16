@@ -11,21 +11,21 @@ Particle::Particle()
 
 Particle::Particle(double x, double y, double z, double px, double py, double pz)
 {
-    this->SetDirection(px,py,pz)->SetPoint(x,y,z);
+    SetDirection(px,py,pz).SetPoint(x,y,z);
 }
 
 Particle::Particle (double* point, double* direction)
 {
-    this->SetDirection(direction[0],direction[1],direction[2])->SetPoint(point[0],point[1],point[2]);
+    SetDirection(direction[0],direction[1],direction[2]).SetPoint(point[0],point[1],point[2]);
 }  
 
 Particle::Particle (vector<double> point, vector<double> direction)
 {
-    this->SetDirection(direction[0],direction[1],direction[2])->SetPoint(point[0],point[1],point[2]);
+    SetDirection(direction[0],direction[1],direction[2]).SetPoint(point[0],point[1],point[2]);
 }  
 
 
-Particle* Particle::SetDirection(double px, double py, double pz)
+Particle& Particle::SetDirection(double px, double py, double pz)
 {
     double norm= px*px + py*py + pz*pz;
     if (TMath::Abs(norm - 1) > 1e-6 && norm > 1e-6)
@@ -45,5 +45,5 @@ Particle* Particle::SetDirection(double px, double py, double pz)
     fTheta=TMath::ACos(fPz);
     fPhi=TMath::ATan(fPy/fPx);
 
-    return this;
+    return *this;
 }
