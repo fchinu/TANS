@@ -39,7 +39,7 @@ Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
     intersection.x = point[0] + direction[0] * t;
     intersection.y = point[1] + direction[1] * t;
     intersection.z = point[2] + direction[2] * t;
-    intersection.phi = TMath::ATan((intersection.y) / (intersection.x));
+    intersection.phi = ComputePhi(intersection.x, intersection.y);
 
     if (fill)
         fTrueHit.push_back(intersection);
@@ -71,4 +71,12 @@ void Detector::Smearing()
         fRecoHit.push_back(SmearedIntersection);
     }
 
+}
+
+double Detector::ComputePhi(double x, double y)
+{
+    double phi = TMath::ATan(y / x);
+    if (x<0)
+        phi+=TMath::Pi();
+    return phi;
 }

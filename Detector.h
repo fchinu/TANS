@@ -23,6 +23,8 @@ private:
     vector<fPoint> fTrueHit, fRecoHit;
     double fMuAngular=0, fSigmaAngular=3e-3;    //Parameters for smearing (in cm)
     double fMuZ=0, fSigmaZ=1.2e-2;              //Parameters for smearing (in cm)
+
+    double ComputePhi(double x, double y);
 };
 
 #endif
