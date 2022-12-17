@@ -1,3 +1,6 @@
+#include "TString.h"
+#include "TSystem.h"
+
 void Compile_Simulation(TString myopt="fast")
 {
     TString opt;
