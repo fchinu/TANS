@@ -36,6 +36,7 @@ private:
     double fX,fY,fZ;
     double fPx,fPy,fPz;
     double fTheta, fPhi;
+    double ComputePhi(double x, double y);
 
     ClassDef(Particle, 1)
 };

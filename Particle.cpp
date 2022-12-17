@@ -45,7 +45,15 @@ Particle& Particle::SetDirection(double px, double py, double pz)
 
     fPx=px; fPy=py; fPz=pz;
     fTheta=TMath::ACos(fPz);
-    fPhi=TMath::ATan(fPy/fPx);
+    fPhi=ComputePhi(fPx,fPy);
 
     return *this;
+}
+
+double Particle::ComputePhi(double x, double y)
+{
+    double phi = TMath::ATan(y / x);
+    if (x<0)
+        phi+=TMath::Pi();
+    return phi;
 }
