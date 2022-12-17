@@ -2,12 +2,8 @@
 
 ClassImp(Particle)
 
-Particle::Particle()
-{
-    fX=0; fY=0; fZ=0;
-    fPx=0; fPy=0; fPz=0;
-    fTheta=0; fPhi=0;
-}
+Particle::Particle() :
+fX(0.), fY(0.), fZ(0.), fPx(1.), fPy(0.), fPz(0.), fTheta(0.), fPhi(0.) {}
 
 Particle::Particle(double x, double y, double z, double px, double py, double pz)
 {
