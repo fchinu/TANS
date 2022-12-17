@@ -20,6 +20,12 @@ Particle::Particle (vector<double> point, vector<double> direction)
     SetDirection(direction[0],direction[1],direction[2]).SetPoint(point[0],point[1],point[2]);
 }  
 
+Particle::Particle (vector<double> point, TRandom* rndmptr)
+{
+    double direction[3];
+    rndmptr->Sphere(direction[0],direction[1],direction[2],1);
+    SetDirection(direction[0],direction[1],direction[2]).SetPoint(point[0],point[1],point[2]);
+}
 
 Particle& Particle::SetDirection(double px, double py, double pz)
 {

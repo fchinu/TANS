@@ -4,6 +4,7 @@
 #include "TObject.h"
 #include "TMath.h"
 #include "Riostream.h"
+#include "TRandom.h"
 #include <vector>
 
 class Particle : public TObject
@@ -17,6 +18,7 @@ public:
     Particle (double x, double y, double z, double px, double py, double pz);
     Particle (double* point, double* direction);                                    //array initialisation
     Particle (vector<double> point, vector<double> direction);                      //vector initialisation
+    Particle (vector<double> point, TRandom* rndmptr);                              //random initialisation
 
     vector<double> GetDirection()       const             {return {fPx,fPy,fPz};}
     vector<double> GetPolarDirection()  const             {return {fTheta,fPhi};}
