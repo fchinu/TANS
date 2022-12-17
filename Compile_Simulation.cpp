@@ -12,5 +12,6 @@ void Compile_Simulation(TString myopt="fast")
         gSystem->Exec("./clean.sh");
     gSystem->CompileMacro("Particle.cpp",opt.Data());
     gSystem->CompileMacro("Detector.cpp",opt.Data());
+    gSystem->CompileMacro("Event_Visual.cpp",opt.Data());
     gSystem->CompileMacro("Event.cpp",opt.Data());
 }
