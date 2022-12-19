@@ -20,11 +20,17 @@ MaterialBudget::MaterialBudget(double height, double radius, double length, doub
 
 MaterialBudget::MaterialBudget(double height, double radius, double length, string material)
 {
-    if(height<=0) cout << "Material Budget height null or negative. Setting value equal to 1. \n";
-    height = 1.;
+    if(height<=0) 
+    {
+        cout << "Material Budget height null or negative. Setting value equal to 1. \n";
+        height = 1.;
+    }
 
-    if(radius<=0) cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
-    radius = 1.;
+    if(radius<=0) 
+    {
+        cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
+        radius = 1.;
+    }
 
     this->SetGeometry(height,radius, 0.27)->SetMaterial(material);
 }
@@ -102,34 +108,4 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     return part;
 }
 
-/* bool MaterialBudget::operator<(const MaterialBudget& a)
-{ 
-    bool r;
-    double c,d;
-    c = fRadius;
-    cout << c << endl;
-    d = a.GetRadius();
-    cout << d << endl;
-    if(c<d) r = true;
-    if(c>d) r = false;
 
-    cout << r << endl;
-    return r;
-}
-
-/*bool MaterialBudget::operator>(const MaterialBudget& a)
-{ 
-    return this->GetRadius()>a.GetRadius();
-}
-
-bool operator>(const MaterialBudget& a, const MaterialBudget& b)
-{
-    double c,d;
-    bool y;
-    c = a.GetRadius();
-    d = b.GetRadius();
-    cout << c << " " << d << endl;
-    if(c>d) y=true;
-    if(c<d) y=false;
-    return y;
-}*/
