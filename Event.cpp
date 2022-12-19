@@ -1,5 +1,6 @@
 #include "Detector.h"
 #include "TStopwatch.h"
+#include "Event_Visual.h"
 
 void Event(unsigned multiplicity, double x=0, double y=0,double z= 0)
 {
@@ -12,15 +13,13 @@ void Event(unsigned multiplicity, double x=0, double y=0,double z= 0)
         p.push_back(new Particle({x,y,z},gRandom));
         det.GetIntersection(p.back());
     }
-    cout<<endl<<p.size()<<endl;
     vector<Detector::fPoint> TrueHits = det.GetTrueHits();
-    cout<<endl<<TrueHits.size()<<endl;
-    TrueHits[0].print();
     det.Smearing();
     vector<Detector::fPoint> RecoHits = det.GetRecoHits();
     RecoHits[0].print();
+    Event_Visual(p);
     for (auto i:p)
         delete i;
     w.Stop();
-    w.Print();
+    w.Print("u");
 }
