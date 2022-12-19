@@ -29,7 +29,7 @@ public:
     bool operator<(const MaterialBudget& a)               {return GetRadius()<a.GetRadius();}
     bool operator>(const MaterialBudget& a)               {return GetRadius()>a.GetRadius();}
 
-private:
+protected:
     double fHeight;
     double fRadius;
     double fLength;
