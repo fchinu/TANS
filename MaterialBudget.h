@@ -20,9 +20,9 @@ public:
     double GetDensity() const                              {return fDensity;}
     vector<int> GetFeatures() const                        {return {fZ, fA};}
 
-    MaterialBudget* SetGeometry(double height, double radius, double length);
-    MaterialBudget* SetMaterial(double density, int z, int a);
-    MaterialBudget* SetMaterial(string material);
+    MaterialBudget& SetGeometry(double height, double radius, double length);
+    MaterialBudget& SetMaterial(double density, int z, int a);
+    MaterialBudget& SetMaterial(string material);
 
     Particle* MultScattering(Particle* part); 
 

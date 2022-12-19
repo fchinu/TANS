@@ -2,10 +2,7 @@
 
 ClassImp(MaterialBudget)
 
-MaterialBudget::MaterialBudget()
-{
-    fHeight=0.; fRadius=0.; fLength=0.; fDensity=0.; fZ=0; fA=0;
-}
+MaterialBudget::MaterialBudget(): fHeight(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0){}
 
 MaterialBudget::MaterialBudget(double height, double radius, double length, double density, int z, int a)
 {
@@ -15,7 +12,7 @@ MaterialBudget::MaterialBudget(double height, double radius, double length, doub
     if(radius<=0) cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
     radius = 1.;
 
-    this->SetGeometry(height,radius, 0.27)->SetMaterial(density, z, a);
+    SetGeometry(height,radius, 0.27).SetMaterial(density, z, a);
 }
 
 MaterialBudget::MaterialBudget(double height, double radius, double length, string material)
@@ -32,40 +29,48 @@ MaterialBudget::MaterialBudget(double height, double radius, double length, stri
         radius = 1.;
     }
 
-    this->SetGeometry(height,radius, 0.27)->SetMaterial(material);
+    SetGeometry(height,radius, 0.27).SetMaterial(material);
 }
  
-MaterialBudget* MaterialBudget::SetGeometry(double height, double radius, double length)
+MaterialBudget& MaterialBudget::SetGeometry(double height, double radius, double length)
 {
     fHeight = height;
     fRadius = radius;
     fLength = length;
 
-    return this;
+    return *this;
 }
 
-MaterialBudget* MaterialBudget::SetMaterial(double density, int z, int a)
+MaterialBudget& MaterialBudget::SetMaterial(double density, int z, int a)
 {
     fDensity = density;
     fZ = z;
     fA = a;
-    return this;
+    return *this;
 }
 
-MaterialBudget* MaterialBudget::SetMaterial(string a)
+MaterialBudget& MaterialBudget::SetMaterial(string a)
 {
-    if(a=="Be"){
+    for(auto & i:a) i=tolower(i);
+
+    if(a=="be"){
         fDensity = 1.85; // g/cm3
         fZ = 4;
         fA = 8; 
     }
 
-    if(a=="Si"){
+    else if(a=="si"){
         fDensity = 3.74; // g/cm3
         fZ = 14;
         fA = 28;
     }
-    return this;
+    else{
+        cout << "Unknown material: setting density, z, A equal to 1" << endl;
+        fDensity = 1;
+        fZ = 1;
+        fA = 1;
+    }
+    return *this;
 }
 
 Particle* MaterialBudget::MultScattering(Particle* part)
