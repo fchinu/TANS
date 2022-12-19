@@ -8,8 +8,6 @@ Detector::~Detector()
 {
 }
 
-double fRadius=5, fHeight=27;
-
 Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
 {
     vector<double> direction = particle->GetDirection();

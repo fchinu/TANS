@@ -2,8 +2,9 @@
 #define DETECTOR_H
 
 #include "Particle.h"
+#include "MaterialBudget.h"
 
-class Detector : public TObject//,public MaterialBudget
+class Detector : public MaterialBudget
 {
 public:
     using fPoint = struct{

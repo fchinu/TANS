@@ -8,6 +8,7 @@ void Event(unsigned multiplicity, double x=0, double y=0,double z= 0)
     w.Start();
     vector<Particle*> p;
     Detector det;
+    det.SetGeometry(1,5,0.27);
     while (p.size()<multiplicity)
     {
         p.push_back(new Particle({x,y,z},gRandom));
