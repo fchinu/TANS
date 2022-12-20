@@ -47,7 +47,7 @@ void Event_Visual(vector<Particle*> particles)
             double rad_phi= TMath::DegToRad()*dir[1], rad_theta=TMath::DegToRad()*dir[0];
             double len1=8/TMath::Sin(rad_theta)/2;
             TGeoVolume *Track=gGeoManager->MakeTubs((Trackstr+std::to_string(count)).c_str(),Iron,0,0.05,len1,0,360);
-            top->AddNode(Track,count, new TGeoCombiTrans(-len1*TMath::Sin(rad_phi)*TMath::Sin(rad_theta),len1*TMath::Cos(rad_phi)*TMath::Sin(rad_theta),-len1*TMath::Cos(rad_theta),new TGeoRotation("ha_8",dir[1],dir[0],0))); // 45,90,0
+            top->AddNode(Track,count, new TGeoCombiTrans(-len1*TMath::Sin(rad_phi)*TMath::Sin(rad_theta)+i->GetPoint()[0],len1*TMath::Cos(rad_phi)*TMath::Sin(rad_theta)+i->GetPoint()[1],-len1*TMath::Cos(rad_theta)+i->GetPoint()[2],new TGeoRotation("ha_8",dir[1],dir[0],0))); // 45,90,0
             ++count;
         }
     }
