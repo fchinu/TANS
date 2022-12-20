@@ -1,5 +1,7 @@
 #include "Run.h"
 
+ClassImp(Run)
+
 Run::Run(TString cfgFileName) : 
 fConfigFile(YAML::LoadFile(cfgFileName.Data())),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),

@@ -26,6 +26,7 @@ private:
     double fMuZ=0, fSigmaZ=1.2e-2;              //Parameters for smearing (in cm)
 
     double ComputePhi(double x, double y);
+    ClassDef(Detector, 1)
 };
 
 #endif

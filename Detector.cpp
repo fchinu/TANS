@@ -1,5 +1,7 @@
 #include "Detector.h"
 
+ClassImp(Detector)
+
 Detector::Detector(/* args */)
 {
 }
