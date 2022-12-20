@@ -33,6 +33,8 @@ private:
     vector<bool> fIsDetector;
     vector<double> fRadii, fThickness, fLenght;
     vector<string> fMaterial;
+
+    ClassDef(Run, 1)
 };
 
 
