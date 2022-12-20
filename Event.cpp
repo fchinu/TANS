@@ -2,10 +2,8 @@
 #include "TStopwatch.h"
 #include "Event_Visual.h"
 
-void Event(unsigned multiplicity, double x=0, double y=0,double z= 0)
+void Event(unsigned multiplicity, double x, double y,double z)
 {
-    TStopwatch w;
-    w.Start();
     vector<Particle*> p;
     Detector det;
     det.SetGeometry(1,5,0.27);
@@ -15,12 +13,14 @@ void Event(unsigned multiplicity, double x=0, double y=0,double z= 0)
         det.GetIntersection(p.back());
     }
     vector<Detector::fPoint> TrueHits = det.GetTrueHits();
+    if (TrueHits.size()>0)
+    {
     det.Smearing();
     vector<Detector::fPoint> RecoHits = det.GetRecoHits();
-    RecoHits[0].print();
-    Event_Visual(p);
+    }
+
+    //RecoHits[0].print();
+    //Event_Visual(p);
     for (auto i:p)
         delete i;
-    w.Stop();
-    w.Print("u");
 }

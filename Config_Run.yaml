@@ -1,0 +1,9 @@
+NEvents: 1000000
+
+#Multiplicity settings
+MultType: kConst    #Possibilities: kConst, kCustom, kUniform
+MultConst: 10       #only if kConst
+MultFile: Multi_ALICE.root
+MultHisto: Table 3/Hist1D_y1
+MultRange: [10,20]  
+

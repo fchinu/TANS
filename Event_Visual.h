@@ -7,3 +7,4 @@
 #include "Particle.h"
 
 void Event_Visual(vector<Particle*> particles);
+void Event(unsigned multiplicity, double x=0, double y=0,double z= 0);

@@ -15,4 +15,5 @@ void Compile_Simulation(TString myopt="fast")
     gSystem->CompileMacro("Detector.cpp",opt.Data());
     gSystem->CompileMacro("Event_Visual.cpp",opt.Data());
     gSystem->CompileMacro("Event.cpp",opt.Data());
+    gSystem->CompileMacro("Run.cpp",opt.Data());
 }
