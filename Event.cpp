@@ -20,7 +20,7 @@ void Event(unsigned multiplicity, double x, double y,double z)
     }
 
     //RecoHits[0].print();
-    //Event_Visual(p);
+    Event_Visual(p);
     for (auto i:p)
         delete i;
 }

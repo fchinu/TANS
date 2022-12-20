@@ -11,17 +11,28 @@
 #include <vector>
 #include <string>
 
-class Run
+class Run: public TObject
 {
 public:
     Run(TString cfgFileName);
 
 private:
-    void RunConstMult(), RunUniformMult(), RunCustomMult();
+    void RunConstMult(), RunUniformMult(), RunCustomMult(), CreateDetectors();
     YAML::Node fConfigFile;
-    unsigned fConstMult;        //TODO: possibly remove these 3 datamembers
-    unsigned fNEvents;
-    string fkMultType;
+
+    //Multiplicity info
+    unsigned fNEvents,fConstMult;
+    string fMultType,fMultFile,fMultHisto;
+    vector<unsigned> fMultRange;
+
+    //Vertex dispersion info
+    double fSigmaZ,fSigmaX,fSigmaY;
+
+    //Detectors info
+    vector<MaterialBudget> fDetectors;
+    vector<bool> fIsDetector;
+    vector<double> fRadii, fThickness, fLenght;
+    vector<string> fMaterial;
 };
 
 
