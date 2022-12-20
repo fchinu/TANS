@@ -3,53 +3,79 @@
 Run::Run(TString cfgFileName) : 
 fConfigFile(YAML::LoadFile(cfgFileName.Data())),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),
-fkMultType(fConfigFile["MultType"].as<std::string>())
+fMultType(fConfigFile["MultType"].as<std::string>()),
+fConstMult(fConfigFile["MultConst"].as<unsigned>()),
+fMultFile(fConfigFile["MultFile"].as<std::string>()),
+fMultHisto(fConfigFile["MultHisto"].as<std::string>()),
+fMultRange(fConfigFile["MultRange"].as<std::vector<unsigned> >()),
+fSigmaX(fConfigFile["SigmaX"].as<double>()),
+fSigmaY(fConfigFile["SigmaY"].as<double>()),
+fSigmaZ(fConfigFile["SigmaZ"].as<double>()),
+fIsDetector(fConfigFile["IsDetector"].as<std::vector<bool> >()),
+fRadii(fConfigFile["Radii"].as<std::vector<double> >()),
+fThickness(fConfigFile["Thickness"].as<std::vector<double> >()),
+fLenght(fConfigFile["Lenght"].as<std::vector<double> >()),
+fMaterial(fConfigFile["Material"].as<std::vector<string> >())
 {
     TStopwatch w;
     w.Start();
-    if (fkMultType.find("kConst") != std::string::npos)
+    CreateDetectors();
+    if (fMultType.find("kConst") != std::string::npos)
         RunConstMult();
-    else if (fkMultType.find("kUniform") != std::string::npos)
+    else if (fMultType.find("kUniform") != std::string::npos)
         RunUniformMult();
-    else if (fkMultType.find("kCustom") != std::string::npos)
-        RunCustomMult();
+    else if (fMultType.find("kCustom") != std::string::npos)
+        RunCustomMult();            //TODO: default case
     w.Stop();
     w.Print("u");
 }
 
-void Run::RunConstMult()
+void Run::RunConstMult()            //TODO: check case "MultConst" is not defined
 {
-    fConstMult = fConfigFile["MultConst"].as<unsigned>();
     for (unsigned i=0; i<fNEvents; i++)
     {
-        Event(fConstMult, 0,0,0);     
+        Event(fConstMult, gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ));     
     }
 }
 
-void Run::RunUniformMult()
+void Run::RunUniformMult()          //TODO: check case "MultRange" is not defined
 {
-    vector<unsigned> Range = fConfigFile["MultRange"].as<std::vector<unsigned> >();
     for (unsigned i=0; i<fNEvents; i++)
     {
-        Event(gRandom->Integer(Range[1]-Range[0]+1) + Range[0], 0,0,0);     
+        Event(gRandom->Integer(fMultRange[1]-fMultRange[0]+1) + fMultRange[0], gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ));     
     }
 }
 
-void Run::RunCustomMult()
+void Run::RunCustomMult()           //TODO: check case "fMultRange" is not defined
 {
-    vector<unsigned> Range = fConfigFile["MultRange"].as<std::vector<unsigned> >();
-    string kMultFile = fConfigFile["MultFile"].as<std::string>();
-    string MultHisto = fConfigFile["MultHisto"].as<std::string>();
-
-    TFile* infile = TFile::Open(kMultFile.c_str());
-    TH1D* histo = (TH1D*)infile->Get(MultHisto.c_str());
-    unsigned mult;
-    do {
-        mult = histo->GetRandom();
-    }while (mult < Range[0] || mult > Range[1]);
-    
+    TFile* infile = TFile::Open(fMultFile.c_str());
+    TH1D* histo = (TH1D*)infile->Get(fMultHisto.c_str());
+    unsigned mult;    
     for (unsigned i=0; i<fNEvents; i++)
     {
-        Event(mult, 0,0,0);     
+        do {
+            mult = histo->GetRandom();
+        }while (mult < fMultRange[0] || mult > fMultRange[1]);
+        Event(mult, gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ));     
+    }
+}
+
+
+void Run::CreateDetectors()     //TODO: add default cases
+{
+    for (vector<bool>::size_type i=0; i<fIsDetector.size(); i++)
+    {
+        Detector DetTemp;
+        MaterialBudget MatTemp;
+        if (fIsDetector[i])
+        {
+            DetTemp.SetGeometry(fThickness[i],fRadii[i],fLenght[i]).SetMaterial(fMaterial[i]);
+            fDetectors.push_back(DetTemp);
+        }
+        else
+        {
+            MatTemp.SetGeometry(fThickness[i],fRadii[i],fLenght[i]).SetMaterial(fMaterial[i]);
+            fDetectors.push_back(DetTemp);
+        }
     }
 }
