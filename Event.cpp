@@ -17,33 +17,35 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     fConfig.z = z;
 }
 
-/*void Event::EventSignal()
+void Event::ProcessingEvent(TTree* tree)
 {
     TStopwatch w;
     w.Start();
-    for (auto i:fParticles){
-        for(auto j:fDetectors){
-            fDetectors[j]->FillTree(fDetectors[j].GetIntersection(fParticles[i]));
+    /*for (int i = 0; i<fParticles.size(); i++){
+        for(int j = 0; j<fDetectors.size(); j++){
+            if(fDetectors[j]->IsDetector()){
+                fDetectors[j]->GetIntersection(fParticles[i]);
+                fDetectors[j]->GetSmearedIntersection();
+            }
+            fDetectors[j]->MultScattering(fParticles[i]);
+            FillTree(tree, j);
         }
-    }
-    
-    vector<Particle*> p;
-    Detector det;
-    det.SetGeometry(1,5,0.27);
-    while (p.size()<config.multiplicity)
-    {
-        p.push_back(new Particle({config.x,config.y,config.z},gRandom));
-        det.GetIntersection(p.back());
-    }
-    vector<Detector::fPoint> TrueHits = det.GetTrueHits();
-    det.Smearing();
-    vector<Detector::fPoint> RecoHits = det.GetRecoHits();
-    RecoHits[0].print();
-    EventVisual(p);
-    for (auto i:p)
-        delete i;
+    }*/
     w.Stop();
     w.Print("u");
+}
+
+/*void Event::FillTree(TTree* tree, int z){
+    if(!tree->GetBranch("Config")){
+        tree->SetBranchAddress("Config", &fConfig);
+        tree->SetBranchAddress("TrueHits", &fDetectors[z]->GetTrueHits().back());
+        tree->SetBranchAddress("RecoHits", &fDetectors[z]->GetRecoHits().back());
+    }
+    else{
+        tree->SetBranchAddress("TrueHits", &fDetectors[z]->GetTrueHits().back());
+        tree->SetBranchAddress("RecoHits", &fDetectors[z]->GetRecoHits().back());
+    }
+    tree->Fill();
 }*/
 
 void Event::EventVisual(vector<Particle*> particles)

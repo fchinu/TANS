@@ -15,15 +15,16 @@ public:
     Detector();
     ~Detector();
 
-    virtual bool IsRiv() {return true;}
+    virtual bool IsDetector() const {return true;}
     fPoint GetIntersection(const Particle* particle,bool fill=true);
+    fPoint GetSmearedIntersection();
     vector<fPoint> GetTrueHits() const  {return fTrueHit;}
     vector<fPoint> GetRecoHits() const  {return fRecoHit;}
-    void Smearing();
+    
 private:
     vector<fPoint> fTrueHit, fRecoHit;
-    double fMuAngular=0, fSigmaAngular=3e-3;    //Parameters for smearing (in cm)
-    double fMuZ=0, fSigmaZ=1.2e-2;              //Parameters for smearing (in cm)
+    double fMuAngular=0, fSigmaAngular=3e-3;    // Parameters for smearing (in cm)
+    double fMuZ=0, fSigmaZ=1.2e-2;              // Parameters for smearing (in cm)
 
     double ComputePhi(double x, double y);
 };

@@ -1,16 +1,19 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include "Particle.h"
-#include "MaterialBudget.h"
 #include <Riostream.h>
 #include <TSystem.h>
 #include <TGeoManager.h>
 #include <TMath.h>
 #include <string>
 #include <vector>
-#include "Detector.h"
 #include "TStopwatch.h"
+#include "Particle.h"
+#include "MaterialBudget.h"
+#include "Detector.h"
+#include "TFile.h"
+#include "TTree.h" 
+#include "TBranch.h"
 
 class Event : public TObject
 {
@@ -22,9 +25,9 @@ public:
     };
 
     Event(vector<MaterialBudget*>, unsigned int, double, double, double);
-    // void EventSignal();
+    void ProcessingEvent(TTree* tree);
     void EventVisual(vector<Particle*> particles);
-    void FillTree(MaterialBudget* detector);  // privata?
+    // void FillTree(TTree* tree, int z);  // privata?
 
 private:
     vector<Particle*> fParticles;

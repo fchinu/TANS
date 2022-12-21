@@ -24,6 +24,7 @@ public:
     MaterialBudget& SetMaterial(double density, int z, int a);
     MaterialBudget& SetMaterial(string material);
 
+    virtual bool IsDetector() const                        {return false;}
     Particle* MultScattering(Particle* part); 
 
     bool operator<(const MaterialBudget& a)               {return GetRadius()<a.GetRadius();}

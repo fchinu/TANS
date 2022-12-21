@@ -46,7 +46,7 @@ Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
 }
 
 
-void Detector::Smearing()
+void Detector::GetSmearedIntersection()
 {
     fRecoHit.clear();
     fPoint SmearedIntersection;
@@ -68,7 +68,7 @@ void Detector::Smearing()
 
         fRecoHit.push_back(SmearedIntersection);
     }
-
+    return SmearedIntersection;
 }
 
 double Detector::ComputePhi(double x, double y)
