@@ -1,18 +1,30 @@
 #include "Detector.h"
 
-Detector::Detector(/* args */)
+Detector::Detector(bool multscat, bool smearing, bool noise)
 {
+    SetStatus(multscat, smearing, noise);
 }
 
 Detector::~Detector()
 {
 }
 
+void Detector::SetStatus(bool multscat, bool smearing, bool noise)
+{
+    fMultScat = multscat;
+    fSmearing = smearing;
+    fNoise = noise;
+}
+
 void Detector::Interaction(Particle* particle)
 {
     fTrueHit.push_back(GetIntersection(particle,1));
-    fRecoHit.push_back(GetSmearedIntersection());
-    MultScattering(particle);
+    if(fSmearing){
+        fRecoHit.push_back(GetSmearedIntersection());
+    }
+    if(fMultScat){
+        MultScattering(particle);
+    }
 }
 
 MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool fill)

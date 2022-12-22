@@ -2,9 +2,9 @@
 
 ClassImp(MaterialBudget)
 
-MaterialBudget::MaterialBudget(): fHeight(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0){}
+MaterialBudget::MaterialBudget(): fHeight(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0), fMultScat(0){}
 
-MaterialBudget::MaterialBudget(double height, double radius, double length, double density, int z, int a)
+MaterialBudget::MaterialBudget(double height, double radius, double length, double density, int z, int a, bool multscat)
 {
     if(height<=0) cout << "Material Budget height null or negative. Setting value equal to 1. \n";
     height = 1.;
@@ -12,10 +12,10 @@ MaterialBudget::MaterialBudget(double height, double radius, double length, doub
     if(radius<=0) cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
     radius = 1.;
 
-    SetGeometry(height,radius, 0.27).SetMaterial(density, z, a);
+    SetGeometry(height,radius, 0.27).SetMaterial(density, z, a).SetStatus(multscat);
 }
 
-MaterialBudget::MaterialBudget(double height, double radius, double length, string material)
+MaterialBudget::MaterialBudget(double height, double radius, double length, bool multscat, string material)
 {
     if(height<=0) 
     {
@@ -29,9 +29,14 @@ MaterialBudget::MaterialBudget(double height, double radius, double length, stri
         radius = 1.;
     }
 
-    SetGeometry(height,radius, 0.27).SetMaterial(material);
+    SetGeometry(height,radius, 0.27).SetMaterial(material).SetStatus(multscat);
 }
- 
+
+void MaterialBudget::SetStatus(bool multscat)
+{
+    fMultScat = multscat;
+}
+
 MaterialBudget& MaterialBudget::SetGeometry(double height, double radius, double length)
 {
     fHeight = height;
@@ -75,7 +80,9 @@ MaterialBudget& MaterialBudget::SetMaterial(string a)
 
 void MaterialBudget::Interaction(Particle* part)
 {
-    MultScattering(part);
+    if(fMultScat){
+        MultScattering(part);
+    }
 }
 
 Particle* MaterialBudget::MultScattering(Particle* part)

@@ -19,8 +19,8 @@ public:
     };
 
     MaterialBudget();                                                       // default constructor
-    MaterialBudget(double height, double radius, double length, double density, int z, int a);
-    MaterialBudget(double height, double radius, double length, string material);
+    MaterialBudget(double height, double radius, double length, double density, int z, int a, bool multscat);
+    MaterialBudget(double height, double radius, double length, bool multscat, string material);
     
     double GetHeight() const                               {return fHeight;}
     double GetRadius() const                               {return fRadius;}
@@ -28,8 +28,11 @@ public:
     vector<double> GetGeometry() const                     {return {fHeight,fRadius,fLength};}
     double GetDensity() const                              {return fDensity;}
     vector<int> GetFeatures() const                        {return {fZ, fA};}
+    bool GetStatus() const                                 {return fMultScat;}
+
     virtual fPoint GetIntersection(const Particle* particle, bool);
 
+    void SetStatus(bool multscat);
     MaterialBudget& SetGeometry(double height, double radius, double length);
     MaterialBudget& SetMaterial(double density, int z, int a);
     MaterialBudget& SetMaterial(string material);
@@ -50,6 +53,7 @@ protected:
     double fDensity;
     int fZ;
     int fA;
+    bool fMultScat;
 
     double ComputePhi(double x, double y);
 
