@@ -8,6 +8,7 @@
 #include "TStopwatch.h"
 #include "TString.h"
 #include "Event_Visual.h"
+#include "TTree.h"
 #include <vector>
 #include <string>
 
@@ -29,9 +30,9 @@ private:
     double fSigmaZ,fSigmaX,fSigmaY;
 
     //Detectors info
-    vector<MaterialBudget> fDetectors;
+    vector<MaterialBudget*> fDetectors;
     vector<bool> fIsDetector;
-    vector<double> fRadii, fThickness, fLenght;
+    vector<double> fRadii, fThickness, fLength;
     vector<string> fMaterial;
 
     ClassDef(Run, 1)

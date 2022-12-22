@@ -1,11 +1,11 @@
 NEvents: 1
 
 #Multiplicity settings
-MultType: kCustom              #Possibilities: kConst, kCustom, kUniform
-MultConst: 10                 #only if kConst
+MultType: kCustom               #Possibilities: kConst, kCustom, kUniform
+MultConst: 10                   #only if kConst
 MultFile: Multi_ALICE.root
 MultHisto: Table 3/Hist1D_y1
-MultRange: [30,40]            #used for kUniform and kCustom
+MultRange: [30,40]              #used for kUniform and kCustom
 
 #Vertex dispersion settings
 SigmaZ: 5.3    #cm
