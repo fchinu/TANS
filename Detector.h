@@ -7,26 +7,25 @@
 class Detector : public MaterialBudget
 {
 public:
-    using fPoint = struct{
-        bool isIntersection=false; double x = 0, y = 0, z = 0, phi = 0;     //no need for theta in cilindrical coordinates
-        void print() {cout<<"isIntersection: "<<isIntersection<<"\tx: "<<x<<"\ty: "<<y<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
-    };
 
     Detector();
     ~Detector();
 
     virtual bool IsDetector() const {return true;}
-    fPoint GetIntersection(const Particle* particle,bool fill=true);
-    fPoint GetSmearedIntersection();
-    vector<fPoint> GetTrueHits() const  {return fTrueHit;}
-    vector<fPoint> GetRecoHits() const  {return fRecoHit;}
+    virtual void Interaction(Particle* particle);
+
+    virtual void FillTree(TTree& gentree, TTree& rectree);
+    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle,bool fill=true);
+    MaterialBudget::fPoint GetSmearedIntersection();
+    vector<MaterialBudget::fPoint> GetTrueHits() const  {return fTrueHit;}
+    vector<MaterialBudget::fPoint> GetRecoHits() const  {return fRecoHit;}
     
 private:
-    vector<fPoint> fTrueHit, fRecoHit;
+    vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
     double fMuAngular=0, fSigmaAngular=3e-3;    // Parameters for smearing (in cm)
     double fMuZ=0, fSigmaZ=1.2e-2;              // Parameters for smearing (in cm)
 
-    double ComputePhi(double x, double y);
+    // double ComputePhi(double x, double y);
 };
 
 #endif

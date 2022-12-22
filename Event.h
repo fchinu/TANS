@@ -25,9 +25,10 @@ public:
     };
 
     Event(vector<MaterialBudget*>, unsigned int, double, double, double);
-    void ProcessingEvent(TTree* tree);
+    void ProcessingEvent(TTree&, TTree&, vector<fVertMult>*, vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*,
+                            vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*);
     void EventVisual(vector<Particle*> particles);
-    // void FillTree(TTree* tree, int z);  // privata?
+    void FillTree(TTree& gentree, TTree& rectree, int j);  // privata?
 
 private:
     vector<Particle*> fParticles;

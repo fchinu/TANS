@@ -8,7 +8,14 @@ Detector::~Detector()
 {
 }
 
-Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
+void Detector::Interaction(Particle* particle)
+{
+    fTrueHit.push_back(GetIntersection(particle,1));
+    fRecoHit.push_back(GetSmearedIntersection());
+    MultScattering(particle);
+}
+
+MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
 {
     vector<double> direction = particle->GetDirection();
     vector<double> point = particle->GetPoint();
@@ -18,7 +25,7 @@ Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
     double b = (point[0]*direction[1] + point[1]*direction[2]);
     double delta = b*b - den * (point[0]*point[0] + point[1]*point[1] - fRadius * fRadius);
 
-    fPoint intersection;
+    MaterialBudget::fPoint intersection;
     if (delta <= 0)     //particle going along z axis
     {
         intersection.isIntersection=false;
@@ -46,10 +53,10 @@ Detector::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
 }
 
 
-void Detector::GetSmearedIntersection()
+MaterialBudget::fPoint Detector::GetSmearedIntersection()
 {
     fRecoHit.clear();
-    fPoint SmearedIntersection;
+    MaterialBudget::fPoint SmearedIntersection;
     for (const auto& i : fTrueHit)
     {
         double ar=gRandom->Gaus(0,fSigmaAngular);
@@ -71,10 +78,19 @@ void Detector::GetSmearedIntersection()
     return SmearedIntersection;
 }
 
-double Detector::ComputePhi(double x, double y)
+void Detector::FillTree(TTree& gentree, TTree& rectree)
+{
+    gentree.SetBranchAddress("TrueHits", &fTrueHit);
+    rectree.SetBranchAddress("RecoHits", &fRecoHit);
+
+    gentree.Fill();
+    rectree.Fill();
+}
+
+/*double Detector::ComputePhi(double x, double y)
 {
     double phi = TMath::ATan(y / x);
     if (x<0)
         phi+=TMath::Pi();
     return phi;
-}
+}*/

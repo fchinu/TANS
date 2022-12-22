@@ -73,6 +73,11 @@ MaterialBudget& MaterialBudget::SetMaterial(string a)
     return *this;
 }
 
+void MaterialBudget::Interaction(Particle* part)
+{
+    MultScattering(part);
+}
+
 Particle* MaterialBudget::MultScattering(Particle* part)
 {
     double rotation[3][3];
@@ -113,4 +118,44 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     return part;
 }
 
+MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle, bool)
+{
+    vector<double> direction = particle->GetDirection();
+    vector<double> point = particle->GetPoint();
 
+    //Evaluates all different factors to evaluate intersection
+    double den = direction[0]*direction[0] + direction[1]*direction[1];
+    double b = (point[0]*direction[1] + point[1]*direction[2]);
+    double delta = b*b - den * (point[0]*point[0] + point[1]*point[1] - fRadius * fRadius);
+
+    MaterialBudget::fPoint intersection;
+    if (delta <= 0)     //particle going along z axis
+    {
+        intersection.isIntersection=false;
+        return intersection;
+    }
+
+    double t = (TMath::Sqrt(delta)-b)/den;
+
+    if (point[2] + direction[2] * t < -fHeight/2 || point[2] + direction[2] * t > fHeight/2)       //particle goes outside detector
+    {
+        intersection.isIntersection=false;
+        return intersection;
+    } 
+
+    intersection.isIntersection=true;
+    intersection.x = point[0] + direction[0] * t;
+    intersection.y = point[1] + direction[1] * t;
+    intersection.z = point[2] + direction[2] * t;
+    intersection.phi = ComputePhi(intersection.x, intersection.y);
+
+    return intersection;
+}
+
+double MaterialBudget::ComputePhi(double x, double y)
+{
+    double phi = TMath::ATan(y / x);
+    if (x<0)
+        phi+=TMath::Pi();
+    return phi;
+}
