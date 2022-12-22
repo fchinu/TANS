@@ -1,6 +1,8 @@
 #include "Detector.h"
 
-Detector::Detector(bool multscat, bool smearing, bool noise)
+ClassImp(Detector)
+
+Detector::Detector(/* args */)
 {
     SetStatus(multscat, smearing, noise);
 }
