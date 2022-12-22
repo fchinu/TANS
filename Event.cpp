@@ -2,7 +2,9 @@
 
 ClassImp(Event)
 
-Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z)
+Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree, 
+            vector<fVertMult>* config, vector<MaterialBudget::fPoint>* GenHits1, vector<MaterialBudget::fPoint>* GenHits2,
+            vector<MaterialBudget::fPoint>* RecHits1,vector<MaterialBudget::fPoint>* RecHits2)
 {
     while (fParticles.size()<multiplicity)
     {
@@ -15,6 +17,9 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     fConfig.x = x;
     fConfig.y = y;
     fConfig.z = z;
+    
+    ProcessingEvent(gentree, rectree, config, GenHits1, GenHits2, RecHits1, RecHits2);
+
 }
 
 void Event::ProcessingEvent(TTree& gentree, TTree& rectree, vector<fVertMult>* config, vector<MaterialBudget::fPoint>* GenHits1, vector<MaterialBudget::fPoint>* GenHits2,

@@ -24,7 +24,8 @@ public:
         void print() {cout<<"Molteplicita': "<< multiplicity <<"\t Coordinate vertice: x: "<< x <<", y: "<< y <<", z: "<< z <<endl;}
     };
 
-    Event(vector<MaterialBudget*>, unsigned int, double, double, double);
+    Event(vector<MaterialBudget*>, unsigned int, double, double, double, TTree&, TTree&, vector<fVertMult>*, vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*,
+                            vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*);
     void ProcessingEvent(TTree&, TTree&, vector<fVertMult>*, vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*,
                             vector<MaterialBudget::fPoint>*, vector<MaterialBudget::fPoint>*);
     void EventVisual(vector<Particle*> particles);
