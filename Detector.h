@@ -8,6 +8,7 @@ class Detector : public MaterialBudget
 {
 public:
 
+    Detector() = default;
     Detector(bool multscat, bool smearing, bool noise);
     ~Detector();
 

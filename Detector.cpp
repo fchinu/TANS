@@ -2,13 +2,9 @@
 
 ClassImp(Detector)
 
-Detector::Detector(/* args */)
+Detector::Detector(bool multscat, bool smearing, bool noise)
 {
     SetStatus(multscat, smearing, noise);
-}
-
-Detector::~Detector()
-{
 }
 
 void Detector::SetStatus(bool multscat, bool smearing, bool noise)
