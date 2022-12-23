@@ -17,23 +17,14 @@ fIsDetector(fConfigFile["IsDetector"].as<std::vector<bool> >()),
 fRadii(fConfigFile["Radii"].as<std::vector<double> >()),
 fThickness(fConfigFile["Thickness"].as<std::vector<double> >()),
 fLength(fConfigFile["Lenght"].as<std::vector<double> >()),
-fMaterial(fConfigFile["Material"].as<std::vector<string> >())
+fMaterial(fConfigFile["Material"].as<std::vector<string> >()),
+TreeGen("TreeGen","TreeGen"),
+TreeRec("TreeRec","TreeRec")
 {
     TStopwatch w;
-    TFile hfile("Tree.root","recreate");
-    TTree TreeGen("TreeGen","TreeGen");
-    TTree TreeRec("TreeRec","TreeRec");
-
-    Event::fVertMult Config;
-    vector<MaterialBudget::fPoint>   GenHits1,GenHits2, RecHits1,RecHits2;
-    vector<MaterialBudget::fPoint>*  ptrGenHits1=&GenHits1;
-    vector<MaterialBudget::fPoint>*  ptrGenHits2=&GenHits2;
-    vector<MaterialBudget::fPoint>*  ptrRecHits1=&RecHits1;
-    vector<MaterialBudget::fPoint>*  ptrRecHits2=&RecHits2;
-
     //vector<Event::fVertMult> Config;
     //vector<Event::fVertMult>* ptrConfig=&Config;
-
+    TFile hfile("Tree.root","recreate");
     //TreeGen.Branch("Config",&ptrConfig);
     TreeGen.Branch("GenHits1",&ptrGenHits1);
     TreeGen.Branch("GenHits2",&ptrGenHits2);
