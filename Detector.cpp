@@ -9,11 +9,20 @@ Detector::~Detector()
 {
 }
 
-void Detector::SetStatus(bool multscat, bool smearing, bool noise)
+Detector& Detector::SetStatus(vector<bool> status)
 {
-    fMultScat = multscat;
-    fSmearing = smearing;
-    fNoise = noise;
+    if(status.size() == 3){  
+        fMultScat = status[0];
+        fSmearing = status[1];
+        fNoise = status[2];
+    }
+    else{
+        cout << "Invalid features for detector, switching on multiple scattering, smearing and noise phenomena" << endl;
+        fMultScat = true;
+        fSmearing = true;
+        fNoise = true;
+    }
+    return *this;
 }
 
 void Detector::Interaction(Particle* particle)
@@ -46,7 +55,7 @@ MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool 
 
     double t = (TMath::Sqrt(delta)-b)/den;
 
-    if (point[2] + direction[2] * t < -fHeight/2 || point[2] + direction[2] * t > fHeight/2)       //particle goes outside detector
+    if (point[2] + direction[2] * t < -fThickness/2 || point[2] + direction[2] * t > fThickness/2)       //particle goes outside detector
     {
         intersection.isIntersection=false;
         return intersection;
@@ -78,7 +87,7 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection()
         SmearedIntersection.phi = i.phi + ar/fRadius;
         SmearedIntersection.z = i.z + zr;
 
-        if (SmearedIntersection.z < -fHeight/2 || SmearedIntersection.z > fHeight/2)
+        if (SmearedIntersection.z < -fThickness/2 || SmearedIntersection.z > fThickness/2)
             continue;
         
         SmearedIntersection.isIntersection=true;

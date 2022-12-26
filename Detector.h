@@ -14,7 +14,8 @@ public:
     virtual bool IsDetector() const {return true;}
     virtual void Interaction(Particle* particle);
 
-    void SetStatus(bool multscat, bool smearing, bool noise);
+    Detector& SetStatus(bool multscat, bool smearing, bool noise) {fMultScat = multscat; fSmearing = smearing; fNoise = noise; return *this;}
+    Detector& SetStatus(vector<bool> status);
 
     virtual void FillTree(TTree& gentree, TTree& rectree);
     virtual MaterialBudget::fPoint GetIntersection(const Particle* particle,bool fill=true);

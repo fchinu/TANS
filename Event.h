@@ -1,19 +1,11 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <Riostream.h>
 #include <TSystem.h>
 #include <TGeoManager.h>
-#include <TMath.h>
 #include <string>
-#include <vector>
 #include "TStopwatch.h"
-#include "Particle.h"
-#include "MaterialBudget.h"
 #include "Detector.h"
-#include "TFile.h"
-#include "TTree.h" 
-#include "TBranch.h"
 
 class Event : public TObject
 {
