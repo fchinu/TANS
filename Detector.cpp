@@ -1,8 +1,13 @@
 #include "Detector.h"
 
-Detector::Detector(bool multscat, bool smearing, bool noise)
+Detector::Detector() : MaterialBudget() {};
+
+Detector::Detector(double thickness, double radius, double length, string material, bool multscat=1, bool smearing=1, bool noise=0)
+: MaterialBudget(thickness, radius, length, material, multscat=1)
 {
-    SetStatus(multscat, smearing, noise);
+    // *fTrueHitPtr = &fTrueHit;
+    // *fRecoHitPtr = &fRecoHit;
+    SetStatus(smearing, noise);
 }
 
 Detector::~Detector()
@@ -11,14 +16,12 @@ Detector::~Detector()
 
 Detector& Detector::SetStatus(vector<bool> status)
 {
-    if(status.size() == 3){  
-        fMultScat = status[0];
-        fSmearing = status[1];
-        fNoise = status[2];
+    if(status.size() == 2){  
+        fSmearing = status[0];
+        fNoise = status[1];
     }
     else{
-        cout << "Invalid features for detector, switching on multiple scattering, smearing and noise phenomena" << endl;
-        fMultScat = true;
+        cout << "Invalid features for detector, switching on smearing and noise phenomena" << endl;
         fSmearing = true;
         fNoise = true;
     }
@@ -99,19 +102,17 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection()
     return SmearedIntersection;
 }
 
-void Detector::FillTree(TTree& gentree, TTree& rectree)
+void Detector::FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* recbranchname)
 {
-    gentree.SetBranchAddress("TrueHits", &fTrueHit);
-    rectree.SetBranchAddress("RecoHits", &fRecoHit);
+    cout << "Filling tree branches..." << endl;
+    std::vector<MaterialBudget::fPoint>* fTrueHitPtr = &fTrueHit;
+    std::vector<MaterialBudget::fPoint>* fRecoHitPtr = &fRecoHit;
+
+    gentree.SetBranchAddress(genbranchname, &fTrueHitPtr);
+    rectree.SetBranchAddress(recbranchname, &fRecoHitPtr);
 
     gentree.Fill();
+    cout << "GenTree filled" << endl;
     rectree.Fill();
+    cout << "RecTree filled" << endl;
 }
-
-/*double Detector::ComputePhi(double x, double y)
-{
-    double phi = TMath::ATan(y / x);
-    if (x<0)
-        phi+=TMath::Pi();
-    return phi;
-}*/

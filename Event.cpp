@@ -2,10 +2,11 @@
 
 ClassImp(Event)
 
-Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree, 
-            vector<fVertMult>* config, vector<MaterialBudget::fPoint>* GenHits1, vector<MaterialBudget::fPoint>* GenHits2,
-            vector<MaterialBudget::fPoint>* RecHits1,vector<MaterialBudget::fPoint>* RecHits2)
+Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree)
 {
+    cout << "Entering event constructor..." << endl;
+    TStopwatch w;
+    w.Start();
     while (fParticles.size()<multiplicity)
     {
         fParticles.push_back(new Particle({x,y,z},gRandom));
@@ -13,34 +14,43 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     for(unsigned int i=0; i < detectors.size(); i++){
         fDetectors.push_back(detectors[i]);
     }
+    cout << "Generated particles = " << fParticles.size() << endl;
+    cout << "Generating particles DONE" << endl;
     fConfig.multiplicity = multiplicity;
     fConfig.x = x;
     fConfig.y = y;
     fConfig.z = z;
     
-    ProcessingEvent(gentree, rectree, config, GenHits1, GenHits2, RecHits1, RecHits2);
+    cout << "Starting processing event..." << endl;
 
+    ProcessingEvent(gentree, rectree);
+    w.Stop();
+    w.Print("u");
 }
 
-void Event::ProcessingEvent(TTree& gentree, TTree& rectree, vector<fVertMult>* config, vector<MaterialBudget::fPoint>* GenHits1, vector<MaterialBudget::fPoint>* GenHits2,
-                            vector<MaterialBudget::fPoint>* RecHits1,vector<MaterialBudget::fPoint>* RecHits2)
+void Event::ProcessingEvent(TTree& gentree, TTree& rectree)
 {
-    TStopwatch w;
-    w.Start();
     gentree.SetBranchAddress("Config", &fConfig);
     for(vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++){
         for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++){
             fDetectors[j]->Interaction(fParticles[i]);
         }
-        FillTree(gentree, rectree, j); 
+        cout << "Interaction with " << j << " detector DONE" << endl;
+        FillTree(gentree, rectree, j);
+        cout << "Trees filled" << endl;  
     }
-    w.Stop();
-    w.Print("u");
+    cout << "End of processing" << endl;
 }
 
 void Event::FillTree(TTree& gentree, TTree& rectree, int j)
 {
-    fDetectors[j]->FillTree(gentree, rectree);
+    char a[80]; 
+    sprintf(a,"GenHits detector %d", j);
+    char b[80]; 
+    sprintf(b,"RecHits detector %d", j);
+    const char* genbranchname = a;
+    const char* recbranchname = b;
+    fDetectors[j]->FillTree(gentree, genbranchname, rectree, recbranchname);
 }
 
 void Event::EventVisual(vector<Particle*> particles)

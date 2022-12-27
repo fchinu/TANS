@@ -8,16 +8,17 @@ class Detector : public MaterialBudget
 {
 public:
 
-    Detector(bool multscat, bool smearing, bool noise);
+    Detector();
+    Detector(double thickness, double radius, double length, string material, bool multscat, bool smearing, bool noise);
     ~Detector();
 
     virtual bool IsDetector() const {return true;}
     virtual void Interaction(Particle* particle);
 
-    Detector& SetStatus(bool multscat, bool smearing, bool noise) {fMultScat = multscat; fSmearing = smearing; fNoise = noise; return *this;}
+    Detector& SetStatus(bool smearing, bool noise) {fSmearing = smearing; fNoise = noise; return *this;}
     Detector& SetStatus(vector<bool> status);
 
-    virtual void FillTree(TTree& gentree, TTree& rectree);
+    virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* rectreename);
     virtual MaterialBudget::fPoint GetIntersection(const Particle* particle,bool fill=true);
     MaterialBudget::fPoint GetSmearedIntersection();
     vector<bool> GetStatus() const                      {return {fMultScat, fSmearing, fNoise};}
@@ -26,7 +27,8 @@ public:
     
 private:
     bool fSmearing, fNoise;
-    vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
+    // std::vector<MaterialBudget::fPoint>* fTrueHitPtr, fRecoHitPtr;
+    std::vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
     double fMuAngular=0, fSigmaAngular=3e-3;    // Parameters for smearing (in cm)
     double fMuZ=0, fSigmaZ=1.2e-2;              // Parameters for smearing (in cm)
 

@@ -41,7 +41,8 @@ public:
     virtual void Interaction(Particle* part);
     virtual bool IsDetector() const                        {return false;}
 
-    virtual void FillTree(TTree& gentree, TTree& rectree){};
+    virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* recbranchname)
+                         {cout << "Material budget, not filling any branch" << endl;}
     Particle* MultScattering(Particle* part); 
 
     bool operator<(const MaterialBudget& a)               {return GetRadius()<a.GetRadius();}
