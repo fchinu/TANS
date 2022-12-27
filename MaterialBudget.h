@@ -38,9 +38,11 @@ public:
     MaterialBudget& SetMaterial(double density, int z, int a) {fDensity = density; fZ = z; fA = a; return *this;}
     MaterialBudget& SetMaterial(string material);
 
-    virtual void Interaction(Particle* part);
+    virtual void Interaction(Particle* part, int& detected, int& notdetected, int& smeared, int& notsmeared);
     virtual bool IsDetector() const                        {return false;}
 
+    virtual void FillData(Particle* part, int& detected, int& notdetected, int& smeared, int& notsmeared){};
+    virtual void ClearData(){}
     virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* recbranchname)
                          {cout << "Material budget, not filling any branch" << endl;}
     Particle* MultScattering(Particle* part); 

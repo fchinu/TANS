@@ -68,8 +68,9 @@ MaterialBudget& MaterialBudget::SetStatus(vector<bool> status)
     return *this;
 }
 
-void MaterialBudget::Interaction(Particle* part)
+void MaterialBudget::Interaction(Particle* part, int& detected, int& notdetected, int& smeared, int& notsmeared)
 {
+    FillData(part, detected, notdetected, smeared, notsmeared);
     if(fMultScat){
         MultScattering(part);
     }
@@ -83,34 +84,35 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     rotation[1][0] = TMath::Cos(part->GetPolarDirection()[1]);
     rotation[2][0] = 0.;
     rotation[0][1] = -TMath::Cos(part->GetPolarDirection()[1])*TMath::Cos(part->GetPolarDirection()[0]);
-    rotation[1][1] = -TMath::Cos(part->GetPolarDirection()[1])*TMath::Sin(part->GetPolarDirection()[1]);
-    rotation[2][1] = -TMath::Sin(part->GetPolarDirection()[0]);
-    rotation[0][2] = -TMath::Sin(part->GetPolarDirection()[0])*TMath::Cos(part->GetPolarDirection()[1]);
-    rotation[1][2] = -TMath::Sin(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
-    rotation[2][2] = -TMath::Sin(part->GetPolarDirection()[0]);
+    rotation[1][1] = -TMath::Cos(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
+    rotation[2][1] = TMath::Sin(part->GetPolarDirection()[0]);
+    rotation[0][2] = TMath::Sin(part->GetPolarDirection()[0])*TMath::Cos(part->GetPolarDirection()[1]);
+    rotation[1][2] = TMath::Sin(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
+    rotation[2][2] = TMath::Cos(part->GetPolarDirection()[0]);
 
-    double v = TMath::Sqrt(part->GetDirection()[0]*part->GetDirection()[0] + part->GetDirection()[1]*part->GetDirection()[1] + part->GetDirection()[2]*part->GetDirection()[2]);
-
-    double l,beta;
-
+    /*double l,beta,v;
+    v = TMath::Sqrt(part->GetDirection()[0]*part->GetDirection()[0] + part->GetDirection()[1]*part->GetDirection()[1] + part->GetDirection()[2]*part->GetDirection()[2]);
     beta=1.;
     l = 4*(2.81794*pow(10,-15))*(1/137.035999)*(6.02214*pow(10,23))*(fZ*fZ*fDensity/fA)*log(183/pow(fZ,1/3));  // = 1/X0
+    double thetanew = ((13.6*1.6*pow(10,-13))/(beta*3*pow(10,8)*v))*fZ*TMath::Sqrt(l*fThickness)*(1+0.038*log(l*fThickness));*/
 
-    double thetanew = ((13.6*1.6*pow(10,-13))/(beta*3*pow(10,8)*v))*fZ*TMath::Sqrt(l*fThickness)*(1+0.038*log(l*fThickness));
+    double thetaapprox = 0.001; // 1mrad
     double phinew = (gRandom->Rndm())*2*M_PI;
-    double newdir[3];  // nuova direzione nel sistema di riferimento del lab
     double dir[3]; // nuova direzione nel sistema di riferimento legato a direzione precedente
-    dir[0] = TMath::Sin(thetanew)*TMath::Cos(phinew);
-    dir[1] = TMath::Sin(thetanew)*TMath::Sin(phinew);
-    dir[2] = TMath::Cos(thetanew);
-    for(int i=0;i<3;i++){
-        newdir[i]=0.;
-        for(int j=0; j<3; j++){
-            newdir[i] += rotation[i][j]*dir[j];
-        }
+    dir[0] = TMath::Sin(thetaapprox)*TMath::Cos(phinew);
+    dir[1] = TMath::Sin(thetaapprox)*TMath::Sin(phinew);
+    dir[2] = TMath::Cos(thetaapprox);
 
+    vector<double> newdir; // nuova direzione nel sistema di riferimento del lab
+    double count = 0.;
+    for(int i=0;i<3;i++){
+        count = 0.;
+        for(int j=0; j<3; j++){
+            count += rotation[i][j]*dir[j];
+        }
+        newdir.push_back(count);
     }
-    part->SetPoint(GetIntersection(part,1).x, GetIntersection(part, 1).y, GetIntersection(part, 1).z);
+    part->SetPoint(GetIntersection(part,1).x, GetIntersection(part,1).y, GetIntersection(part,1).z);
     part->SetDirection(newdir);
     return part;
 }

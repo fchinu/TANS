@@ -5,13 +5,13 @@
 #endif
 
 void TryEvent(){
-    // gInterpreter->GenerateDictionary("vector<Event::fVertMult>*", "vector");
+
     TFile hfile("Tree.root", "recreate");
     
     double xvert = 0.;
     double yvert = 0.;
     double zvert = 0.;
-    unsigned int multiplicity = 100;
+    unsigned int multiplicity = 1000;
     std::vector<MaterialBudget*> detectors;
     MaterialBudget* beampipe = new MaterialBudget(0.08, 3., 10000000., "Be", 1);
     Detector* detector1 = new Detector(0.02, 4., 27., "Si", 1, 1, 0);
@@ -39,7 +39,7 @@ void TryEvent(){
     cout << "Everything initialised" << endl;
 
     Event(detectors, multiplicity, xvert, yvert, zvert, gentree, rectree);
-    Event(detectors, multiplicity, xvert, yvert, zvert, gentree, rectree);
+    // Event(detectors, multiplicity, xvert, yvert, zvert, gentree, rectree);
 
     hfile.Write();
     hfile.Close();

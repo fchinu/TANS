@@ -29,6 +29,8 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     fConfig.push_back(temp);
     
     cout << "Starting processing event..." << endl;
+    cout << endl;
+    cout << endl;
 
     ProcessingEvent(gentree, rectree);
     w.Stop();
@@ -39,12 +41,22 @@ void Event::ProcessingEvent(TTree& gentree, TTree& rectree)
 {
     gentree.SetBranchAddress("Config", &fConfigprt);
     for(vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++){
+        cout << "Starting interaction with detector " << j << endl;  
+        int detected = 0, notdetected = 0, smeared = 0, notsmeared = 0;
         for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++){
-            fDetectors[j]->Interaction(fParticles[i]);
+            fDetectors[j]->Interaction(fParticles[i], detected, notdetected, smeared, notsmeared);
         }
-        cout << "Interaction with " << j << " detector DONE" << endl;
+        cout << "Interaction with detector " << j << " DONE" << endl;
+        cout << "Detected particles: " << detected << endl;
+        cout << "Not-detected particles: " << notdetected << endl;
+        cout << "Smeared particles: " << smeared << endl;
+        cout << "Not-smeared particles: " << notsmeared << endl;
         FillTree(gentree, rectree, j);
         cout << "Trees filled" << endl;  
+        fDetectors[j]->ClearData();
+        cout << "Cleared data from detector" << endl;
+        cout << endl; 
+        cout << endl;
     }
     cout << "End of processing" << endl;
 }
