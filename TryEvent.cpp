@@ -11,7 +11,7 @@ void TryEvent(){
     double xvert = 0.;
     double yvert = 0.;
     double zvert = 0.;
-    unsigned int multiplicity = 1000;
+    unsigned int multiplicity = 100;
     std::vector<MaterialBudget*> detectors;
     MaterialBudget* beampipe = new MaterialBudget(0.08, 3., 10000000., "Be", 1);
     Detector* detector1 = new Detector(0.02, 4., 27., "Si", 1, 1, 0);
