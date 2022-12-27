@@ -13,14 +13,17 @@ public:
     ~Detector();
 
     virtual bool IsDetector() const {return true;}
-    virtual void Interaction(Particle* particle);
+    virtual void Interaction(Particle* particle, int& detected, int& notdetected, int& smeared, int& notsmeared);
 
     Detector& SetStatus(bool smearing, bool noise) {fSmearing = smearing; fNoise = noise; return *this;}
     Detector& SetStatus(vector<bool> status);
 
+    virtual void ClearData(){fTrueHit.clear(); fRecoHit.clear();}
     virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* rectreename);
-    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle,bool fill=true);
-    MaterialBudget::fPoint GetSmearedIntersection();
+    virtual void FillData(Particle*, int& detected, int& notdetected, int& smeared, int& notsmeared);
+    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle);
+    MaterialBudget::fPoint GetSmearedIntersection(MaterialBudget::fPoint intersection);
+    MaterialBudget::fPoint OldGetSmearedIntersection();
     vector<bool> GetStatus() const                      {return {fMultScat, fSmearing, fNoise};}
     vector<MaterialBudget::fPoint> GetTrueHits() const  {return fTrueHit;}
     vector<MaterialBudget::fPoint> GetRecoHits() const  {return fRecoHit;}
