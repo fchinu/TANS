@@ -1,5 +1,9 @@
 #include "Event.h"
 
+#ifdef __MAKECINT__
+#pragma link C++ class vector<Event::fVertMult>+;
+#endif
+
 ClassImp(Event)
 
 Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree)
@@ -9,17 +13,20 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     w.Start();
     while (fParticles.size()<multiplicity)
     {
-        fParticles.push_back(new Particle({x,y,z},gRandom));
+        Particle* temp = new Particle({x,y,z},{0,1,0});
+        fParticles.push_back(temp);
     }
     for(unsigned int i=0; i < detectors.size(); i++){
         fDetectors.push_back(detectors[i]);
     }
     cout << "Generated particles = " << fParticles.size() << endl;
     cout << "Generating particles DONE" << endl;
-    fConfig.multiplicity = multiplicity;
-    fConfig.x = x;
-    fConfig.y = y;
-    fConfig.z = z;
+    fVertMult temp;
+    temp.multiplicity = multiplicity;
+    temp.x = x;
+    temp.y = y;
+    temp.z = z;
+    fConfig.push_back(temp);
     
     cout << "Starting processing event..." << endl;
 
@@ -30,7 +37,7 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
 
 void Event::ProcessingEvent(TTree& gentree, TTree& rectree)
 {
-    gentree.SetBranchAddress("Config", &fConfig);
+    gentree.SetBranchAddress("Config", &fConfigprt);
     for(vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++){
         for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++){
             fDetectors[j]->Interaction(fParticles[i]);

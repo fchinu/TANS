@@ -1,5 +1,9 @@
 #include"Event.h"
 
+#ifdef __MAKECINT__
+#pragma link C++ class vector<Event::fVertMult>+;
+#endif
+
 void TryEvent(){
     // gInterpreter->GenerateDictionary("vector<Event::fVertMult>*", "vector");
     TFile hfile("Tree.root", "recreate");
@@ -7,7 +11,7 @@ void TryEvent(){
     double xvert = 0.;
     double yvert = 0.;
     double zvert = 0.;
-    unsigned int multiplicity = 1000;
+    unsigned int multiplicity = 100;
     std::vector<MaterialBudget*> detectors;
     MaterialBudget* beampipe = new MaterialBudget(0.08, 3., 10000000., "Be", 1);
     Detector* detector1 = new Detector(0.02, 4., 27., "Si", 1, 1, 0);
@@ -16,11 +20,11 @@ void TryEvent(){
     detectors.push_back(detector1);
     detectors.push_back(detector2);
 
-    std::vector<Event::fVertMult>* config = NULL;
-    std::vector<MaterialBudget::fPoint>* genhits1 = NULL;
-    std::vector<MaterialBudget::fPoint>* genhits2 = NULL;
-    std::vector<MaterialBudget::fPoint>* rechits1 = NULL;
-    std::vector<MaterialBudget::fPoint>* rechits2 = NULL;
+    std::vector<Event::fVertMult>*          config      = nullptr;
+    std::vector<MaterialBudget::fPoint>*    genhits1    = nullptr;
+    std::vector<MaterialBudget::fPoint>*    genhits2    = nullptr;
+    std::vector<MaterialBudget::fPoint>*    rechits1    = nullptr;
+    std::vector<MaterialBudget::fPoint>*    rechits2    = nullptr;
     
 
     TTree gentree("gentree", "gentree");
@@ -34,6 +38,7 @@ void TryEvent(){
 
     cout << "Everything initialised" << endl;
 
+    Event(detectors, multiplicity, xvert, yvert, zvert, gentree, rectree);
     Event(detectors, multiplicity, xvert, yvert, zvert, gentree, rectree);
 
     hfile.Write();

@@ -30,7 +30,7 @@ Detector& Detector::SetStatus(vector<bool> status)
 
 void Detector::Interaction(Particle* particle)
 {
-    fTrueHit.push_back(GetIntersection(particle,1));
+    fTrueHit.push_back(GetIntersection(particle,false));
     if(fSmearing){
         fRecoHit.push_back(GetSmearedIntersection());
     }
@@ -104,6 +104,8 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection()
 
 void Detector::FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* recbranchname)
 {
+    cout<<"TrueTreeSize = "<<fTrueHit.size()<<endl;
+    cout<<"RecTreeSize = "<<fRecoHit.size()<<endl;
     cout << "Filling tree branches..." << endl;
     std::vector<MaterialBudget::fPoint>* fTrueHitPtr = &fTrueHit;
     std::vector<MaterialBudget::fPoint>* fRecoHitPtr = &fRecoHit;

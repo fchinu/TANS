@@ -24,7 +24,8 @@ public:
 private:
     vector<Particle*> fParticles;
     vector<MaterialBudget*> fDetectors;
-    fVertMult fConfig;
+    vector<fVertMult> fConfig;
+    vector<fVertMult>* fConfigprt = &fConfig;
     
     ClassDef(Event, 1)
 
