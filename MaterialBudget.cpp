@@ -97,6 +97,7 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     double thetanew = ((13.6*1.6*pow(10,-13))/(beta*3*pow(10,8)*v))*fZ*TMath::Sqrt(l*fThickness)*(1+0.038*log(l*fThickness));*/
 
     double thetaapprox = 0.001; // 1mrad
+    thetaapprox = gRandom->Gaus(0,thetaapprox);
     double phinew = (gRandom->Rndm())*2*M_PI;
     double dir[3]; // nuova direzione nel sistema di riferimento legato a direzione precedente
     dir[0] = TMath::Sin(thetaapprox)*TMath::Cos(phinew);
