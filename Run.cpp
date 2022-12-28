@@ -80,16 +80,16 @@ void Run::CreateDetectors()     //TODO: add default cases
 {
     for (vector<bool>::size_type i=0; i<fIsDetector.size(); i++)
     {
-        Detector DetTemp;
-        MaterialBudget MatTemp;
+        Detector* DetTemp = new Detector;
+        MaterialBudget* MatTemp = new MaterialBudget;
         if (fIsDetector[i])
         {
-            DetTemp.SetGeometry(fThickness[i],fRadii[i],fLength[i]).SetMaterial(fMaterial[i]);
+            DetTemp->SetGeometry(fThickness[i],fRadii[i],fLength[i]).SetMaterial(fMaterial[i]);
             fDetectors.push_back(DetTemp);
         }
         else
         {
-            MatTemp.SetGeometry(fThickness[i],fRadii[i],fLength[i]).SetMaterial(fMaterial[i]);
+            MatTemp->SetGeometry(fThickness[i],fRadii[i],fLength[i]).SetMaterial(fMaterial[i]);
             fDetectors.push_back(MatTemp);
         }
     }
