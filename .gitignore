@@ -1,3 +1,6 @@
 *.d
 *.so
 *.pcm
+.vscode
+*.json
+Tree.root
