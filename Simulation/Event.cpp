@@ -14,7 +14,7 @@ fDetectors(detectors)
     w.Start();
     while (fParticles.size()<multiplicity)
     {
-        Particle* temp = new Particle({x,y,z},{0,1,0});
+        Particle* temp = new Particle({x,y,z},gRandom);
         fParticles.push_back(temp);
     }
     cout << "Generated particles = " << fParticles.size() << endl;
@@ -31,6 +31,7 @@ fDetectors(detectors)
     cout << endl;
 
     ProcessingEvent(gentree, rectree);
+    EventVisual(fParticles);
     w.Stop();
     w.Print("u");
 }

@@ -3,7 +3,7 @@ NEvents: 1
 
 #Multiplicity settings
 MultType: kConst               #Possibilities: kConst, kCustom, kUniform
-MultConst: null                   #only if kConst
+MultConst: 1000                   #only if kConst
 MultFile: Multi_ALICE.root
 MultHisto: Table 3/Hist1D_y1
 MultRange: null              #used for kUniform and kCustom

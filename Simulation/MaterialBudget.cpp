@@ -113,7 +113,8 @@ Particle* MaterialBudget::MultScattering(Particle* part)
         }
         newdir.push_back(count);
     }
-    part->SetPoint(GetIntersection(part).x, GetIntersection(part).y, GetIntersection(part).z);
+    MaterialBudget::fPoint intersection = GetIntersection(part);
+    part->SetPoint(intersection.x, intersection.y, intersection.z);
     part->SetDirection(newdir);
     return part;
 }
@@ -125,7 +126,7 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
 
     //Evaluates all different factors to evaluate intersection
     double den = direction[0]*direction[0] + direction[1]*direction[1];
-    double b = (point[0]*direction[1] + point[1]*direction[2]);
+    double b = (point[0]*direction[0] + point[1]*direction[1]);
     double delta = b*b - den * (point[0]*point[0] + point[1]*point[1] - fRadius * fRadius);
 
     MaterialBudget::fPoint intersection;
@@ -137,7 +138,7 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
 
     double t = (TMath::Sqrt(delta)-b)/den;
 
-    if (point[2] + direction[2] * t < -fThickness/2 || point[2] + direction[2] * t > fThickness/2)       //particle goes outside detector
+    if (point[2] + direction[2] * t < -fLength/2 || point[2] + direction[2] * t > fLength/2)       // particle goes outside detector
     {
         intersection.isIntersection=false;
         return intersection;
@@ -148,7 +149,7 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
     intersection.y = point[1] + direction[1] * t;
     intersection.z = point[2] + direction[2] * t;
     intersection.phi = ComputePhi(intersection.x, intersection.y);
-
+    // intersection.print();
     return intersection;
 }
 

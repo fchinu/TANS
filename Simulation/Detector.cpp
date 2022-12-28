@@ -62,7 +62,7 @@ void Detector::FillData(Particle* particle, int& detected, int& notdetected, int
     }
 }
 
-MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle)
+/*MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle)
 {
     vector<double> direction = particle->GetDirection();
     vector<double> point = particle->GetPoint();
@@ -92,9 +92,9 @@ MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle)
     intersection.y = point[1] + direction[1] * t;
     intersection.z = point[2] + direction[2] * t;
     intersection.phi = ComputePhi(intersection.x, intersection.y);
-
+    intersection.print();
     return intersection;
-}
+}*/
 
 MaterialBudget::fPoint Detector::GetSmearedIntersection(MaterialBudget::fPoint intersection)
 {

@@ -21,7 +21,7 @@ public:
     virtual void ClearData(){fTrueHit.clear(); fRecoHit.clear();}
     virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* rectreename);
     virtual void FillData(Particle*, int& detected, int& notdetected, int& smeared, int& notsmeared);
-    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle);
+    // virtual MaterialBudget::fPoint GetIntersection(const Particle* particle);
     MaterialBudget::fPoint GetSmearedIntersection(MaterialBudget::fPoint intersection);
     MaterialBudget::fPoint OldGetSmearedIntersection();
     vector<bool> GetStatus() const                      {return {fMultScat, fSmearing, fNoise};}
