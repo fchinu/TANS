@@ -81,7 +81,7 @@ MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle)
 
     double t = (TMath::Sqrt(delta)-b)/den;
 
-    if (point[2] + direction[2] * t < -fThickness/2 || point[2] + direction[2] * t > fThickness/2)       // particle goes outside detector
+    if (point[2] + direction[2] * t < -fLength/2 || point[2] + direction[2] * t > fLength/2)       // particle goes outside detector
     {
         intersection.isIntersection=false;
         return intersection;
@@ -100,14 +100,14 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection(MaterialBudget::fPoint i
 {
     MaterialBudget::fPoint SmearedIntersection;
     
-    double ar=gRandom->Gaus(0,fSigmaAngular);
-    double zr=gRandom->Gaus(0,fSigmaZ);
+    double ar=gRandom->Gaus(fMuAngular,fSigmaAngular);
+    double zr=gRandom->Gaus(fMuZ,fSigmaZ);
 
     //smearing
     SmearedIntersection.phi = intersection.phi + ar/fRadius;
     SmearedIntersection.z = intersection.z + zr;
 
-    if (SmearedIntersection.z < -fThickness/2 || SmearedIntersection.z > fThickness/2){
+    if (SmearedIntersection.z < -fLength/2 || SmearedIntersection.z > fLength/2){
         SmearedIntersection.isIntersection = false;
     }
     else{
@@ -149,14 +149,7 @@ void Detector::FillTree(TTree& gentree, const char* genbranchname, TTree& rectre
     cout<<"TrueTreeSize = "<<fTrueHit.size()<<endl;
     cout<<"RecTreeSize = "<<fRecoHit.size()<<endl;
     cout << "Filling tree branches..." << endl;
-    std::vector<MaterialBudget::fPoint>* fTrueHitPtr = &fTrueHit;
-    std::vector<MaterialBudget::fPoint>* fRecoHitPtr = &fRecoHit;
 
     gentree.SetBranchAddress(genbranchname, &fTrueHitPtr);
     rectree.SetBranchAddress(recbranchname, &fRecoHitPtr);
-
-    gentree.Fill();
-    cout << "GenTree filled" << endl;
-    rectree.Fill();
-    cout << "RecTree filled" << endl;
 }

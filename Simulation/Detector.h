@@ -32,6 +32,8 @@ private:
     bool fSmearing, fNoise;
     // std::vector<MaterialBudget::fPoint>* fTrueHitPtr, fRecoHitPtr;
     std::vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
+    std::vector<MaterialBudget::fPoint>* fTrueHitPtr=&fTrueHit;
+    std::vector<MaterialBudget::fPoint>* fRecoHitPtr=&fRecoHit;
     double fMuAngular=0, fSigmaAngular=3e-3;    // Parameters for smearing (in cm)
     double fMuZ=0, fSigmaZ=1.2e-2;              // Parameters for smearing (in cm)
 

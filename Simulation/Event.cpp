@@ -6,7 +6,8 @@
 
 ClassImp(Event)
 
-Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree)
+Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree):
+fDetectors(detectors)
 {
     cout << "Entering event constructor..." << endl;
     TStopwatch w;
@@ -15,9 +16,6 @@ Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, doubl
     {
         Particle* temp = new Particle({x,y,z},{0,1,0});
         fParticles.push_back(temp);
-    }
-    for(unsigned int i=0; i < detectors.size(); i++){
-        fDetectors.push_back(detectors[i]);
     }
     cout << "Generated particles = " << fParticles.size() << endl;
     cout << "Generating particles DONE" << endl;
@@ -52,6 +50,10 @@ void Event::ProcessingEvent(TTree& gentree, TTree& rectree)
         cout << "Smeared particles: " << smeared << endl;
         cout << "Not-smeared particles: " << notsmeared << endl;
         FillTree(gentree, rectree, j);
+        gentree.Fill();
+        cout << "GenTree filled" << endl;
+        rectree.Fill();
+        cout << "RecTree filled" << endl;
         cout << "Trees filled" << endl;  
         fDetectors[j]->ClearData();
         cout << "Cleared data from detector" << endl;
