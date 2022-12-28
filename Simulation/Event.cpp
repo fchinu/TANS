@@ -31,7 +31,7 @@ fDetectors(detectors)
     cout << endl;
 
     ProcessingEvent(gentree, rectree);
-    EventVisual(fParticles);
+    //EventVisual(fParticles);
     w.Stop();
     w.Print("u");
 }

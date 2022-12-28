@@ -27,6 +27,7 @@ public:
     Particle& SetDirection(vector<double> direction)            {SetDirection(direction[0],direction[1],direction[2]); return *this;}
     Particle& SetDirection(double *direction)                   {SetDirection(direction[0],direction[1],direction[2]); return *this;}
     Particle& SetDirection(double px, double py, double pz);
+    Particle& SetPolarDirection(double theta, double phi)       {SetDirection(TMath::Sin(theta)*TMath::Cos(phi), TMath::Sin(theta)*TMath::Sin(phi),TMath::Cos(theta)); return *this;}
     Particle& SetPoint(vector<double> point)                    {SetPoint(point[0],point[1],point[2]); return *this;}
     Particle& SetPoint(double *point)                           {SetPoint(point[0],point[1],point[2]); return *this;}
     Particle& SetPoint(double x, double y, double z)            {fX=x; fY=y; fZ=z; return *this;}

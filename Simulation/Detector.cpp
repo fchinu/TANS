@@ -1,9 +1,8 @@
 #include "Detector.h"
-
 Detector::Detector() : MaterialBudget() {};
 
 Detector::Detector(double thickness, double radius, double length, string material, bool multscat=1, bool smearing=1, bool noise=0)
-: MaterialBudget(thickness, radius, length, material, multscat=1)
+: MaterialBudget(thickness, radius, length, material, multscat)
 {
     // *fTrueHitPtr = &fTrueHit;
     // *fRecoHitPtr = &fRecoHit;
@@ -30,7 +29,7 @@ Detector& Detector::SetStatus(vector<bool> status)
 
 void Detector::Interaction(Particle* particle, int& detected, int& notdetected, int& smeared, int& notsmeared)
 {
-    FillData(particle, detected, notdetected, smeared, notsmeared);
+    FillData(particle, detected, notdetected, smeared, notsmeared); 
     if(fMultScat){
         MultScattering(particle);
     }
