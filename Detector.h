@@ -8,25 +8,30 @@ class Detector : public MaterialBudget
 {
 public:
 
-    Detector() = default;
-    Detector(bool multscat, bool smearing, bool noise);
+    Detector();
+    Detector(double thickness, double radius, double length, string material, bool multscat, bool smearing, bool noise);
     ~Detector();
 
     virtual bool IsDetector() const {return true;}
-    virtual void Interaction(Particle* particle);
+    virtual void Interaction(Particle* particle, int& detected, int& notdetected, int& smeared, int& notsmeared);
 
-    void SetStatus(bool multscat, bool smearing, bool noise);
+    Detector& SetStatus(bool smearing, bool noise) {fSmearing = smearing; fNoise = noise; return *this;}
+    Detector& SetStatus(vector<bool> status);
 
-    virtual void FillTree(TTree& gentree, TTree& rectree);
-    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle,bool fill=true);
-    MaterialBudget::fPoint GetSmearedIntersection();
+    virtual void ClearData(){fTrueHit.clear(); fRecoHit.clear();}
+    virtual void FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* rectreename);
+    virtual void FillData(Particle*, int& detected, int& notdetected, int& smeared, int& notsmeared);
+    virtual MaterialBudget::fPoint GetIntersection(const Particle* particle);
+    MaterialBudget::fPoint GetSmearedIntersection(MaterialBudget::fPoint intersection);
+    MaterialBudget::fPoint OldGetSmearedIntersection();
     vector<bool> GetStatus() const                      {return {fMultScat, fSmearing, fNoise};}
     vector<MaterialBudget::fPoint> GetTrueHits() const  {return fTrueHit;}
     vector<MaterialBudget::fPoint> GetRecoHits() const  {return fRecoHit;}
     
 private:
     bool fSmearing, fNoise;
-    vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
+    // std::vector<MaterialBudget::fPoint>* fTrueHitPtr, fRecoHitPtr;
+    std::vector<MaterialBudget::fPoint> fTrueHit, fRecoHit;
     double fMuAngular=0, fSigmaAngular=3e-3;    // Parameters for smearing (in cm)
     double fMuZ=0, fSigmaZ=1.2e-2;              // Parameters for smearing (in cm)
 

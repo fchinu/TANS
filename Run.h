@@ -14,13 +14,6 @@ public:
     TTree TreeGen;
     TTree TreeRec;
 
-    vector<Event::fVertMult> Config;
-    vector<MaterialBudget::fPoint>   GenHits1,GenHits2, RecHits1,RecHits2;
-    vector<MaterialBudget::fPoint>*  ptrGenHits1=&GenHits1;
-    vector<MaterialBudget::fPoint>*  ptrGenHits2=&GenHits2;
-    vector<MaterialBudget::fPoint>*  ptrRecHits1=&RecHits1;
-    vector<MaterialBudget::fPoint>*  ptrRecHits2=&RecHits2;
-
 private:
     void RunConstMult(), RunUniformMult(), RunCustomMult(), CreateDetectors();
     YAML::Node fConfigFile;

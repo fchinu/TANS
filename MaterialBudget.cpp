@@ -2,56 +2,34 @@
 
 ClassImp(MaterialBudget)
 
-MaterialBudget::MaterialBudget(): fHeight(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0), fMultScat(0){}
+MaterialBudget::MaterialBudget(): fThickness(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0), fMultScat(true){}
 
-MaterialBudget::MaterialBudget(double height, double radius, double length, double density, int z, int a, bool multscat)
+MaterialBudget::MaterialBudget(double thickness, double radius, double length, double density, int z, int a, bool multscat = true)
 {
-    if(height<=0) cout << "Material Budget height null or negative. Setting value equal to 1. \n";
-    height = 1.;
+    if(thickness<=0) cout << "Material Budget thickness null or negative. Setting value equal to 1. \n";
+    fThickness = 1.;
 
     if(radius<=0) cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
-    radius = 1.;
+    fRadius = 1.;
 
-    SetGeometry(height,radius, 0.27).SetMaterial(density, z, a).SetStatus(multscat);
+    SetGeometry(thickness,radius, 0.27).SetMaterial(density, z, a).SetStatus(multscat);
 }
 
-MaterialBudget::MaterialBudget(double height, double radius, double length, bool multscat, string material)
+MaterialBudget::MaterialBudget(double thickness, double radius, double length, string material, bool multscat = true)
 {
-    if(height<=0) 
+    if(thickness<=0) 
     {
-        cout << "Material Budget height null or negative. Setting value equal to 1. \n";
-        height = 1.;
+        cout << "Material Budget thickness null or negative. Setting value equal to 1. \n";
+        fThickness = 1.;
     }
 
     if(radius<=0) 
     {
         cout << "Material Budget radius null or negative. Setting value equal to 1. \n";
-        radius = 1.;
+        fRadius = 1.;
     }
 
-    SetGeometry(height,radius, 0.27).SetMaterial(material).SetStatus(multscat);
-}
-
-void MaterialBudget::SetStatus(bool multscat)
-{
-    fMultScat = multscat;
-}
-
-MaterialBudget& MaterialBudget::SetGeometry(double height, double radius, double length)
-{
-    fHeight = height;
-    fRadius = radius;
-    fLength = length;
-
-    return *this;
-}
-
-MaterialBudget& MaterialBudget::SetMaterial(double density, int z, int a)
-{
-    fDensity = density;
-    fZ = z;
-    fA = a;
-    return *this;
+    SetGeometry(thickness, radius, length).SetMaterial(material).SetStatus(multscat);
 }
 
 MaterialBudget& MaterialBudget::SetMaterial(string a)
@@ -78,8 +56,21 @@ MaterialBudget& MaterialBudget::SetMaterial(string a)
     return *this;
 }
 
-void MaterialBudget::Interaction(Particle* part)
+MaterialBudget& MaterialBudget::SetStatus(vector<bool> status)
 {
+    if(status.size() == 1){  
+        fMultScat = status.back();
+    }
+    else{
+        cout << "Invalid features for material budget, switching on multiple scattering phenomenon" << endl;
+        fMultScat = true;
+    }
+    return *this;
+}
+
+void MaterialBudget::Interaction(Particle* part, int& detected, int& notdetected, int& smeared, int& notsmeared)
+{
+    FillData(part, detected, notdetected, smeared, notsmeared);
     if(fMultScat){
         MultScattering(part);
     }
@@ -93,34 +84,36 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     rotation[1][0] = TMath::Cos(part->GetPolarDirection()[1]);
     rotation[2][0] = 0.;
     rotation[0][1] = -TMath::Cos(part->GetPolarDirection()[1])*TMath::Cos(part->GetPolarDirection()[0]);
-    rotation[1][1] = -TMath::Cos(part->GetPolarDirection()[1])*TMath::Sin(part->GetPolarDirection()[1]);
-    rotation[2][1] = -TMath::Sin(part->GetPolarDirection()[0]);
-    rotation[0][2] = -TMath::Sin(part->GetPolarDirection()[0])*TMath::Cos(part->GetPolarDirection()[1]);
-    rotation[1][2] = -TMath::Sin(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
-    rotation[2][2] = -TMath::Sin(part->GetPolarDirection()[0]);
+    rotation[1][1] = -TMath::Cos(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
+    rotation[2][1] = TMath::Sin(part->GetPolarDirection()[0]);
+    rotation[0][2] = TMath::Sin(part->GetPolarDirection()[0])*TMath::Cos(part->GetPolarDirection()[1]);
+    rotation[1][2] = TMath::Sin(part->GetPolarDirection()[0])*TMath::Sin(part->GetPolarDirection()[1]);
+    rotation[2][2] = TMath::Cos(part->GetPolarDirection()[0]);
 
-    double v = TMath::Sqrt(part->GetDirection()[0]*part->GetDirection()[0] + part->GetDirection()[1]*part->GetDirection()[1] + part->GetDirection()[2]*part->GetDirection()[2]);
-
-    double l,beta;
-
+    /*double l,beta,v;
+    v = TMath::Sqrt(part->GetDirection()[0]*part->GetDirection()[0] + part->GetDirection()[1]*part->GetDirection()[1] + part->GetDirection()[2]*part->GetDirection()[2]);
     beta=1.;
     l = 4*(2.81794*pow(10,-15))*(1/137.035999)*(6.02214*pow(10,23))*(fZ*fZ*fDensity/fA)*log(183/pow(fZ,1/3));  // = 1/X0
+    double thetanew = ((13.6*1.6*pow(10,-13))/(beta*3*pow(10,8)*v))*fZ*TMath::Sqrt(l*fThickness)*(1+0.038*log(l*fThickness));*/
 
-    double thetanew = ((13.6*1.6*pow(10,-13))/(beta*3*pow(10,8)*v))*fZ*TMath::Sqrt(l*fHeight)*(1+0.038*log(l*fHeight));
+    double thetaapprox = 0.001; // 1mrad
+    thetaapprox = gRandom->Gaus(0,thetaapprox);
     double phinew = (gRandom->Rndm())*2*M_PI;
-    double newdir[3];  // nuova direzione nel sistema di riferimento del lab
     double dir[3]; // nuova direzione nel sistema di riferimento legato a direzione precedente
-    dir[0] = TMath::Sin(thetanew)*TMath::Cos(phinew);
-    dir[1] = TMath::Sin(thetanew)*TMath::Sin(phinew);
-    dir[2] = TMath::Cos(thetanew);
+    dir[0] = TMath::Sin(thetaapprox)*TMath::Cos(phinew);
+    dir[1] = TMath::Sin(thetaapprox)*TMath::Sin(phinew);
+    dir[2] = TMath::Cos(thetaapprox);
+
+    vector<double> newdir; // nuova direzione nel sistema di riferimento del lab
+    double count = 0.;
     for(int i=0;i<3;i++){
-        newdir[i]=0.;
+        count = 0.;
         for(int j=0; j<3; j++){
-            newdir[i] += rotation[i][j]*dir[j];
+            count += rotation[i][j]*dir[j];
         }
-
+        newdir.push_back(count);
     }
-
+    part->SetPoint(GetIntersection(part,1).x, GetIntersection(part,1).y, GetIntersection(part,1).z);
     part->SetDirection(newdir);
     return part;
 }
@@ -144,7 +137,7 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle,
 
     double t = (TMath::Sqrt(delta)-b)/den;
 
-    if (point[2] + direction[2] * t < -fHeight/2 || point[2] + direction[2] * t > fHeight/2)       //particle goes outside detector
+    if (point[2] + direction[2] * t < -fThickness/2 || point[2] + direction[2] * t > fThickness/2)       //particle goes outside detector
     {
         intersection.isIntersection=false;
         return intersection;

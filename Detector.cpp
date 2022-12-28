@@ -1,31 +1,68 @@
 #include "Detector.h"
 
-ClassImp(Detector)
+Detector::Detector() : MaterialBudget() {};
 
-Detector::Detector(bool multscat, bool smearing, bool noise)
+Detector::Detector(double thickness, double radius, double length, string material, bool multscat=1, bool smearing=1, bool noise=0)
+: MaterialBudget(thickness, radius, length, material, multscat=1)
 {
-    SetStatus(multscat, smearing, noise);
+    // *fTrueHitPtr = &fTrueHit;
+    // *fRecoHitPtr = &fRecoHit;
+    SetStatus(smearing, noise);
 }
 
-void Detector::SetStatus(bool multscat, bool smearing, bool noise)
+Detector::~Detector()
 {
-    fMultScat = multscat;
-    fSmearing = smearing;
-    fNoise = noise;
 }
 
-void Detector::Interaction(Particle* particle)
+Detector& Detector::SetStatus(vector<bool> status)
 {
-    fTrueHit.push_back(GetIntersection(particle,1));
-    if(fSmearing){
-        fRecoHit.push_back(GetSmearedIntersection());
+    if(status.size() == 2){  
+        fSmearing = status[0];
+        fNoise = status[1];
     }
+    else{
+        cout << "Invalid features for detector, switching on smearing and noise phenomena" << endl;
+        fSmearing = true;
+        fNoise = true;
+    }
+    return *this;
+}
+
+void Detector::Interaction(Particle* particle, int& detected, int& notdetected, int& smeared, int& notsmeared)
+{
+    FillData(particle, detected, notdetected, smeared, notsmeared);
     if(fMultScat){
         MultScattering(particle);
     }
 }
 
-MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool fill)
+void Detector::FillData(Particle* particle, int& detected, int& notdetected, int& smeared, int& notsmeared)
+{
+    MaterialBudget::fPoint intersection = GetIntersection(particle);
+    if (intersection.isIntersection){
+        fTrueHit.push_back(intersection);
+        // cout << "True data saved" << endl;
+        detected++;
+        if(fSmearing){
+            MaterialBudget::fPoint smearedintersection = GetSmearedIntersection(intersection);
+            if(smearedintersection.isIntersection){
+                fRecoHit.push_back(smearedintersection);
+                // cout << "Smeared data saved" << endl;
+                smeared++;
+            }
+            else{
+                // cout << "Smeared intersection outside detector" << endl;
+                notsmeared++;
+            }
+        }
+    }
+    else{
+        // cout << "Particle not detected" << endl;
+        notdetected++;
+    }
+}
+
+MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle)
 {
     vector<double> direction = particle->GetDirection();
     vector<double> point = particle->GetPoint();
@@ -44,7 +81,7 @@ MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool 
 
     double t = (TMath::Sqrt(delta)-b)/den;
 
-    if (point[2] + direction[2] * t < -fHeight/2 || point[2] + direction[2] * t > fHeight/2)       //particle goes outside detector
+    if (point[2] + direction[2] * t < -fThickness/2 || point[2] + direction[2] * t > fThickness/2)       // particle goes outside detector
     {
         intersection.isIntersection=false;
         return intersection;
@@ -56,14 +93,32 @@ MaterialBudget::fPoint Detector::GetIntersection(const Particle* particle, bool 
     intersection.z = point[2] + direction[2] * t;
     intersection.phi = ComputePhi(intersection.x, intersection.y);
 
-    if (fill)
-        fTrueHit.push_back(intersection);
-
     return intersection;
 }
 
+MaterialBudget::fPoint Detector::GetSmearedIntersection(MaterialBudget::fPoint intersection)
+{
+    MaterialBudget::fPoint SmearedIntersection;
+    
+    double ar=gRandom->Gaus(0,fSigmaAngular);
+    double zr=gRandom->Gaus(0,fSigmaZ);
 
-MaterialBudget::fPoint Detector::GetSmearedIntersection()
+    //smearing
+    SmearedIntersection.phi = intersection.phi + ar/fRadius;
+    SmearedIntersection.z = intersection.z + zr;
+
+    if (SmearedIntersection.z < -fThickness/2 || SmearedIntersection.z > fThickness/2){
+        SmearedIntersection.isIntersection = false;
+    }
+    else{
+        SmearedIntersection.isIntersection=true;
+        SmearedIntersection.x = fRadius*TMath::Cos(SmearedIntersection.phi);
+        SmearedIntersection.y = fRadius*TMath::Sin(SmearedIntersection.phi);
+    }
+    return SmearedIntersection;
+}
+
+/*MaterialBudget::fPoint Detector::OldGetSmearedIntersection()
 {
     fRecoHit.clear();
     MaterialBudget::fPoint SmearedIntersection;
@@ -76,7 +131,7 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection()
         SmearedIntersection.phi = i.phi + ar/fRadius;
         SmearedIntersection.z = i.z + zr;
 
-        if (SmearedIntersection.z < -fHeight/2 || SmearedIntersection.z > fHeight/2)
+        if (SmearedIntersection.z < -fThickness/2 || SmearedIntersection.z > fThickness/2)
             continue;
         
         SmearedIntersection.isIntersection=true;
@@ -84,23 +139,24 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection()
         SmearedIntersection.y = fRadius*TMath::Sin(SmearedIntersection.phi);
 
         fRecoHit.push_back(SmearedIntersection);
+        cout << "Smeared data saved" << endl;
     }
     return SmearedIntersection;
-}
+}*/
 
-void Detector::FillTree(TTree& gentree, TTree& rectree)
+void Detector::FillTree(TTree& gentree, const char* genbranchname, TTree& rectree, const char* recbranchname)
 {
-    gentree.SetBranchAddress("TrueHits", &fTrueHit);
-    rectree.SetBranchAddress("RecoHits", &fRecoHit);
+    cout<<"TrueTreeSize = "<<fTrueHit.size()<<endl;
+    cout<<"RecTreeSize = "<<fRecoHit.size()<<endl;
+    cout << "Filling tree branches..." << endl;
+    std::vector<MaterialBudget::fPoint>* fTrueHitPtr = &fTrueHit;
+    std::vector<MaterialBudget::fPoint>* fRecoHitPtr = &fRecoHit;
+
+    gentree.SetBranchAddress(genbranchname, &fTrueHitPtr);
+    rectree.SetBranchAddress(recbranchname, &fRecoHitPtr);
 
     gentree.Fill();
+    cout << "GenTree filled" << endl;
     rectree.Fill();
+    cout << "RecTree filled" << endl;
 }
-
-/*double Detector::ComputePhi(double x, double y)
-{
-    double phi = TMath::ATan(y / x);
-    if (x<0)
-        phi+=TMath::Pi();
-    return phi;
-}*/
