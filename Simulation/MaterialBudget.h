@@ -30,7 +30,7 @@ public:
     vector<int> GetFeatures() const                        {return {fZ, fA};}
     bool GetStatus() const                                 {return fMultScat;}
 
-    virtual fPoint GetIntersection(const Particle* particle, bool);
+    virtual fPoint GetIntersection(const Particle* particle);
 
     MaterialBudget& SetStatus(bool multscat)               {fMultScat = multscat; return *this;}
     MaterialBudget& SetStatus(vector<bool> status);

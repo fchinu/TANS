@@ -113,12 +113,12 @@ Particle* MaterialBudget::MultScattering(Particle* part)
         }
         newdir.push_back(count);
     }
-    part->SetPoint(GetIntersection(part,1).x, GetIntersection(part,1).y, GetIntersection(part,1).z);
+    part->SetPoint(GetIntersection(part).x, GetIntersection(part).y, GetIntersection(part).z);
     part->SetDirection(newdir);
     return part;
 }
 
-MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle, bool)
+MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
 {
     vector<double> direction = particle->GetDirection();
     vector<double> point = particle->GetPoint();
