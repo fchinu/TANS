@@ -24,12 +24,12 @@ public:
     vector<double> GetPolarDirection()  const             {return {fTheta,fPhi};}
     vector<double> GetPoint()           const             {return {fX,fY,fZ};}
 
-    Particle& SetDirection(vector<double> direction)            {SetDirection(direction[0],direction[1],direction[2]); return *this;}
-    Particle& SetDirection(double *direction)                   {SetDirection(direction[0],direction[1],direction[2]); return *this;}
+    Particle& SetDirection(vector<double> direction)            {return SetDirection(direction[0],direction[1],direction[2]);}
+    Particle& SetDirection(double *direction)                   {return SetDirection(direction[0],direction[1],direction[2]);}
     Particle& SetDirection(double px, double py, double pz);
-    Particle& SetPolarDirection(double theta, double phi)       {SetDirection(TMath::Sin(theta)*TMath::Cos(phi), TMath::Sin(theta)*TMath::Sin(phi),TMath::Cos(theta)); return *this;}
-    Particle& SetPoint(vector<double> point)                    {SetPoint(point[0],point[1],point[2]); return *this;}
-    Particle& SetPoint(double *point)                           {SetPoint(point[0],point[1],point[2]); return *this;}
+    Particle& SetPolarDirection(double theta, double phi)       {return SetDirection(TMath::Sin(theta)*TMath::Cos(phi), TMath::Sin(theta)*TMath::Sin(phi),TMath::Cos(theta));}
+    Particle& SetPoint(vector<double> point)                    {return SetPoint(point[0],point[1],point[2]);}
+    Particle& SetPoint(double *point)                           {return SetPoint(point[0],point[1],point[2]);}
     Particle& SetPoint(double x, double y, double z)            {fX=x; fY=y; fZ=z; return *this;}
 
 
