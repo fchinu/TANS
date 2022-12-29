@@ -96,16 +96,18 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     //Defines rotation matrix
     double rotation[3][3];
     vector<double> PolarDirection=part->GetPolarDirection();
+    double sintheta=TMath::Sin(PolarDirection[0]), sinphi=TMath::Sin(PolarDirection[1]);
+    double costheta=TMath::Cos(PolarDirection[0]), cosphi=TMath::Cos(PolarDirection[1]);
 
-    rotation[0][0] = -TMath::Sin(PolarDirection[1]);
-    rotation[1][0] = TMath::Cos(PolarDirection[1]);
+    rotation[0][0] = -sinphi;
+    rotation[1][0] = cosphi;
     rotation[2][0] = 0.;
-    rotation[0][1] = -TMath::Cos(PolarDirection[1])*TMath::Cos(PolarDirection[0]);
-    rotation[1][1] = -TMath::Cos(PolarDirection[0])*TMath::Sin(PolarDirection[1]);
-    rotation[2][1] = TMath::Sin(PolarDirection[0]);
-    rotation[0][2] = TMath::Sin(PolarDirection[0])*TMath::Cos(PolarDirection[1]);
-    rotation[1][2] = TMath::Sin(PolarDirection[0])*TMath::Sin(PolarDirection[1]);
-    rotation[2][2] = TMath::Cos(PolarDirection[0]);
+    rotation[0][1] = -cosphi*costheta;
+    rotation[1][1] = -costheta*sinphi;
+    rotation[2][1] = sintheta;
+    rotation[0][2] = sintheta*cosphi;
+    rotation[1][2] = sintheta*sinphi;
+    rotation[2][2] = costheta;
 
     /*double l,beta,v;
     v = TMath::Sqrt(part->GetDirection()[0]*part->GetDirection()[0] + part->GetDirection()[1]*part->GetDirection()[1] + part->GetDirection()[2]*part->GetDirection()[2]);

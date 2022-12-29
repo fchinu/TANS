@@ -2,6 +2,9 @@
 
 void Simulation(TString ConfigFileName = "Config_Run.yaml")
 {
+    TRandom3* rndmptr = new TRandom3();
+    delete gRandom;
+    gRandom=rndmptr;
     Run a(ConfigFileName);
     //TFile hfile("Tree.root","recreate");
     //TTree tree("tree","tree");
