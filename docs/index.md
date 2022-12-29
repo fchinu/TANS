@@ -1,15 +1,39 @@
-# TANS PROJECT
-This is the documentation page for the TANS project made by Fabrizio Chinu and Marcello Di Costanzo
+# Simulation of pp collisions
+High energy collisions, such as those that occur in particle accelerators, can produce a wide range of fascinating phenomena, including the creation of new particles and the study of fundamental physical interactions. In this project, we developed a simulation tool to study these collisions and how it is possible to use vertex detectors to reconstruct the primary vertex. The simulation was built using Monte Carlo techniques and only considered high momentum particles moving in a low-intensity magnetic field, i.e. having a linear trajectory.
 
-`this is formatted as code`
+### Prerequisites
+The code in this repository requires to have installed:
+- [ROOT](https://root.cern/)
+- [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+    - Ubuntu: it can be installed through 
+        ```
+        sudo apt update 
+        sudo apt install libyaml-cpp-dev
+        ```
+    - MacOs: 
+        - via MacPorts: `sudo port install yaml-cpp`
+        - via Homebrew: `brew install yaml-cpp`
+    - For other OS follow instructions in the [yaml-cpp official github page](https://github.com/jbeder/yaml-cpp)
 
-For multiple lines of code use triple backtick
-
+### Running the simulation
+To compile the simulation, it is sufficient to run ROOT and execute the following command:
 ```
-gSystem->CompileMacro("Simulation/Particle.cpp",opt.Data());
-gSystem->CompileMacro("Simulation/MaterialBudget.cpp",opt.Data());
-gSystem->CompileMacro("Simulation/Detector.cpp",opt.Data());
+.x Compile_Simulation.cpp+
 ```
+To run the simulation launch the simulation function:
+```
+Simulation()
+```
+
+It is possible to add some parameters to the Complile_Simulation.cpp file to activate different options:
+- `.x Compile_Simulation.cpp+("force")` to force the compilation of the different files
+- `.x Compile_Simulation.cpp+("clean")` to delete all the compilation outputs coming from previous compilations before compiling
+- `.x Compile_Simulation.cpp+("run")` to run the simulation after the compilation ends
+
+It is possible to combine these options: for example, `.x Compile_Simulation.cpp+("cleanrun")` deletes all the compilation outputs coming from previous compilations, then runs the simulation after compilation
+
+### Simulation results
+
 For quoting use >
 > Ciao!
 
