@@ -1,24 +1,23 @@
 #include "Event.h"
 
+//Used to create ACLiC dictionary for vector<Event::fVertMult>
 #ifdef __MAKECINT__
 #pragma link C++ class vector<Event::fVertMult>+;
 #endif
 
 ClassImp(Event)
 
-Event::Event(vector<MaterialBudget*> detectors, unsigned int multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree):
+Event::Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree):
 fDetectors(detectors)
 {
-    cout << "Entering event constructor..." << endl;
-    TStopwatch w;
-    w.Start();
-    while (fParticles.size()<multiplicity)
+
+    while (fParticles.size()<multiplicity)          //Creates particles
     {
         Particle* temp = new Particle({x,y,z},gRandom);
         fParticles.push_back(temp);
     }
-    cout << "Generated particles = " << fParticles.size() << endl;
-    cout << "Generating particles DONE" << endl;
+
+    //Stores event infos
     fVertMult temp;
     temp.multiplicity = multiplicity;
     temp.x = x;
@@ -26,60 +25,53 @@ fDetectors(detectors)
     temp.z = z;
     fConfig.push_back(temp);
     
-    cout << "Starting processing event..." << endl;
-    cout << endl;
-    cout << endl;
 
-    ProcessingEvent(gentree, rectree);
+    ProcessEvent(gentree, rectree);
     //EventVisual(fParticles);
-    w.Stop();
-    w.Print("u");
 }
 
-void Event::ProcessingEvent(TTree& gentree, TTree& rectree)
+Event::~Event()
 {
+    //deallocates memory
+    for (auto&i : fParticles)
+        delete i;
+}
+
+void Event::ProcessEvent(TTree& gentree, TTree& rectree)
+{
+/*
+ *  Function to handle the event
+ *  -------------------------
+ *  Parameters:
+ *  gentree: TTree&
+ *      TTree of generated events
+ *  rectree: TTree&
+ *      TTree of reconstructed events
+ */
     gentree.SetBranchAddress("Config", &fConfigprt);
-    for(vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++){
-        cout << "Starting interaction with detector " << j << endl;  
-        int detected = 0, notdetected = 0, smeared = 0, notsmeared = 0;
-        for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++){
-            fDetectors[j]->Interaction(fParticles[i], detected, notdetected, smeared, notsmeared);
-        }
-        cout << "Interaction with detector " << j << " DONE" << endl;
-        cout << "Detected particles: " << detected << endl;
-        cout << "Not-detected particles: " << notdetected << endl;
-        cout << "Smeared particles: " << smeared << endl;
-        cout << "Not-smeared particles: " << notsmeared << endl;
-        FillTree(gentree, rectree, j);
-        gentree.Fill();
-        cout << "GenTree filled" << endl;
-        rectree.Fill();
-        cout << "RecTree filled" << endl;
-        cout << "Trees filled" << endl;  
-        fDetectors[j]->ClearData();
-        cout << "Cleared data from detector" << endl;
-        cout << endl; 
-        cout << endl;
-    }
-    cout << "End of processing" << endl;
-}
+    for(vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++)
+    {
+        for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++)
+            fDetectors[j]->Interaction(fParticles[i]);
 
-void Event::FillTree(TTree& gentree, TTree& rectree, int j)
-{
-    char a[80]; 
-    sprintf(a,"GenHits detector %d", j);
-    char b[80]; 
-    sprintf(b,"RecHits detector %d", j);
-    const char* genbranchname = a;
-    const char* recbranchname = b;
-    fDetectors[j]->FillTree(gentree, genbranchname, rectree, recbranchname);
+        gentree.Fill();
+        rectree.Fill();
+        fDetectors[j]->ClearData();
+    }
 }
 
 void Event::EventVisual(vector<Particle*> particles)
 {
+/*
+ *  Function to visualise the event
+ *  -------------------------
+ *  Parameters:
+ *  particles: vector<Particle*>
+ *      vector of generated particles
+ */
     gSystem->Load("libGeom");
 
-    TGeoManager *geom = new TGeoManager("world", "the simplest geometry");
+    TGeoManager *geom = new TGeoManager("world", "the simplest geometry");      //TODO: deallocate memory
     TGeoMaterial *mat = new TGeoMaterial("Vacuum",0,0,0);
     TGeoMaterial *Fe = new TGeoMaterial("Fe",55.845,26,7.87);
     TGeoMedium   *med = new TGeoMedium("Vacuum",1,mat);
