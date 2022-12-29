@@ -1,4 +1,6 @@
 theme: jekyll-theme-cayman
+title: [TANS Project]
+description: [F. Chinu, M. Di Costanzo]
 collections:
     docs:
       permalink: "/:collection/:path/"
