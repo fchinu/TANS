@@ -125,15 +125,12 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     dir[1] = TMath::Sin(thetaapprox)*TMath::Sin(phinew);
     dir[2] = TMath::Cos(thetaapprox);
 
-    vector<double> newdir;                  // New direction in the lab frame
-    double count = 0.;
-    for(int i=0;i<3;i++){
-        count = 0.;
+    vector<double> newdir(3,0);                  // New direction in the lab frame
+    for(int i=0;i<3;i++)
         for(int j=0; j<3; j++)
-            count += rotation[i][j]*dir[j];
-        newdir.push_back(count);
-    }
-    MaterialBudget::fPoint intersection = GetIntersection(part);
+            newdir[i] += rotation[i][j]*dir[j];
+
+    MaterialBudget::fPoint intersection = GetLastIntersection(part);
     part->SetPoint(intersection.x, intersection.y, intersection.z);
     part->SetDirection(newdir);
     return part;

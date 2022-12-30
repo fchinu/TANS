@@ -61,6 +61,7 @@ public:
     bool            GetStatus()     const        {return fMultScat;}
 
     virtual fPoint GetIntersection(const Particle* particle);
+    virtual fPoint GetLastIntersection(const Particle* particle)  {return GetIntersection(particle);}
 
     MaterialBudget& SetStatus(bool multscat)                                        {fMultScat = multscat; return *this;}
     MaterialBudget& SetStatus(vector<bool> status);

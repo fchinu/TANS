@@ -57,6 +57,7 @@ public:
     virtual void FillData(Particle*);
     virtual void SetBranchAddress(TTree& gentree,TTree& rectree, unsigned countdet);
     MaterialBudget::fPoint GetSmearedIntersection(const MaterialBudget::fPoint& intersection);
+    virtual MaterialBudget::fPoint GetLastIntersection(const Particle* particle)  {return fTrueHit.back();}
     vector<bool> GetStatus() const                              {return {fMultScat, fSmearing, fNoise};}
     vector<MaterialBudget::fPoint> GetTrueHits() const          {return fTrueHit;}
     vector<MaterialBudget::fPoint> GetRecoHits() const          {return fRecoHit;}
