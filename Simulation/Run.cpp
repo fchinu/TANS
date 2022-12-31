@@ -51,6 +51,8 @@ TreeRec("TreeRec","TreeRec")
     TreeGen.Write();
     TreeRec.Write();
     hfile.Close();
+    TFile* hfileptr = &hfile;
+    Reconstruction analysis(hfileptr,2);
     w.Stop();
     w.Print("u");
 }

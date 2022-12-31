@@ -18,6 +18,7 @@ void Compile_Simulation(TString myopt="fast")
     gSystem->CompileMacro("Simulation/Event.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Run.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Simulation.cpp",opt.Data());
+    gSystem->CompileMacro("Simulation/Reconstruction.cpp",opt.Data());
     if (myopt.Contains("run"))
         gROOT->ProcessLine("Simulation()");
 }

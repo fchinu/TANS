@@ -2,6 +2,7 @@
 #define RUN_H
 
 #include "Event.h"
+#include"Reconstruction.h"
 #include "yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include <vector>

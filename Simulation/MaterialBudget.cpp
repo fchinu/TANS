@@ -1,5 +1,9 @@
 #include "MaterialBudget.h"
 
+#ifdef __MAKECINT__
+#pragma link C++ class vector<MaterialBudget::fPoint>+;
+#endif
+
 ClassImp(MaterialBudget)
 
 MaterialBudget::MaterialBudget(): fThickness(0.), fRadius(0.), fLength(0.), fDensity(0.), fZ(0), fA(0), fMultScat(true){}
