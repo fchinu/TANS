@@ -3,7 +3,7 @@
  
 ClassImp(Reconstruction)
  
-Reconstruction::Reconstruction(TFile* file, int ndetectors)
+Reconstruction::Reconstruction()
 {
     // reading tree data into fData
     // TTreeReader reader1("Intersections", file);
@@ -13,23 +13,22 @@ Reconstruction::Reconstruction(TFile* file, int ndetectors)
     // TTreeReaderValue<MaterialBudget::fPoint> intersections2(reader2, "RecHits detector 1");
    
     // Open the file containing the tree.
-    TFile::Open("/home/marcello/TANS/Simulation/Tree.root");
-    if (!file || file->IsZombie()) {
-      return;
-    }
+    TFile* file = TFile::Open("Simulation/Tree.root");
+    //if (*file)
+    //    cout<<"file letto";
     // Create a TTreeReader for the tree, for instance by passing the
     // TTree's name and the TDirectory / TFile it is in.
-    TTreeReader myReader("TreeRec", file);
+    TTreeReader myReader("fTreeRec", file);
    
     // The branch "RecHits detector 1" contains MaterialBudget::fPoint.
     cout << "Ciao" << endl;
-    TTreeReaderValue<MaterialBudget::fPoint> intersect1(myReader, "RecHits detector 1");
+    TTreeReaderValue<vector<MaterialBudget::fPoint>> intersect1(myReader, "RecHits_1");
     cout << "Ciao" << endl;
-    TTreeReaderValue<MaterialBudget::fPoint> intersect2(myReader, "RecHits detector 2");
+    TTreeReaderValue<vector<MaterialBudget::fPoint>> intersect2(myReader, "RecHits_2");
     cout << "Ciao" << endl;
  
-    std::vector<MaterialBudget::fPoint> intersections1;
-    std::vector<MaterialBudget::fPoint> intersections2;
+    std::vector<vector<MaterialBudget::fPoint>> intersections1;
+    std::vector<vector<MaterialBudget::fPoint>> intersections2;
     // Loop over all entries of the TTree or TChain.
     while (myReader.Next()) {
        // Just access the data as if myPx and myPy were iterators (note the '*'

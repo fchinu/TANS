@@ -11,8 +11,7 @@
 class Reconstruction: public TObject
 {
 public:
-    Reconstruction(){};
-    Reconstruction(TFile* file, int ndetectors);
+    Reconstruction();
  
     void VertexReco();
     void FindTracklets();
