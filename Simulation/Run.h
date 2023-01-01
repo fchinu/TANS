@@ -2,7 +2,6 @@
 #define RUN_H
 
 #include "Event.h"
-#include"Reconstruction.h"
 #include "yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include <vector>
@@ -10,15 +9,23 @@
 
 class Run: public TObject
 {
+/*
+ *  Class for executing a Run
+ *  -------------------------
+ *  Parameters:
+ *  cfgFileName: string containing yaml file for configurations
+ * 
+ */
 public:
+    Run() = default;
     Run(TString cfgFileName);
-    TTree TreeGen;
-    TTree TreeRec;
 
 private:
     void RunConstMult(), RunUniformMult(), RunCustomMult(), CreateDetectors();
     YAML::Node fConfigFile;
     string fOutFileName;
+    TTree fTreeGen;
+    TTree fTreeRec;
 
     //Multiplicity info
     unsigned fNEvents,fConstMult;
@@ -36,6 +43,8 @@ private:
 
     //Reconstruction & simulation options
     bool fDoMultScattering, fDoSmearing;
+
+    bool fVerbose;
 
     ClassDef(Run, 1)
 };

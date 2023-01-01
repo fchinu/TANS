@@ -50,6 +50,18 @@ Particle& Particle::SetDirection(double px, double py, double pz)
 
 double Particle::ComputePhi(double x, double y)
 {
+/*
+ *  Helper function that evauates the azimuth
+ *  -------------------------
+ *  Parameters:
+ *  x,y: double
+ *      coordinates of a point
+ * 
+ *  -------------------------
+ *  Returns:
+ *      double containing azimuth of the point of coordinates (x,y)
+ * 
+ */
     double phi = TMath::ATan(y / x);
     if (x<0)
         phi+=TMath::Pi();
