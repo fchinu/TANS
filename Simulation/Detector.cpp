@@ -108,6 +108,6 @@ void Detector::SetBranchAddress(TTree& gentree,TTree& rectree, unsigned countdet
  *      running count of detectors
  * 
  */
-    gentree.SetBranchAddress((string("GenHits detector ")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
-    rectree.SetBranchAddress((string("RecHits detector ")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
+    gentree.SetBranchAddress((string("GenHits_")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
+    rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
 }

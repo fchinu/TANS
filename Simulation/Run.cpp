@@ -136,8 +136,8 @@ void Run::CreateDetectors()     //TODO: add default cases
                 cout<<"Creating Detector"<<endl;
             fDetectors.push_back(new Detector(fThickness[i],fRadii[i],fLength[i],fMaterial[i],fDoMultScattering,fDoSmearing,0));
             ++DetCount;
-            fTreeGen.Branch((string("GenHits detector ")+std::to_string(DetCount)).c_str(),&genhits);
-            fTreeRec.Branch((string("RecHits detector ")+std::to_string(DetCount)).c_str(),&rechits);
+            fTreeGen.Branch((string("GenHits_")+std::to_string(DetCount)).c_str(),&genhits);
+            fTreeRec.Branch((string("RecHits_")+std::to_string(DetCount)).c_str(),&rechits);
             fDetectors[i]->SetBranchAddress(fTreeGen,fTreeRec,DetCount);    //SetsAddress of corresponding branches
         }
         else
