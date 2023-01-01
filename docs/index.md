@@ -1,5 +1,5 @@
 # Simulation of pp collisions
-High energy collisions, such as those that occur in particle accelerators, can produce a wide range of fascinating phenomena, including the creation of new particles and the study of fundamental physical interactions. In this project, we developed a simulation tool to study these collisions and how it is possible to use vertex detectors to reconstruct the primary vertex. The simulation was built using Monte Carlo techniques and only considered high momentum particles moving in a low-intensity magnetic field, i.e. having a linear trajectory.
+High energy collisions, such as those that occur in particle accelerators, can produce a wide range of fascinating phenomena, including the creation of new particles and the study of fundamental physical interactions. In this project, we developed a simulation tool to study these collisions and how it is possible to use vertex detectors to reconstruct the primary vertex position. The simulation was built using Monte Carlo techniques and only considered high momentum particles moving in a low-intensity magnetic field, i.e. the particles have a linear trajectory.
 
 ### Prerequisites
 The code in this repository requires to have installed:
@@ -32,10 +32,19 @@ It is possible to add some parameters to the Complile_Simulation.cpp file to act
 
 It is possible to combine these options: for example, `.x Compile_Simulation.cpp+("cleanrun")` deletes all the compilation outputs coming from previous compilations, then runs the simulation after compilation
 
-### Simulation results
+### Configuration of the simulation
+It is possible to configure a simulation using a .yaml file, following these steps:
 
-For quoting use >
-> Ciao!
+- Open the .yaml file in a text editor or configuration tool.
+- Review the available parameters and their descriptions.
+- Modify the values of the parameters as desired to configure the simulation.
+- Save the .yaml file once you have finished making your changes.
+
+[Here](https://github.com/Bizzzio/TANS/blob/main/Config_Run.yaml) CONTROLLARE LINK DOPO PULL REQUEST is an example of settings used to run a simulation.
+
+The config file can then be passed to the simulation function: `Simulation("Config_file.yaml")`
+> Be careful: only the parameters included in the example linked above are defined!
+
 
 To add an image use
 ![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
