@@ -17,7 +17,8 @@ public:
     void FindTracklets();
  
 private:
-    std::vector<std::vector<MaterialBudget::fPoint>> fData;
+    std::vector<std::vector<MaterialBudget::fPoint>> fIntersections1;
+    std::vector<std::vector<MaterialBudget::fPoint>> fIntersections2;
     std::vector<std::vector<MaterialBudget::fPoint>> fTracklets;
     std::vector<std::vector<double>> fVertexes;
  

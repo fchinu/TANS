@@ -1,5 +1,5 @@
 OutFileName: Simulation/Tree.root
-NEvents: 100000
+NEvents: 2
 
 #Multiplicity settings
 MultType: kConst               #Possibilities: kConst, kCustom, kUniform

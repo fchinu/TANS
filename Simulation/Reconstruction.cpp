@@ -21,34 +21,76 @@ Reconstruction::Reconstruction()
     TTreeReader myReader("fTreeRec", file);
    
     // The branch "RecHits detector 1" contains MaterialBudget::fPoint.
-    cout << "Ciao" << endl;
-    TTreeReaderValue<vector<MaterialBudget::fPoint>> intersect1(myReader, "RecHits_1");
-    cout << "Ciao" << endl;
-    TTreeReaderValue<vector<MaterialBudget::fPoint>> intersect2(myReader, "RecHits_2");
-    cout << "Ciao" << endl;
+
+    TTreeReaderValue<std::vector<MaterialBudget::fPoint>> intersect1(myReader, "RecHits_1");
+    TTreeReaderValue<std::vector<MaterialBudget::fPoint>> intersect2(myReader, "RecHits_2");
  
-    std::vector<vector<MaterialBudget::fPoint>> intersections1;
-    std::vector<vector<MaterialBudget::fPoint>> intersections2;
     // Loop over all entries of the TTree or TChain.
     while (myReader.Next()) {
-       // Just access the data as if myPx and myPy were iterators (note the '*'
+       // Just access the data as if intersect1 and intersect2 were iterators (note the '*'
        // in front of them):
-       intersections1.push_back(*intersect1);
-       intersections2.push_back(*intersect2);
+       fIntersections1.push_back(*intersect1);
+       fIntersections2.push_back(*intersect2);
     }
- 
-    cout << "Intersezioni1: " << intersections1.size() << endl;
-    cout << "Intersezioni2: " << intersections2.size() << endl;
- 
-    //FindTracklets();
-    VertexReco();
-    //file->Close();
+
+    cout << "Intersezioni1: " << fIntersections1.size() << endl;    
+    for (auto i: fIntersections1){
+        cout << i.size() << endl;
+        for (auto j: i){
+            j.print();
+        }
+        //cout << endl;
+    }
+    cout << endl;
+    cout << "Intersezioni2: " << fIntersections2.size() << endl;
+    for (auto x: fIntersections2){
+        cout << x.size() << endl;
+        for (auto y: x){
+            y.print();
+        }
+        //cout << endl;
+    }
+    cout << endl;
+    cout << "Fine stampa" << endl;
+    
+
+    FindTracklets();
+    cout << "Fine FindTracklets ended" << endl;
+    /*VertexReco();
+    cout << "VertexReco ended" << endl;
+    */
+    file->Close();
 }
  
 void Reconstruction::FindTracklets()
 {
+    cout << "Entering FindTracklets" << endl;
     double phimax = 0.010; // maximum angle difference for 2 intersections to be a tracklet
-    int nEntries1 = fData[0].size();
+    std::vector<MaterialBudget::fPoint> tracklet;
+    for (auto x: fIntersections1){
+        for (auto y: x){
+            for (auto i: fIntersections2){
+                for (auto j: i){
+                    if(abs(y.phi-j.phi)<phimax){
+                        tracklet.push_back(y);
+                        tracklet.push_back(j);
+                        fTracklets.push_back(tracklet);
+                        tracklet.clear();
+                    }
+                }
+            }
+        }
+    }
+
+    for(auto z: fTracklets){
+        for(auto w: z){
+            w.print();
+        }
+        cout << endl;
+    }
+    cout << endl;
+    cout << "Number of tracklets: " << fTracklets.size() << endl;
+    /*int nEntries1 = fData[0].size();
     int nEntries2 = fData[1].size();
     std::vector<MaterialBudget::fPoint> tracklet;
     for(unsigned int i=0; i<nEntries1; i++){
@@ -62,26 +104,27 @@ void Reconstruction::FindTracklets()
                 tracklet.clear();
             }
         }
-    }
+    }*/
 }
  
 void Reconstruction::VertexReco()
 {
+    cout << "Entering VertexReco" << endl;
     std::vector<double> vertex;
-    for(int i=0; i<fTracklets.size(); i++){
+    for(auto i: fTracklets){
         double a,b,c; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
-        a = fTracklets[i][0].x - fTracklets[i][1].x;
-        b = fTracklets[i][0].y - fTracklets[i][1].y;
-        c = fTracklets[i][0].z - fTracklets[i][1].z;
+        a = i[0].x - i[1].x;
+        b = i[0].y - i[1].y;
+        c = i[0].z - i[1].z;
  
         // value of parameter t for intersection between line and orthogonal plane passing for O
-        double t = -(a*fTracklets[i][1].x + b*fTracklets[i][1].y + c*fTracklets[i][1].z)/(a*a + b*b + c*c);
+        double t = -(a*i[1].x + b*i[1].y + c*i[1].z)/(a*a + b*b + c*c);
  
         // vertex coordinates
         double x, y, z;
-        x = fTracklets[i][1].x + a*t;
-        y = fTracklets[i][1].y + b*t;
-        z = fTracklets[i][1].z + c*t;
+        x = i[1].x + a*t;
+        y = i[1].y + b*t;
+        z = i[1].z + c*t;
  
         vertex.push_back(x);
         vertex.push_back(y);
@@ -89,5 +132,12 @@ void Reconstruction::VertexReco()
  
         fVertexes.push_back(vertex);
         vertex.clear();
+    }
+    for(auto i: fVertexes){
+        cout << "Vertex coordinates: ";
+        for(auto j: i){
+            cout << j << " ";
+        }
+        cout << endl;
     }
 }

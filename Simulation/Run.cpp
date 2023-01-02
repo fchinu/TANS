@@ -1,4 +1,5 @@
 #include "Run.h"
+#include "Reconstruction.h"
 
 ClassImp(Run)
 
@@ -51,6 +52,7 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     TFile hfile(fOutFileName.c_str(),"recreate");
     fTreeGen.Write();
     fTreeRec.Write();
+    Reconstruction analysis;
     hfile.Close();
     WritingTime.Stop();
     cout<<"Simulation time:"<<endl;
