@@ -55,7 +55,7 @@ Reconstruction::Reconstruction()
     
 
     FindTracklets();
-    cout << "Fine FindTracklets ended" << endl;
+    cout << "FindTracklets ended" << endl;
     /*VertexReco();
     cout << "VertexReco ended" << endl;
     */
@@ -67,20 +67,21 @@ void Reconstruction::FindTracklets()
     cout << "Entering FindTracklets" << endl;
     double phimax = 0.010; // maximum angle difference for 2 intersections to be a tracklet
     std::vector<MaterialBudget::fPoint> tracklet;
-    for (auto x: fIntersections1){
-        for (auto y: x){
-            for (auto i: fIntersections2){
-                for (auto j: i){
-                    if(abs(y.phi-j.phi)<phimax){
-                        tracklet.push_back(y);
-                        tracklet.push_back(j);
-                        fTracklets.push_back(tracklet);
-                        tracklet.clear();
-                    }
+    // vector<MaterialBudget*>::size_type j = 0; j<fDetectors.size(); j++
+    for(vector<vector<MaterialBudget::fPoint>>::size_type i=0; i<fIntersections1.size(); i++){
+        for (auto y: fIntersections1[i]){
+            for (auto z: fIntersections2[i]){
+                if(abs(y.phi-z.phi)<phimax){
+                    tracklet.push_back(y);
+                    tracklet.push_back(z);
+                    fTracklets.push_back(tracklet);
+                    tracklet.clear();
                 }
             }
         }
     }
+
+    
 
     for(auto z: fTracklets){
         for(auto w: z){
