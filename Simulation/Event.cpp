@@ -54,10 +54,11 @@ void Event::ProcessEvent(TTree& gentree, TTree& rectree)
         for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++)
             fDetectors[j]->Interaction(fParticles[i]);
 
-        gentree.Fill();
-        rectree.Fill();
-        fDetectors[j]->ClearData();
     }
+    gentree.Fill();
+    rectree.Fill();
+    for (auto& j : fDetectors)
+        j->ClearData();
 }
 
 void Event::EventVisual(vector<Particle*> particles)
