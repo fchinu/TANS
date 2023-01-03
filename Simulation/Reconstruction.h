@@ -15,6 +15,7 @@ public:
  
     void VertexReco();
     void FindTracklets();
+    void MinDca();
  
 private:
     std::vector<std::vector<MaterialBudget::fPoint>> fIntersections1;

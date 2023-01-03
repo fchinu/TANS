@@ -52,8 +52,8 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     TFile hfile(fOutFileName.c_str(),"recreate");
     fTreeGen.Write();
     fTreeRec.Write();
-    Reconstruction analysis;
     hfile.Close();
+    Reconstruction analysis;
     WritingTime.Stop();
     cout<<"Simulation time:"<<endl;
     SimulationTime.Print("u");
