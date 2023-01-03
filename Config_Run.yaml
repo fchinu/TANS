@@ -2,11 +2,11 @@ OutFileName: Simulation/Tree.root
 NEvents: 10000
 
 #Multiplicity settings
-MultType: kConst               #Possibilities: kConst, kCustom, kUniform
+MultType: kCustom               #Possibilities: kConst, kCustom, kUniform
 MultConst: 100                  #only if kConst
 MultFile: Simulation/Multi_ALICE.root
 MultHisto: Table 3/Hist1D_y1
-MultRange: null              #used for kUniform and kCustom
+MultRange: [5,100]              #used for kUniform and kCustom
 
 #Vertex dispersion settings
 SigmaZ: 5.3    #cm

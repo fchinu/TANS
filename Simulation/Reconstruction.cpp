@@ -143,7 +143,7 @@ void Reconstruction::MinDca()
                 ++count;
             }
         fVertexesZ.push_back(mean/count);
-        cout<<"Vertex is:"<<fVertexesZ.back();
+        //cout<<"Vertex is:"<<fVertexesZ.back();
         histo->Reset();
         vertexTemp.clear();
     }
