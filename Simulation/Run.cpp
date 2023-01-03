@@ -30,6 +30,8 @@ fLength(fConfigFile["Lenght"].as<std::vector<double> >()),
 fMaterial(fConfigFile["Material"].as<std::vector<string> >()),
 fDoMultScattering(fConfigFile["DoMultScattering"].as<bool>()),
 fDoSmearing(fConfigFile["DoSmearing"].as<bool>()),
+fDoNoise(fConfigFile["DoNoise"].as<bool>()),
+fMeanNoise(fConfigFile["MeanNoise"].as<int>()),
 
 fVerbose(fConfigFile["Verbose"].as<bool>())
 {
@@ -136,7 +138,7 @@ void Run::CreateDetectors()     //TODO: add default cases
         {
             if (fVerbose)
                 cout<<"Creating Detector"<<endl;
-            fDetectors.push_back(new Detector(fThickness[i],fRadii[i],fLength[i],fMaterial[i],fDoMultScattering,fDoSmearing,0));
+            fDetectors.push_back(new Detector(fThickness[i],fRadii[i],fLength[i],fMaterial[i],fDoMultScattering,fDoSmearing,fDoNoise,fMeanNoise));
             ++DetCount;
             fTreeGen.Branch((string("GenHits_")+std::to_string(DetCount)).c_str(),&genhits);
             fTreeRec.Branch((string("RecHits_")+std::to_string(DetCount)).c_str(),&rechits);

@@ -42,7 +42,8 @@ private:
     vector<string> fMaterial;
 
     //Reconstruction & simulation options
-    bool fDoMultScattering, fDoSmearing;
+    bool fDoMultScattering, fDoSmearing, fDoNoise;
+    int fMeanNoise;
 
     bool fVerbose;
 

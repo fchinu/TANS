@@ -1,5 +1,5 @@
 OutFileName: Simulation/Tree.root
-NEvents: 10000
+NEvents: 50000
 
 #Multiplicity settings
 MultType: kCustom               #Possibilities: kConst, kCustom, kUniform
@@ -20,6 +20,9 @@ Thickness: [0.08,0.02,0.02]       #cm
 Lenght: [27.,27.,27.]             #cm
 Material: [Be, Si, Si]            #Be or Si
 DoMultScattering: True
+#Detectors only
 DoSmearing: True
+DoNoise: True
+MeanNoise: 10
 
 Verbose: True
