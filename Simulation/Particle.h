@@ -20,7 +20,7 @@ public:
     Particle (double* point, double* direction);                                    //array initialisation
     Particle (vector<double> point, vector<double> direction);                      //vector initialisation
     Particle (vector<double> point, TRandom* rndmptr);                              //random initialisation
-    Particle (vector<double> point, TH1D* pseudorap);                              
+    Particle (vector<double> point, TH1D* theta);                              
 
     vector<double> GetDirection()       const             {return {fPx,fPy,fPz};}
     vector<double> GetPolarDirection()  const             {return {fTheta,fPhi};}

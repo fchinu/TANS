@@ -64,7 +64,7 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
         RunConstDistr();
     else if (fDistrType.find("kUniform") != std::string::npos)
         RunUniformDistr();
-    else if (fDistrType.find("kCustom") != std::string::npos)
+    else if (fDistrType.find("kCustom") != std::string::npos)      
         RunCustomDistr();
 
     SimulationTime.Stop();
@@ -138,15 +138,30 @@ void Run::RunCustomDistr()
  *  If fMultRange is define, multiplicity is restricted to that range
  */
     TFile* infile = TFile::Open(fDistrFile.c_str());
-    TH1D* histo = (TH1D*)infile->Get(fDistrHisto.c_str());
-    histo -> SetDirectory(0);
+    TH1D* histopseudorap = (TH1D*)infile->Get(fDistrHisto.c_str());
+    histopseudorap->SetDirectory(0);
     infile->Close();
+    double mintheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(histopseudorap->GetNbinsX()) + histopseudorap->GetBinWidth(histopseudorap->GetNbinsX()))));
+    cout<<"Mintetha "<<mintheta<<endl;
+    double maxtheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))));  
+    cout<<"Maxtetha "<<maxtheta<<endl;
+    cout<<2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))))<<endl;
+    TH1D* histotheta = new TH1D("Theta","Theta",histopseudorap->GetNbinsX(),mintheta,maxtheta);
+    for (int i=1; i<=histopseudorap->GetNbinsX();i++)
+    {
+        double theta=histotheta->GetBinCenter(i);
+        double eta=-TMath::Log(TMath::Tan(theta/2));
+        double etadensity = histopseudorap->GetBinContent(histopseudorap->FindBin(eta));
+        double derivative=TMath::Abs(1/TMath::Cos(theta/2)/TMath::Sin(theta/2));
+        histotheta->Fill(histotheta->GetBinCenter(i),etadensity*derivative);
+    }
     for (unsigned i=0; i<fNEvents; i++)
     {
         if (i%10000==0 && i!=0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histo,fTreeGen,fTreeRec);     
+        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
     }
+    delete histotheta;
 }
 
 
