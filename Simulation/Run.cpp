@@ -40,7 +40,7 @@ fMeanNoise(fConfigFile["MeanNoise"].as<int>()),
 
 fVerbose(fConfigFile["Verbose"].as<bool>())
 {
-    TStopwatch SimulationTime, WritingTime;
+    TStopwatch SimulationTime, WritingTime, ReconstructionTime;
     SimulationTime.Start();
 
     std::vector<Event::fVertMult>* config = nullptr;        //used to define Branch type
@@ -74,12 +74,16 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     fTreeGen.Write();
     fTreeRec.Write();
     hfile.Close();
-    Reconstruction analysis;
     WritingTime.Stop();
+    ReconstructionTime.Start();
+    Reconstruction analysis;
+    ReconstructionTime.Stop();
     cout<<"Simulation time:"<<endl;
     SimulationTime.Print("u");
     cout<<"Writing time:"<<endl;
     WritingTime.Print("u");
+    cout<<"Reconstruction time:"<<endl;
+    ReconstructionTime.Print("u");
 }
 
 inline unsigned Run::GetCustomMult()
