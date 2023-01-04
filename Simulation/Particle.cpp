@@ -25,6 +25,11 @@ Particle::Particle (vector<double> point, TRandom* rndmptr)
     SetPolarDirection(TMath::ACos(1-2.*rndmptr->Rndm()),2*TMath::Pi()*rndmptr->Rndm()).SetPoint(point[0],point[1],point[2]);
 }
 
+Particle::Particle (vector<double> point, TH1D* pseudorap)
+{
+    SetPolarDirection(2*TMath::ATan(exp(-pseudorap->GetRandom())),2*TMath::Pi()*gRandom->Rndm()).SetPoint(point[0],point[1],point[2]);
+}
+
 Particle& Particle::SetDirection(double px, double py, double pz)
 {
     double norm= px*px + py*py + pz*pz;

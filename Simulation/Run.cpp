@@ -11,11 +11,16 @@ fTreeRec("fTreeRec","fTreeRec"),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),
 
 //Multiplicity settings
-fMultType(fConfigFile["MultType"].as<std::string>()),
-fConstMult(fConfigFile["MultConst"].IsNull() ? 0 : fConfigFile["MultConst"].as<unsigned>()),
-fMultFile(fConfigFile["MultFile"].as<std::string>()),
-fMultHisto(fConfigFile["MultHisto"].as<std::string>()),
-fMultRange(fConfigFile["MultRange"].IsNull() ?  std::vector<unsigned>{} : fConfigFile["MultRange"].as<std::vector<unsigned> >()),
+fMultType(fConfigFile["Multiplicity"]["MultType"].as<std::string>()),
+fConstMult(fConfigFile["Multiplicity"]["MultConst"].IsNull() ? 0 : fConfigFile["Multiplicity"]["MultConst"].as<unsigned>()),
+fMultFile(fConfigFile["Multiplicity"]["MultFile"].as<std::string>()),
+fMultHistoName(fConfigFile["Multiplicity"]["MultHistoName"].as<std::string>()),
+fMultRange(fConfigFile["Multiplicity"]["MultRange"].IsNull() ?  std::vector<unsigned>{} : fConfigFile["Multiplicity"]["MultRange"].as<std::vector<unsigned> >()),
+//Angular distribution settings
+fDistrType(fConfigFile["AngularDistr"]["DistrType"].as<std::string>()),
+fDistrFile(fConfigFile["AngularDistr"]["DistrFile"].as<std::string>()),
+fDistrHisto(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>()),
+fDistrConst(fConfigFile["AngularDistr"]["DistrConst"].as<std::vector<double> >()),
 
 //Vertex dispersion settings
 fSigmaX(fConfigFile["SigmaX"].as<double>()),
@@ -43,11 +48,25 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
 
     CreateDetectors();
     if (fMultType.find("kConst") != std::string::npos)
-        RunConstMult();
+        fMultFunction=&Run::GetConstMult;
     else if (fMultType.find("kUniform") != std::string::npos)
-        RunUniformMult();
+        fMultFunction=&Run::GetUniformMult;
     else if (fMultType.find("kCustom") != std::string::npos)
-        RunCustomMult();            //TODO: default case
+    {
+        TFile* infile = TFile::Open(fMultFile.c_str());
+        fMultHisto = (TH1D*)infile->Get(fMultHistoName.c_str());
+        fMultHisto -> SetDirectory(0);
+        infile->Close();
+        fMultFunction=&Run::GetCustomMult;
+    }           //TODO: add default case
+
+    if (fDistrType.find("kConst") != std::string::npos)
+        RunConstDistr();
+    else if (fDistrType.find("kUniform") != std::string::npos)
+        RunUniformDistr();
+    else if (fDistrType.find("kCustom") != std::string::npos)
+        RunCustomDistr();
+
     SimulationTime.Stop();
     
     WritingTime.Start();
@@ -63,62 +82,66 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     WritingTime.Print("u");
 }
 
-void Run::RunConstMult()
+inline unsigned Run::GetCustomMult()
+{
+    unsigned mult;
+    if (fMultRange.size()>0)
+    {
+        do {
+            mult = fMultHisto->GetRandom();
+        }while (mult < fMultRange[0] || mult > fMultRange[1]);
+    }
+    else
+        mult = fMultHisto->GetRandom();
+    return mult;
+}
+
+void Run::RunConstDistr()
 {
 /*
  *  Function that runs fNEvents with constant multiplicity
  */
-    if (fConstMult == 0)
+    if (fDistrConst.size() != 3)
     {
-        cout<<"\033[93mWarning: MultConst was set to 0 or null, setting it to 10 instead\033[0m \n";
-        fConstMult=10;
+        cout<<"\033[93mWarning: DistrConst is not a vector (dim!=3), setting it to (1,0,0)\033[0m \n";
+        fDistrConst={1,0,0};
     }
-    for (unsigned i=0; i<fNEvents; i++)
+    for (unsigned i=1; i<=fNEvents; i++)
     {
-        if (i%10000==0 && i!=0 && fVerbose)
+        if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,fConstMult, gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
     }
 }
 
-void Run::RunUniformMult()          //TODO: check case "MultRange" is not defined
+void Run::RunUniformDistr()          //TODO: check case "MultRange" is not defined
 {
 /*
  *  Function that runs fNEvents with multiplicity distributed evenly in the range (fMultRange[0],fMultRange[1])
  */
-    for (unsigned i=0; i<fNEvents; i++)
+    for (unsigned i=1; i<=fNEvents; i++)
     {
-        if (i%10000==0 && i!=0 && fVerbose)
+        if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,gRandom->Integer(fMultRange[1]-fMultRange[0]+1) + fMultRange[0], gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
     }
 }
 
-void Run::RunCustomMult()
+void Run::RunCustomDistr()
 {
 /*
  *  Function that runs fNEvents with multiplicity distributed according to an histogram
  *  If fMultRange is define, multiplicity is restricted to that range
  */
-    TFile* infile = TFile::Open(fMultFile.c_str());
-    TH1D* histo = (TH1D*)infile->Get(fMultHisto.c_str());
+    TFile* infile = TFile::Open(fDistrFile.c_str());
+    TH1D* histo = (TH1D*)infile->Get(fDistrHisto.c_str());
     histo -> SetDirectory(0);
     infile->Close();
-    unsigned mult;    
     for (unsigned i=0; i<fNEvents; i++)
     {
-        if (fMultRange.size()>0)
-        {
-            do {
-                mult = histo->GetRandom();
-            }while (mult < fMultRange[0] || mult > fMultRange[1]);
-        }
-        else
-            mult = histo->GetRandom();
-
         if (i%10000==0 && i!=0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,mult, gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histo,fTreeGen,fTreeRec);     
     }
 }
 
