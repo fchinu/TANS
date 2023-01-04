@@ -31,6 +31,6 @@ DoMultScattering: True
 #Detectors only
 DoSmearing: True
 DoNoise: True
-MeanNoise: 10
+MeanNoise: 10                     #Mean number of noise "hits" per detector
 
 Verbose: True
