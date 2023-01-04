@@ -110,7 +110,11 @@ void Detector::SetBranchAddress(TTree& gentree,TTree& rectree, unsigned countdet
  * 
  */
     gentree.SetBranchAddress((string("GenHits_")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
-    rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
+    if (fSmearing)
+        rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
+    else    
+        rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
+
 }
 
 void Detector::Noise()
