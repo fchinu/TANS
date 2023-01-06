@@ -4,6 +4,9 @@
 #include "Event.h"
 #include "yaml-cpp/yaml.h"
 #include "TH1D.h"
+#include "Event_ConstDistribution.h"
+#include "Event_UniformDistribution.h"
+#include "Event_CustomDistribution.h"
 #include <vector>
 #include <string>
 
@@ -19,6 +22,7 @@ class Run: public TObject
 public:
     Run() = default;
     Run(TString cfgFileName);
+    ~Run() {for(auto&i : fDetectors) delete i;}
 
 private:
     void RunConstDistr(), RunUniformDistr(), RunCustomDistr(), CreateDetectors();

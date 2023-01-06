@@ -1,5 +1,5 @@
 OutFileName: Simulation/Tree.root
-NEvents: 1000000
+NEvents: 10000
 
 #Multiplicity settings
 Multiplicity:

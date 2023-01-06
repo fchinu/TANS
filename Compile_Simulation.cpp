@@ -2,7 +2,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-void Compile_Simulation(TString myopt="fast")
+void Compile_Simulation(TString myopt="run")
 {
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Simulation").c_str());
     TString opt;
@@ -16,6 +16,9 @@ void Compile_Simulation(TString myopt="fast")
     gSystem->CompileMacro("Simulation/MaterialBudget.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Detector.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Event.cpp",opt.Data());
+    gSystem->CompileMacro("Simulation/Event_CustomDistribution.cpp",opt.Data());
+    gSystem->CompileMacro("Simulation/Event_UniformDistribution.cpp",opt.Data());
+    gSystem->CompileMacro("Simulation/Event_ConstDistribution.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Reconstruction.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Run.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Simulation.cpp",opt.Data());

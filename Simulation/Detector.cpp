@@ -133,3 +133,16 @@ void Detector::Noise()
         fRecoHit.push_back(noise);
     }
 }
+
+
+MaterialBudget::fPoint Detector::GetLastIntersection(const Particle*)
+{
+    if (fTrueHit.size()>0)
+        return fTrueHit.back();
+    else
+    {
+        MaterialBudget::fPoint temp;
+        temp.isIntersection=false;
+        return temp;
+    }
+}

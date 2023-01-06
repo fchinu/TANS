@@ -98,7 +98,6 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     vector<double> PolarDirection=part->GetPolarDirection();
     double sintheta=TMath::Sin(PolarDirection[0]), sinphi=TMath::Sin(PolarDirection[1]);
     double costheta=TMath::Cos(PolarDirection[0]), cosphi=TMath::Cos(PolarDirection[1]);
-
     rotation[0][0] = -sinphi;
     rotation[1][0] = cosphi;
     rotation[2][0] = 0.;
@@ -129,10 +128,12 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     for(int i=0;i<3;i++)
         for(int j=0; j<3; j++)
             newdir[i] += rotation[i][j]*dir[j];
-
     MaterialBudget::fPoint intersection = GetLastIntersection(part);
-    part->SetPoint(intersection.x, intersection.y, intersection.z);
-    part->SetDirection(newdir);
+    if (intersection.isIntersection)
+    {
+        part->SetPoint(intersection.x, intersection.y, intersection.z);
+        part->SetDirection(newdir);
+    }
     return part;
 }
 

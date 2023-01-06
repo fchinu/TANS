@@ -114,7 +114,7 @@ void Run::RunConstDistr()
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
+        Event_ConstDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
     }
 }
 
@@ -127,7 +127,7 @@ void Run::RunUniformDistr()          //TODO: check case "MultRange" is not defin
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event_UniformDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
     }
 }
 
@@ -145,7 +145,6 @@ void Run::RunCustomDistr()
     cout<<"Mintetha "<<mintheta<<endl;
     double maxtheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))));  
     cout<<"Maxtetha "<<maxtheta<<endl;
-    cout<<2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))))<<endl;
     TH1D* histotheta = new TH1D("Theta","Theta",histopseudorap->GetNbinsX(),mintheta,maxtheta);
     for (int i=1; i<=histopseudorap->GetNbinsX();i++)
     {
@@ -159,7 +158,7 @@ void Run::RunCustomDistr()
     {
         if (i%10000==0 && i!=0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
+        Event_CustomDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
     }
     delete histotheta;
 }
