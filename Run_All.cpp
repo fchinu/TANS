@@ -2,7 +2,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-void Compile_Simulation(TString myopt="run")
+void Run_All(TString myopt="run")
 {
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Simulation").c_str());
     TString opt;
@@ -23,6 +23,9 @@ void Compile_Simulation(TString myopt="run")
     gSystem->CompileMacro("Simulation/VertexHandler.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Run.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Simulation.cpp",opt.Data());
-    if (myopt.Contains("run"))
-        gROOT->ProcessLine("Simulation()");
+    gSystem->CompileMacro("Reconstruction/Reconstruction.cpp",opt.Data());
+    gSystem->CompileMacro("Reconstruction/RunAnalysis.cpp",opt.Data());
+
+    gROOT->ProcessLine("Simulation()");
+    gROOT->ProcessLine("RunAnalysis()");
 }

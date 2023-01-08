@@ -1,5 +1,4 @@
 #include "Run.h"
-#include "Reconstruction.h"
 
 ClassImp(Run)
 
@@ -35,7 +34,7 @@ fMeanNoise(fConfigFile["MeanNoise"].as<int>()),
 
 fVerbose(fConfigFile["Verbose"].as<bool>())
 {
-    TStopwatch SimulationTime, WritingTime, ReconstructionTime;
+    TStopwatch SimulationTime, WritingTime;
     SimulationTime.Start();
 
     std::vector<Event::fVertMult>* config = nullptr;        //used to define Branch type
@@ -70,15 +69,10 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     fTreeRec.Write();
     hfile.Close();
     WritingTime.Stop();
-    ReconstructionTime.Start();
-    Reconstruction analysis;
-    ReconstructionTime.Stop();
     cout<<"Simulation time:"<<endl;
     SimulationTime.Print("u");
     cout<<"Writing time:"<<endl;
     WritingTime.Print("u");
-    cout<<"Reconstruction time:"<<endl;
-    ReconstructionTime.Print("u");
 }
 
 void Run::RunConstDistr()
