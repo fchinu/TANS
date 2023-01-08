@@ -10,7 +10,7 @@ fTreeGen("fTreeGen","fTreeGen"),
 fTreeRec("fTreeRec","fTreeRec"),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),
 
-//Multiplicity settings
+//Multiplicity handler
 fMultHandler(fConfigFile),
 
 //Angular distribution settings
@@ -20,9 +20,7 @@ fDistrHisto(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>()),
 fDistrConst(fConfigFile["AngularDistr"]["DistrConst"].as<std::vector<double> >()),
 
 //Vertex dispersion settings
-fSigmaX(fConfigFile["SigmaX"].as<double>()),
-fSigmaY(fConfigFile["SigmaY"].as<double>()),
-fSigmaZ(fConfigFile["SigmaZ"].as<double>()),
+fVertexHandler(fConfigFile),
 
 //Material budgets settings
 fIsDetector(fConfigFile["IsDetector"].as<std::vector<bool> >()),
@@ -97,7 +95,7 @@ void Run::RunConstDistr()
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_ConstDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
+        Event_ConstDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),fDistrConst,fTreeGen,fTreeRec);     
     }
 }
 
@@ -110,7 +108,7 @@ void Run::RunUniformDistr()          //TODO: check case "MultRange" is not defin
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_UniformDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event_UniformDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),fTreeGen,fTreeRec);     
     }
 }
 
@@ -141,7 +139,7 @@ void Run::RunCustomDistr()
     {
         if (i%10000==0 && i!=0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_CustomDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
+        Event_CustomDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),histotheta,fTreeGen,fTreeRec);     
     }
     delete histotheta;
 }

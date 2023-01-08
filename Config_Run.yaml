@@ -17,9 +17,12 @@ AngularDistr:
   DistrHisto: heta2
 
 #Vertex dispersion settings
-SigmaZ: 5.3    #cm
-SigmaX: 0.01   #cm
-SigmaY: 0.01   #cm
+Vertex:
+  DistrTypeZ: kUniform               #Possibilities: kGaus, kUniform
+  RangeZ: [-20.,20.]               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
+  SigmaZ: 5.3                     #cm
+  SigmaX: 0.01                    #cm
+  SigmaY: 0.01                    #cm
 
 #Material budgets settings
 IsDetector: [False,True,True]

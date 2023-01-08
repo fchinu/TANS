@@ -21,6 +21,7 @@ void Compile_Simulation(TString myopt="run")
     gSystem->CompileMacro("Simulation/Event_ConstDistribution.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Reconstruction.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/MultHandler.cpp",opt.Data());
+    gSystem->CompileMacro("Simulation/VertexHandler.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Run.cpp",opt.Data());
     gSystem->CompileMacro("Simulation/Simulation.cpp",opt.Data());
     if (myopt.Contains("run"))

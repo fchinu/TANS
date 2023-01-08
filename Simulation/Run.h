@@ -8,6 +8,7 @@
 #include "Event_UniformDistribution.h"
 #include "Event_CustomDistribution.h"
 #include "MultHandler.h"
+#include "VertexHandler.h"
 #include <vector>
 #include <string>
 
@@ -40,7 +41,7 @@ private:
     vector<double> fDistrConst;
 
     //Vertex dispersion info
-    double fSigmaZ,fSigmaX,fSigmaY;
+    VertexHandler fVertexHandler;
 
     //Detectors info
     vector<MaterialBudget*> fDetectors;

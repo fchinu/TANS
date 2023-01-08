@@ -9,11 +9,7 @@ fMultFile(fConfigFile["Multiplicity"]["MultFile"].as<std::string>()),
 fMultHistoName(fConfigFile["Multiplicity"]["MultHistoName"].as<std::string>()),
 fMultRange(fConfigFile["Multiplicity"]["MultRange"].IsNull() ?  std::vector<unsigned>{} : fConfigFile["Multiplicity"]["MultRange"].as<std::vector<unsigned> >())
 {
-    if (fMultType.find("kConst") != std::string::npos)
-        fMultFunction=&MultHandler::GetConstMult;
-    else if (fMultType.find("kUniform") != std::string::npos)
-        fMultFunction=&MultHandler::GetUniformMult;
-    else if (fMultType.find("kCustom") != std::string::npos)
+    if (fMultType.find("kCustom") != std::string::npos)
     {
         TFile* infile = TFile::Open(fMultFile.c_str());
         fMultHisto = (TH1D*)infile->Get(fMultHistoName.c_str());
@@ -21,6 +17,10 @@ fMultRange(fConfigFile["Multiplicity"]["MultRange"].IsNull() ?  std::vector<unsi
         infile->Close();
         fMultFunction=&MultHandler::GetCustomMult;
     }
+    else if (fMultType.find("kUniform") != std::string::npos)
+        fMultFunction=&MultHandler::GetUniformMult;
+    else 
+        fMultFunction=&MultHandler::GetConstMult;
 }
 
 inline unsigned MultHandler::GetCustomMult()
