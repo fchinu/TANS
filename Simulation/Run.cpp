@@ -11,11 +11,8 @@ fTreeRec("fTreeRec","fTreeRec"),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),
 
 //Multiplicity settings
-fMultType(fConfigFile["Multiplicity"]["MultType"].as<std::string>()),
-fConstMult(fConfigFile["Multiplicity"]["MultConst"].IsNull() ? 0 : fConfigFile["Multiplicity"]["MultConst"].as<unsigned>()),
-fMultFile(fConfigFile["Multiplicity"]["MultFile"].as<std::string>()),
-fMultHistoName(fConfigFile["Multiplicity"]["MultHistoName"].as<std::string>()),
-fMultRange(fConfigFile["Multiplicity"]["MultRange"].IsNull() ?  std::vector<unsigned>{} : fConfigFile["Multiplicity"]["MultRange"].as<std::vector<unsigned> >()),
+fMultHandler(fConfigFile),
+
 //Angular distribution settings
 fDistrType(fConfigFile["AngularDistr"]["DistrType"].as<std::string>()),
 fDistrFile(fConfigFile["AngularDistr"]["DistrFile"].as<std::string>()),
@@ -47,18 +44,18 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     fTreeGen.Branch("Config",&config);                      //Branch for multipliciy and vertex position
 
     CreateDetectors();
-    if (fMultType.find("kConst") != std::string::npos)
-        fMultFunction=&Run::GetConstMult;
-    else if (fMultType.find("kUniform") != std::string::npos)
-        fMultFunction=&Run::GetUniformMult;
-    else if (fMultType.find("kCustom") != std::string::npos)
-    {
-        TFile* infile = TFile::Open(fMultFile.c_str());
-        fMultHisto = (TH1D*)infile->Get(fMultHistoName.c_str());
-        fMultHisto -> SetDirectory(0);
-        infile->Close();
-        fMultFunction=&Run::GetCustomMult;
-    }           //TODO: add default case
+    //if (fMultType.find("kConst") != std::string::npos)
+    //    fMultFunction=&Run::GetConstMult;
+    //else if (fMultType.find("kUniform") != std::string::npos)
+    //    fMultFunction=&Run::GetUniformMult;
+    //else if (fMultType.find("kCustom") != std::string::npos)
+    //{
+    //    TFile* infile = TFile::Open(fMultFile.c_str());
+    //    fMultHisto = (TH1D*)infile->Get(fMultHistoName.c_str());
+    //    fMultHisto -> SetDirectory(0);
+    //    infile->Close();
+    //    fMultFunction=&Run::GetCustomMult;
+    //}           //TODO: add default case
 
     if (fDistrType.find("kConst") != std::string::npos)
         RunConstDistr();
@@ -86,20 +83,6 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     ReconstructionTime.Print("u");
 }
 
-inline unsigned Run::GetCustomMult()
-{
-    unsigned mult;
-    if (fMultRange.size()>0)
-    {
-        do {
-            mult = fMultHisto->GetRandom();
-        }while (mult < fMultRange[0] || mult > fMultRange[1]);
-    }
-    else
-        mult = fMultHisto->GetRandom();
-    return mult;
-}
-
 void Run::RunConstDistr()
 {
 /*
@@ -114,7 +97,7 @@ void Run::RunConstDistr()
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_ConstDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
+        Event_ConstDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fDistrConst,fTreeGen,fTreeRec);     
     }
 }
 
@@ -127,7 +110,7 @@ void Run::RunUniformDistr()          //TODO: check case "MultRange" is not defin
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_UniformDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
+        Event_UniformDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),fTreeGen,fTreeRec);     
     }
 }
 
@@ -158,7 +141,7 @@ void Run::RunCustomDistr()
     {
         if (i%10000==0 && i!=0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_CustomDistribution(fDetectors,(this->*fMultFunction)(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
+        Event_CustomDistribution(fDetectors,fMultHandler.GetMultiplicity(), gRandom->Gaus(0,fSigmaX),gRandom->Gaus(0,fSigmaY),gRandom->Gaus(0,fSigmaZ),histotheta,fTreeGen,fTreeRec);     
     }
     delete histotheta;
 }

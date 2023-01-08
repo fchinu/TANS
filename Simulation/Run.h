@@ -7,6 +7,7 @@
 #include "Event_ConstDistribution.h"
 #include "Event_UniformDistribution.h"
 #include "Event_CustomDistribution.h"
+#include "MultHandler.h"
 #include <vector>
 #include <string>
 
@@ -26,20 +27,13 @@ public:
 
 private:
     void RunConstDistr(), RunUniformDistr(), RunCustomDistr(), CreateDetectors();
-    unsigned GetConstMult()             {return fConstMult;}
-    unsigned GetUniformMult()           {return gRandom->Integer(fMultRange[1]-fMultRange[0]+1) + fMultRange[0];}
-    inline unsigned GetCustomMult();
     YAML::Node fConfigFile;
     string fOutFileName;
     TTree fTreeGen;
     TTree fTreeRec;
-
+    unsigned fNEvents;
     //Multiplicity info
-    unsigned fNEvents,fConstMult;
-    string fMultType,fMultFile,fMultHistoName;
-    vector<unsigned> fMultRange;
-    TH1D* fMultHisto;
-    unsigned (Run::*fMultFunction)() = &Run::GetConstMult;
+    MultHandler fMultHandler;
 
     //Angular distribution settings
     string fDistrType,fDistrFile,fDistrHisto;
