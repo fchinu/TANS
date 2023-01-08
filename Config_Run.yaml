@@ -1,13 +1,13 @@
-OutFileName: Simulation/Tree.root
-NEvents: 10000
+OutFileName: Tree.root
+NEvents: 100000
 
 #Multiplicity settings
 Multiplicity:
-  MultType: kCustom              #Possibilities: kConst, kCustom, kUniform
+  MultType: kUniform              #Possibilities: kConst, kCustom, kUniform
   MultConst: 10                  #only if kConst
   MultFile: Simulation/Multi_ALICE.root
   MultHistoName: Table 3/Hist1D_y1
-  MultRange: null              #used for kUniform and kCustom
+  MultRange: [0,100]              #used for kUniform and kCustom
 
 #Angular distribution settings
 AngularDistr:
@@ -18,8 +18,8 @@ AngularDistr:
 
 #Vertex dispersion settings
 Vertex:
-  DistrTypeZ: kUniform               #Possibilities: kGaus, kUniform
-  RangeZ: [-20.,20.]               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
+  DistrTypeZ: kGaus               #Possibilities: kGaus, kUniform
+  RangeZ: null               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
   SigmaZ: 5.3                     #cm
   SigmaX: 0.01                    #cm
   SigmaY: 0.01                    #cm
