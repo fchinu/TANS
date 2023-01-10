@@ -36,11 +36,15 @@ private:
     std::vector<std::vector<double>> fVertexes;
     std::vector<double> fVertexesZ;
     TH1D* fResiduals = new TH1D("Residuals", "Residuals", 500,-0.5,0.5);
-    TEfficiency* pEff = new TEfficiency("eff","Efficiency vs Multiplicity;Multiplicity;Efficiency",100,0,100);
+    TH1D* fResolutionVsMultiplicity = new TH1D("ResolutionVsMultiplicity", "ResolutionVsMultiplicity", 20, 0., 100.);
+    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 54, -27., 27.);
+    TEfficiency* pEff = new TEfficiency("eff","Efficiency vs Multiplicity;Multiplicity;Efficiency", 100, 0, 100);
     
     void FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
     void FillHistoResiduals();
     void FillHistoEff();
+    void FillHistoResolutionVsMultiplicity();
+    void FillHistoResolutionVsZTrue();
 
  
     ClassDef(Reconstruction, 1)

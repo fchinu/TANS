@@ -54,10 +54,15 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     MinDca();
     cout << "Fine MinDca" << endl;
     FillHistoResiduals();
-    cout << "FillHIstoResiduals ended" << endl;
+    cout << "FillHistoResiduals ended" << endl;
     FillHistoEff();
     TFile outfile("outfile.root","recreate");
+    FillHistoResolutionVsMultiplicity();
+    cout << "FillHIstoResolutionVsMultiplicity ended" << endl;
+    FillHistoResolutionVsZTrue();
+    cout << "FillHIstoResolutionVsZTrue ended" << endl;
     fResiduals->Write();
+    fResolutionVsMultiplicity->Write();
     pEff->Write();
     outfile.Close();
     ReconstructionTime.Stop();
@@ -183,7 +188,7 @@ void Reconstruction::FillHistoEff()
     TFile* file = TFile::Open(fTreeFileName.c_str());
     TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());
     tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");
-    TH1F* zgen= (TH1F*)gDirectory->Get("zgen");;
+    TH1F* zgen= (TH1F*)gDirectory->Get("zgen");
     double sigma=zgen->GetRMS();
     file->Close();
     for(unsigned i=0; i<fConfigs.size(); ++i)
@@ -195,3 +200,34 @@ void Reconstruction::FillHistoEff()
             pEff->Fill(false,fConfigs[i][0].multiplicity);
     }
 }
+
+void Reconstruction::FillHistoResolutionVsMultiplicity()
+{
+    cout << "Entering FillHIstoResolutionVsMultiplicity " << endl;
+    TH1D* histmultrange = new TH1D("histmultrange", "histmultrange", 500, -0.5, 0.5);
+    cout << "histmultrange created " << endl;
+    for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++){
+        
+        double LowEdgeMult = fResolutionVsMultiplicity->GetBinLowEdge(i);
+        double UpperEdgeMult = LowEdgeMult + fResolutionVsMultiplicity->GetBinWidth(i);
+    
+        for(int j=0; j<fConfigs.size(); j++){
+            if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult){
+                histmultrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
+            }
+        }
+        cout << "Resolution for multiplicity range: " << LowEdgeMult << "-" << UpperEdgeMult << endl;
+        fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), histmultrange->GetRMS());
+        histmultrange->Reset();
+    }
+    
+    delete histmultrange;
+
+}
+
+void Reconstruction::FillHistoResolutionVsZTrue()
+{
+    cout << "Entering FillHistoResolutionVsZTrue " << endl;
+
+}
+
