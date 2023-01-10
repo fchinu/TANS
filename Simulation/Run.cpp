@@ -13,10 +13,7 @@ fNEvents(fConfigFile["NEvents"].as<unsigned>()),
 fMultHandler(fConfigFile),
 
 //Angular distribution settings
-fDistrType(fConfigFile["AngularDistr"]["DistrType"].as<std::string>()),
-fDistrFile(fConfigFile["AngularDistr"]["DistrFile"].as<std::string>()),
-fDistrHisto(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>()),
-fDistrConst(fConfigFile["AngularDistr"]["DistrConst"].as<std::vector<double> >()),
+fAngularHandler(fConfigFile),
 
 //Vertex dispersion settings
 fVertexHandler(fConfigFile),
@@ -41,25 +38,7 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     fTreeGen.Branch("Config",&config);                      //Branch for multipliciy and vertex position
 
     CreateDetectors();
-    //if (fMultType.find("kConst") != std::string::npos)
-    //    fMultFunction=&Run::GetConstMult;
-    //else if (fMultType.find("kUniform") != std::string::npos)
-    //    fMultFunction=&Run::GetUniformMult;
-    //else if (fMultType.find("kCustom") != std::string::npos)
-    //{
-    //    TFile* infile = TFile::Open(fMultFile.c_str());
-    //    fMultHisto = (TH1D*)infile->Get(fMultHistoName.c_str());
-    //    fMultHisto -> SetDirectory(0);
-    //    infile->Close();
-    //    fMultFunction=&Run::GetCustomMult;
-    //}           //TODO: add default case
-
-    if (fDistrType.find("kConst") != std::string::npos)
-        RunConstDistr();
-    else if (fDistrType.find("kUniform") != std::string::npos)
-        RunUniformDistr();
-    else if (fDistrType.find("kCustom") != std::string::npos)      
-        RunCustomDistr();
+    Start();
 
     SimulationTime.Stop();
     
@@ -75,69 +54,18 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     WritingTime.Print("u");
 }
 
-void Run::RunConstDistr()
+void Run::Start()
 {
 /*
  *  Function that runs fNEvents with constant multiplicity
  */
-    if (fDistrConst.size() != 3)
-    {
-        cout<<"\033[93mWarning: DistrConst is not a vector (dim!=3), setting it to (1,0,0)\033[0m \n";
-        fDistrConst={1,0,0};
-    }
     for (unsigned i=1; i<=fNEvents; i++)
     {
         if (i%10000==0 && fVerbose)
             cout<<"Processing event "<<i<<endl;
-        Event_ConstDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),fDistrConst,fTreeGen,fTreeRec);     
+        Event(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),fAngularHandler,fTreeGen,fTreeRec);     
     }
 }
-
-void Run::RunUniformDistr()          //TODO: check case "MultRange" is not defined
-{
-/*
- *  Function that runs fNEvents with multiplicity distributed evenly in the range (fMultRange[0],fMultRange[1])
- */
-    for (unsigned i=1; i<=fNEvents; i++)
-    {
-        if (i%10000==0 && fVerbose)
-            cout<<"Processing event "<<i<<endl;
-        Event_UniformDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),fTreeGen,fTreeRec);     
-    }
-}
-
-void Run::RunCustomDistr()
-{
-/*
- *  Function that runs fNEvents with multiplicity distributed according to an histogram
- *  If fMultRange is define, multiplicity is restricted to that range
- */
-    TFile* infile = TFile::Open(fDistrFile.c_str());
-    TH1D* histopseudorap = (TH1D*)infile->Get(fDistrHisto.c_str());
-    histopseudorap->SetDirectory(0);
-    infile->Close();
-    double mintheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(histopseudorap->GetNbinsX()) + histopseudorap->GetBinWidth(histopseudorap->GetNbinsX()))));
-    cout<<"Mintetha "<<mintheta<<endl;
-    double maxtheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))));  
-    cout<<"Maxtetha "<<maxtheta<<endl;
-    TH1D* histotheta = new TH1D("Theta","Theta",histopseudorap->GetNbinsX(),mintheta,maxtheta);
-    for (int i=1; i<=histopseudorap->GetNbinsX();i++)
-    {
-        double theta=histotheta->GetBinCenter(i);
-        double eta=-TMath::Log(TMath::Tan(theta/2));
-        double etadensity = histopseudorap->GetBinContent(histopseudorap->FindBin(eta));
-        double derivative=TMath::Abs(1/TMath::Cos(theta/2)/TMath::Sin(theta/2));
-        histotheta->Fill(histotheta->GetBinCenter(i),etadensity*derivative);
-    }
-    for (unsigned i=0; i<fNEvents; i++)
-    {
-        if (i%10000==0 && i!=0 && fVerbose)
-            cout<<"Processing event "<<i<<endl;
-        Event_CustomDistribution(fDetectors,fMultHandler.GetMultiplicity(), fVertexHandler.GetXVertex(),fVertexHandler.GetYVertex(),fVertexHandler.GetZVertex(),histotheta,fTreeGen,fTreeRec);     
-    }
-    delete histotheta;
-}
-
 
 void Run::CreateDetectors()     //TODO: add default cases
 {

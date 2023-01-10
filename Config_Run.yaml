@@ -3,7 +3,7 @@ NEvents: 100000
 
 #Multiplicity settings
 Multiplicity:
-  MultType: kUniform              #Possibilities: kConst, kCustom, kUniform
+  MultType: kCustom              #Possibilities: kConst, kCustom, kUniform
   MultConst: 10                  #only if kConst
   MultFile: Simulation/Multi_ALICE.root
   MultHistoName: Table 3/Hist1D_y1
@@ -12,7 +12,7 @@ Multiplicity:
 #Angular distribution settings
 AngularDistr:
   DistrType: kCustom              #Possibilities: kConst, kCustom, kUniform
-  DistrConst: [0,1,0]             #only if kConst
+  DistrConst: [0.,1.,0.]          #only if kConst
   DistrFile: Simulation/kinem.root
   DistrHisto: heta2
 

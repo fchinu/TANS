@@ -4,9 +4,6 @@
 #include "Event.h"
 #include "yaml-cpp/yaml.h"
 #include "TH1D.h"
-#include "Event_ConstDistribution.h"
-#include "Event_UniformDistribution.h"
-#include "Event_CustomDistribution.h"
 #include "MultHandler.h"
 #include "VertexHandler.h"
 #include <vector>
@@ -27,7 +24,7 @@ public:
     ~Run() {for(auto&i : fDetectors) delete i;}
 
 private:
-    void RunConstDistr(), RunUniformDistr(), RunCustomDistr(), CreateDetectors();
+    void Start(), CreateDetectors();
     YAML::Node fConfigFile;
     string fOutFileName;
     TTree fTreeGen;
@@ -37,8 +34,7 @@ private:
     MultHandler fMultHandler;
 
     //Angular distribution settings
-    string fDistrType,fDistrFile,fDistrHisto;
-    vector<double> fDistrConst;
+    AngularHandler fAngularHandler;
 
     //Vertex dispersion info
     VertexHandler fVertexHandler;

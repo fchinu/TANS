@@ -50,11 +50,8 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     file->Close();
     
     FindTracklets();
-    cout << "Fine FindTracklets ended" << endl;
     MinDca();
-    cout << "Fine MinDca" << endl;
     FillHistoResiduals();
-    cout << "FillHistoResiduals ended" << endl;
     FillHistoEff();
     TFile outfile("outfile.root","recreate");
     FillHistoResolutionVsMultiplicity();
