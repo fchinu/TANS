@@ -1,6 +1,7 @@
 #include "Reconstruction.h"
 #include"TDirectory.h"
 #include "TH1D.h"
+#include "TF1.h"
 #include "TCanvas.h"
 #include <cmath>
  
@@ -62,7 +63,19 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     FillHistoResolutionVsZTrue();
     cout << "FillHIstoResolutionVsZTrue ended" << endl;
     fResiduals->Write();
+    
+    fResolutionVsMultiplicity->SetMarkerStyle(20);
+    fResolutionVsMultiplicity->SetOption("histp");
     fResolutionVsMultiplicity->Write();
+    
+    fResolutionVsZTrue->SetMarkerStyle(20);
+    fResolutionVsZTrue->SetOption("histp");
+    fResolutionVsZTrue->Write();
+    
+    fEfficiencyVsZTrue->SetMarkerStyle(20);
+    fEfficiencyVsZTrue->SetOption("histp");
+    fEfficiencyVsZTrue->Write();
+    
     pEff->Write();
     outfile.Close();
     ReconstructionTime.Stop();
@@ -150,6 +163,8 @@ void Reconstruction::MinDca()
             }
         fVertexesZ.push_back(mean/count);
         //cout<<"Vertex is:"<<fVertexesZ.back();
+        fVertexesZResolutions.push_back(histo->GetRMS());
+        //cout << "Standard deviation " << histo->GetRMS() << endl;
         histo->Reset();
         vertexTemp.clear();
     }
@@ -201,11 +216,15 @@ void Reconstruction::FillHistoEff()
     }
 }
 
+void Reconstruction::FillHistoEfficiencyVsZTrue()
+{
+    
+}
+
 void Reconstruction::FillHistoResolutionVsMultiplicity()
 {
     cout << "Entering FillHIstoResolutionVsMultiplicity " << endl;
     TH1D* histmultrange = new TH1D("histmultrange", "histmultrange", 500, -0.5, 0.5);
-    cout << "histmultrange created " << endl;
     for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++){
         
         double LowEdgeMult = fResolutionVsMultiplicity->GetBinLowEdge(i);
@@ -216,18 +235,35 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
                 histmultrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
         }
-        cout << "Resolution for multiplicity range: " << LowEdgeMult << "-" << UpperEdgeMult << endl;
+        //TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
+        //histmultrange->Fit(gaussian, "MR");
+        //double c = gaussian->GetParameter(2);
         fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), histmultrange->GetRMS());
+        //histmultrange->Write();
         histmultrange->Reset();
     }
-    
     delete histmultrange;
-
 }
 
 void Reconstruction::FillHistoResolutionVsZTrue()
 {
     cout << "Entering FillHistoResolutionVsZTrue " << endl;
-
+    // prendo tutti eventi con z in un certo range, faccio istogramma differenze tra ZTrue e ZReco e prendo come dato per l'istogramma
+    // l'RMS di questo istogramma
+    TH1D* histzrange = new TH1D("histzrange", "histzrange", 500, -0.5, 0.5);
+    for(int i=1; i<=fResolutionVsZTrue->GetNbinsX(); i++){
+        
+        double LowEdgeMult = fResolutionVsZTrue->GetBinLowEdge(i);
+        double UpperEdgeMult = LowEdgeMult + fResolutionVsZTrue->GetBinWidth(i);
+    
+        for(int j=0; j<fConfigs.size(); j++){
+            if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
+                histzrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
+            }
+        }
+        fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), histzrange->GetRMS());
+        //histzrange->Write();
+        histzrange->Reset();
+    }
+    delete histzrange;
 }
-

@@ -1,10 +1,10 @@
 OutFileName: Tree.root
-NEvents: 100000
+NEvents: 10000
 
 #Multiplicity settings
 Multiplicity:
   MultType: kUniform              #Possibilities: kConst, kCustom, kUniform
-  MultConst: 10                  #only if kConst
+  MultConst: 1000                 #only if kConst
   MultFile: Simulation/Multi_ALICE.root
   MultHistoName: Table 3/Hist1D_y1
   MultRange: [0,100]              #used for kUniform and kCustom
@@ -33,7 +33,7 @@ Material: [Be, Si, Si]            #Be or Si
 DoMultScattering: True
 #Detectors only
 DoSmearing: True
-DoNoise: True
+DoNoise: False
 MeanNoise: 10                     #Mean number of noise "hits" per detector
 
 Verbose: True

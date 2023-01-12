@@ -35,9 +35,11 @@ private:
     std::vector<std::vector<MaterialBudget::fPoint>> fTracklets;
     std::vector<std::vector<double>> fVertexes;
     std::vector<double> fVertexesZ;
+    std::vector<double> fVertexesZResolutions;
     TH1D* fResiduals = new TH1D("Residuals", "Residuals", 500,-0.5,0.5);
     TH1D* fResolutionVsMultiplicity = new TH1D("ResolutionVsMultiplicity", "ResolutionVsMultiplicity", 20, 0., 100.);
-    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 54, -27., 27.);
+    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 18, -27., 27.);
+    TH1D* fEfficiencyVsZTrue = new TH1D("EfficiencyVsZTrue", "EfficiencyVsZTrue", 14, -27., 27.);
     TEfficiency* pEff = new TEfficiency("eff","Efficiency vs Multiplicity;Multiplicity;Efficiency", 100, 0, 100);
     
     void FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
@@ -45,6 +47,7 @@ private:
     void FillHistoEff();
     void FillHistoResolutionVsMultiplicity();
     void FillHistoResolutionVsZTrue();
+    void FillHistoEfficiencyVsZTrue();
 
  
     ClassDef(Reconstruction, 1)
