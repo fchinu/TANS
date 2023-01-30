@@ -6,6 +6,7 @@
 #include <string>
 #include "TStopwatch.h"
 #include "Detector.h"
+#include "AngularHandler.h"
 
 class Event : public TObject
 {
@@ -34,14 +35,12 @@ public:
         void print() {cout<<"Multiplicity': "<< multiplicity <<"\t Vertex coordinates: x: "<< x <<", y: "<< y <<", z: "<< z <<endl;}
     };
 
+    Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z,AngularHandler& anglesHandl, TTree& gentree, TTree& rectree);
     ~Event();
     void ProcessEvent(TTree&, TTree&);
     void EventVisual(vector<Particle*> particles);
 
-protected:
-    virtual void CreateParticles(double x, double y, double z) = 0;
-    
-    unsigned                    fMultiplicity; 
+private:
     vector<Particle*>           fParticles;
     vector<MaterialBudget*>     fDetectors;
     vector<fVertMult>           fConfig;
