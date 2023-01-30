@@ -43,6 +43,7 @@ private:
     TEfficiency* pEff = new TEfficiency("eff","Efficiency vs Multiplicity;Multiplicity;Efficiency", 100, 0, 100);
     
     void FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
+    void FillHistoIntersection(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
     void FillHistoResiduals();
     void FillHistoEff();
     void FillHistoResolutionVsMultiplicity();

@@ -138,7 +138,7 @@ void Reconstruction::VertexReco()
 
 void Reconstruction::MinDca()
 {
-    TH1D* histo = new TH1D("vertex", "vertex", 50, -15,15);
+    TH1D* histo = new TH1D("vertex", "vertex", 150, -15,15);
     vector<double> vertexTemp;
     for(auto& i: fTracklets)
     {
@@ -147,7 +147,7 @@ void Reconstruction::MinDca()
             fVertexesZ.push_back(nan(""));
             continue;
         }
-        FillHistoMinDca(histo, i, vertexTemp);
+        FillHistoIntersection(histo, i, vertexTemp);
 
         int histomax(histo->GetMaximumBin()), count(0);
         double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax), mean(0);
@@ -179,6 +179,26 @@ void Reconstruction::FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>
 
         double t;
         t = - (a*tracklets[j].x + b*tracklets[j].y) / (a*a+b*b);    //t of closest approach
+
+        vertextemp.push_back(tracklets[j].z + c*t);
+        histo->Fill(vertextemp.back());
+    }
+}
+
+void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp)
+{
+    for (unsigned j=0;j<tracklets.size();j+=2)
+    {
+        double a,b,c,phi,cosphi,sinphi; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
+        a = tracklets[j+1].x - tracklets[j].x;
+        b = tracklets[j+1].y - tracklets[j].y;
+        c = tracklets[j+1].z - tracklets[j].z;
+        phi=(tracklets[j+1].phi + tracklets[j].phi)/2;
+        cosphi=TMath::Cos(phi);
+        sinphi=TMath::Sin(phi);
+
+        double t;
+        t = - (cosphi*tracklets[j].x + sinphi*tracklets[j].y) / (a*cosphi+b*sinphi);    //t of closest approach
 
         vertextemp.push_back(tracklets[j].z + c*t);
         histo->Fill(vertextemp.back());
@@ -251,7 +271,7 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
         double LowEdgeMult = fResolutionVsMultiplicity->GetBinLowEdge(i);
         double UpperEdgeMult = LowEdgeMult + fResolutionVsMultiplicity->GetBinWidth(i);
     
-        for(int j=0; j<fConfigs.size(); j++){
+        for(unsigned j=0; j<fConfigs.size(); j++){
             if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult){
                 histmultrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
