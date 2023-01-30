@@ -215,7 +215,31 @@ void Reconstruction::FillHistoEff()
 
 void Reconstruction::FillHistoEfficiencyVsZTrue()
 {
+    cout << "Entering FillHistoResolutionVsZTrue " << endl;
+    // prendo tutti eventi con z in un certo range e calcolo efficienza
+    TFile* file = TFile::Open(fTreeFileName.c_str());
+    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());
+    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");
+    TH1F* zgen= (TH1F*)gDirectory->Get("zgen");
+    double sigma=zgen->GetRMS();
+    file->Close();
+    for(int i=1; i<=fEfficiencyVsZTrue->GetNbinsX(); i++){
+        
+        double LowEdgeMult = fEfficiencyVsZTrue->GetBinLowEdge(i);
+        double UpperEdgeMult = LowEdgeMult + fEfficiencyVsZTrue->GetBinWidth(i);
     
+        int generated = 0;
+        int reconstructed = 0;
+        for(int j=0; j<fConfigs.size(); j++){
+            if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
+                generated++;
+                if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma){
+                    reconstructed++;
+                }
+            }
+        }
+        fEfficiencyVsZTrue->Fill(fEfficiencyVsZTrue->GetBinCenter(i), reconstructed/generated);
+    }
 }
 
 void Reconstruction::FillHistoResolutionVsMultiplicity()
