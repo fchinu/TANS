@@ -54,6 +54,7 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     MinDca();
     FillHistoResiduals();
     FillHistoEff();
+    FillHistoEfficiencyVsZTrue();
     TFile outfile("outfile.root","recreate");
     FillHistoResolutionVsMultiplicity();
     cout << "FillHIstoResolutionVsMultiplicity ended" << endl;
@@ -61,19 +62,25 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     cout << "FillHIstoResolutionVsZTrue ended" << endl;
     fResiduals->Write();
     
-    fResolutionVsMultiplicity->SetMarkerStyle(20);
-    fResolutionVsMultiplicity->SetOption("histp");
+    //gStyle->SetErrorX(0.);
+
+    //fResolutionVsMultiplicity->SetMarkerStyle(20);
+    //fResolutionVsMultiplicity->SetMarkerColor(kBlue);
+    //fResolutionVsMultiplicity->SetLineColor(kRed);
+    //fResolutionVsMultiplicity->SetOption("histp");
     fResolutionVsMultiplicity->Write();
     
-    fResolutionVsZTrue->SetMarkerStyle(20);
-    fResolutionVsZTrue->SetOption("histp");
+    //fResolutionVsZTrue->SetMarkerStyle(16);
+    //fResolutionVsZTrue->SetMarkerColor(kBlue);
+    fResolutionVsZTrue->SetLineColor(kRed);
+    //fResolutionVsZTrue->SetOption("E1");
     fResolutionVsZTrue->Write();
     
-    fEfficiencyVsZTrue->SetMarkerStyle(20);
-    fEfficiencyVsZTrue->SetOption("histp");
-    fEfficiencyVsZTrue->Write();
-    
+    pEff->SetLineColor(kRed);
     pEff->Write();
+    pEffvsZ->SetLineColor(kRed);
+    pEffvsZ->Write();
+    
     outfile.Close();
     ReconstructionTime.Stop();
     cout<<"Reconstruction time:"<<endl;
@@ -235,30 +242,19 @@ void Reconstruction::FillHistoEff()
 
 void Reconstruction::FillHistoEfficiencyVsZTrue()
 {
-    cout << "Entering FillHistoResolutionVsZTrue " << endl;
-    // prendo tutti eventi con z in un certo range e calcolo efficienza
-    TFile* file = TFile::Open(fTreeFileName.c_str());
-    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());
-    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");
-    TH1F* zgen= (TH1F*)gDirectory->Get("zgen");
-    double sigma=zgen->GetRMS();
+    TFile* file = TFile::Open(fTreeFileName.c_str());       // puntatore al file del tree
+    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());  // puntatore al tree dei generati
+    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");  // genero l'istogramma delle fGenConfig.z e lo salvo nella current directory con nome 
+                                                            // zgen, non produco grafica grazie a "goff" e con "" non creo l'istogramma temporaneo  
+    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");        // puntatore a zgen
+    double sigma = zgen->GetRMS();  // deviazione standard dell'istogramma
     file->Close();
-    for(int i=1; i<=fEfficiencyVsZTrue->GetNbinsX(); i++){
-        
-        double LowEdgeMult = fEfficiencyVsZTrue->GetBinLowEdge(i);
-        double UpperEdgeMult = LowEdgeMult + fEfficiencyVsZTrue->GetBinWidth(i);
-    
-        int generated = 0;
-        int reconstructed = 0;
-        for(int j=0; j<fConfigs.size(); j++){
-            if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
-                generated++;
-                if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma){
-                    reconstructed++;
-                }
-            }
-        }
-        fEfficiencyVsZTrue->Fill(fEfficiencyVsZTrue->GetBinCenter(i), reconstructed/generated);
+    for(unsigned i=0; i<fConfigs.size(); ++i)
+    {
+        if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma)
+            pEffvsZ->Fill(true,fConfigs[i][0].z);
+        else
+            pEffvsZ->Fill(false,fConfigs[i][0].z);
     }
 }
 
