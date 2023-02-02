@@ -2,7 +2,7 @@
 #define ANGULARHANDLER_H
 
 #include "Riostream.h"
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include "TRandom.h"
 #include "TFile.h"
@@ -10,6 +10,13 @@
 
 class AngularHandler
 {
+/*
+ *  Class for handling particles' angular distribution
+ *  -------------------------
+ *  Parameters:
+ *  cfgFileName: string containing address of yaml file for configurations
+ * 
+ */
 public:
     AngularHandler() = default;
     AngularHandler(YAML::Node ConfigFile);
@@ -21,11 +28,11 @@ private:
     YAML::Node fConfigFile;
 
     std::vector<double> GetConstDistribution()             {return fConstDirection;}
-    inline std::vector<double> GetUniformDistribution();    //TODO: add case DistributionRange is not defined
+    inline std::vector<double> GetUniformDistribution();
     inline std::vector<double> GetCustomDistribution();
     void SetThetaFromEta(TH1D* histopseudorap);
 
-    //Distributioniplicity info
+    //Distribution info
     std::vector<double> fConstDirection;
     string fDistributionType,fDistributionFile,fDistributionHistoName;
     vector<unsigned> fDistributionRange;

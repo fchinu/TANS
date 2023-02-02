@@ -119,6 +119,12 @@ void Detector::SetBranchAddress(TTree& gentree,TTree& rectree, unsigned countdet
 
 void Detector::Noise()
 {
+    /*
+    *  Function that adds noise to the Reconstructed hits vector.
+    *  Noise is distributed according to a Poisson distribution with
+    *  mean value defined in the Config file
+    * 
+    */
     MaterialBudget::fPoint noise;
     noise.isIntersection = true;
     static double  pi=TMath::Pi(), Twopi=2*pi;
@@ -137,6 +143,18 @@ void Detector::Noise()
 
 MaterialBudget::fPoint Detector::GetLastIntersection(const Particle*)
 {
+    /*
+    *  Function that returns the last intersection of the Particle
+    *  if a collision already occurred, no interaction otherwise
+    *  -------------------------
+    *  Parameters:
+    *  Particle*: unused in this clas, only needed for MaterialBudget class
+    * 
+    *  -------------------------
+    *  Returns:
+    *      MaterialBudget::fPoint containing last intersection (in case any occurred)
+    * 
+    */
     if (fTrueHit.size()>0)
         return fTrueHit.back();
     else

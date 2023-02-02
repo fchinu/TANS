@@ -2,7 +2,7 @@
 #define RUN_H
 
 #include "Event.h"
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include "MultHandler.h"
 #include "VertexHandler.h"
@@ -15,7 +15,7 @@ class Run: public TObject
  *  Class for executing a Run
  *  -------------------------
  *  Parameters:
- *  cfgFileName: string containing yaml file for configurations
+ *  cfgFileName: string containing address of yaml file for configurations
  * 
  */
 public:
@@ -30,6 +30,7 @@ private:
     TTree fTreeGen;
     TTree fTreeRec;
     unsigned fNEvents;
+    
     //Multiplicity info
     MultHandler fMultHandler;
 

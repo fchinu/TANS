@@ -48,7 +48,7 @@ public:
         void print() {cout<<"isIntersection: "<<isIntersection<<"\tx: "<<x<<"\ty: "<<y<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
     };
 
-    MaterialBudget();                                                       // default constructor
+    MaterialBudget();                                                       
     MaterialBudget(double thickness, double radius, double length, double density, int z, int a, bool multscat);
     MaterialBudget(double thickness, double radius, double length, string material, bool multscat);
     
@@ -61,7 +61,8 @@ public:
     bool            GetStatus()     const        {return fMultScat;}
 
     virtual fPoint GetIntersection(const Particle* particle);
-    virtual fPoint GetLastIntersection(const Particle* particle)  {return GetIntersection(particle);}
+    //Used for detector class to not call GetIntersection twice per particle
+    virtual fPoint GetLastIntersection(const Particle* particle)                    {return GetIntersection(particle);}
 
     MaterialBudget& SetStatus(bool multscat)                                        {fMultScat = multscat; return *this;}
     MaterialBudget& SetStatus(vector<bool> status);
@@ -77,6 +78,7 @@ public:
     virtual void ClearData()                                {}
     Particle* MultScattering(Particle* part); 
 
+    //Used to sort the material budgets to properly do multiple scattering
     bool operator<(const MaterialBudget& a)                 {return GetRadius()<a.GetRadius();}
     bool operator>(const MaterialBudget& a)                 {return GetRadius()>a.GetRadius();}
 

@@ -2,7 +2,7 @@
 
 AngularHandler::AngularHandler(YAML::Node ConfigFile):
 fConfigFile(ConfigFile),
-//Multiplicity settings
+//Angular ditribution settings
 fDistributionType(fConfigFile["AngularDistr"]["DistrType"].as<std::string>()),
 fConstDirection(fConfigFile["AngularDistr"]["DistrConst"].IsNull() ? std::vector<double>{} : fConfigFile["AngularDistr"]["DistrConst"].as<std::vector<double> >()),
 fDistributionFile(fConfigFile["AngularDistr"]["DistrFile"].as<std::string>()),
@@ -19,14 +19,21 @@ fDistributionHistoName(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>
     }
     else if (fDistributionType.find("kUniform") != std::string::npos)
         fDistributionFunction=&AngularHandler::GetUniformDistribution;
-    else 
+
+    else if (fDistributionType.find("kConst") != std::string::npos)
     {
         if (fConstDirection.size() != 3)
         {
             cout<<"\033[93mWarning: DistrConst is not a vector (dim!=3), setting it to (1,0,0)\033[0m \n";
             fConstDirection={1,0,0};
         }
-        fDistributionFunction=&AngularHandler::GetConstDistribution;              //TODO: add warinings for default case
+        fDistributionFunction=&AngularHandler::GetConstDistribution;
+    }
+    else 
+    {
+        cout<<"\033[93mWarning: DistrType is not kConst, kCustom or kUniform, setting it to kConst with direction (1,0,0)\033[0m \n";
+        fConstDirection={1,0,0};
+        fDistributionFunction=&AngularHandler::GetConstDistribution; 
     }
 
 }
@@ -46,6 +53,9 @@ inline std::vector<double> AngularHandler::GetCustomDistribution()
 
 void AngularHandler::SetThetaFromEta(TH1D* histopseudorap)
 {
+/*
+*  Function to transform pseudorapidity distribution to theta distribution
+*/
     double mintheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(histopseudorap->GetNbinsX()) + histopseudorap->GetBinWidth(histopseudorap->GetNbinsX()))));
     cout<<"Mintetha "<<mintheta<<endl;
     double maxtheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))));  

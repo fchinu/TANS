@@ -18,7 +18,10 @@ fMultRange(fConfigFile["Multiplicity"]["MultRange"].IsNull() ?  std::vector<unsi
         fMultFunction=&MultHandler::GetCustomMult;
     }
     else if (fMultType.find("kUniform") != std::string::npos)
+    {
+        CheckRange();
         fMultFunction=&MultHandler::GetUniformMult;
+    }
     else 
         fMultFunction=&MultHandler::GetConstMult;
 }
@@ -35,4 +38,27 @@ inline unsigned MultHandler::GetCustomMult()
     else
         mult = fMultHisto->GetRandom();
     return mult;
+}
+
+inline bool MultHandler::CheckRange()
+{
+/*
+ *  Function that checks whether MultRange is properly defined
+ * 
+ */
+    if (fMultRange.size()<2)
+    {
+        cout<<"\033[93mWarning: MultRange size < 2, setting it to [0-50]\033[0m \n";
+        fMultRange={0,50};
+    }
+    if (fMultRange[0]<0 || fMultRange[1]<0)
+    {
+        cout<<"\033[93mWarning: MultRange has negative values, setting it to [0-50]\033[0m \n";
+        fMultRange={0,50};
+    }
+    if (fMultRange[0]>fMultRange[1])
+    {
+        cout<<"\033[93mWarning: MultRange is not sorted, setting it to [0-50]\033[0m \n";
+        fMultRange={0,50};
+    }
 }

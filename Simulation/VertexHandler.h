@@ -2,13 +2,20 @@
 #define VERTEXHANDLER_H
 
 #include "Riostream.h"
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include "TRandom.h"
 #include "TFile.h"
 
 class VertexHandler
 {
+/*
+ *  Class for handling vertex creation
+ *  -------------------------
+ *  Parameters:
+ *  cfgFileName: string containing address of yaml file for configurations
+ * 
+ */
 public:
     VertexHandler() = default;
     VertexHandler(YAML::Node ConfigFile);

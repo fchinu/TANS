@@ -55,11 +55,10 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     FillHistoResiduals();
     FillHistoEff();
     FillHistoEfficiencyVsZTrue();
-    TFile outfile("outfile.root","recreate");
     FillHistoResolutionVsMultiplicity();
-    cout << "FillHIstoResolutionVsMultiplicity ended" << endl;
     FillHistoResolutionVsZTrue();
-    cout << "FillHIstoResolutionVsZTrue ended" << endl;
+
+    TFile outfile("outfile.root","recreate");
     fResiduals->Write();
     
     //gStyle->SetErrorX(0.);
@@ -89,12 +88,16 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
  
 void Reconstruction::FindTracklets()
 {
-    //cout << "Entering FindTracklets" << endl;
+/*
+ *  Function that fills fTracklets datamember containing,
+ *  for each event the reconstructed tracklets
+ */
     std::vector<MaterialBudget::fPoint> tracklet;
     for (unsigned i=0; i<fIntersections1.size(); ++i)
     {
         for (auto y: fIntersections1[i])
             for (auto j: fIntersections2[i])
+                //The 2 hits are in the running window
                 if(abs(y.phi-j.phi)<fMaxPhi)
                 {
                     tracklet.push_back(y);
@@ -110,6 +113,7 @@ void Reconstruction::FindTracklets()
  
 void Reconstruction::VertexReco()
 {
+
     cout << "Entering VertexReco" << endl;
     std::vector<double> vertex;
     for(auto i: fTracklets){
@@ -134,17 +138,14 @@ void Reconstruction::VertexReco()
         fVertexes.push_back(vertex);
         vertex.clear();
     }
-    for(auto i: fVertexes){
-        cout << "Vertex coordinates: ";
-        for(auto j: i){
-            cout << j << " ";
-        }
-        cout << endl;
-    }
 }
 
 void Reconstruction::MinDca()
 {
+/*
+ *  Function reconstructs the Z coordinates of the vertex, by averaging the 
+ *  Z coordinates of the tracks at their point of closest approach
+ */
     TH1D* histo = new TH1D("vertex", "vertex", 150, -15,15);
     vector<double> vertexTemp;
     for(auto& i: fTracklets)
@@ -166,9 +167,7 @@ void Reconstruction::MinDca()
                 ++count;
             }
         fVertexesZ.push_back(mean/count);
-        //cout<<"Vertex is:"<<fVertexesZ.back();
         fVertexesZResolutions.push_back(histo->GetRMS());
-        //cout << "Standard deviation " << histo->GetRMS() << endl;
         histo->Reset();
         vertexTemp.clear();
     }
@@ -194,6 +193,12 @@ void Reconstruction::FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>
 
 void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp)
 {
+/*
+ *  Function that reconstructs the vertex, by averaging the interstections
+ *  between each track and a plane orthogonal to the track in the xy plane  
+ *  and passing through the Z axis
+ * 
+ */
     for (unsigned j=0;j<tracklets.size();j+=2)
     {
         double a,b,c,phi,cosphi,sinphi; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
@@ -205,7 +210,8 @@ void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::f
         sinphi=TMath::Sin(phi);
 
         double t;
-        t = - (cosphi*tracklets[j].x + sinphi*tracklets[j].y) / (a*cosphi+b*sinphi);    //t of closest approach
+        //t of intersection between track and plane
+        t = - (cosphi*tracklets[j].x + sinphi*tracklets[j].y) / (a*cosphi+b*sinphi);    
 
         vertextemp.push_back(tracklets[j].z + c*t);
         histo->Fill(vertextemp.back());
@@ -214,9 +220,12 @@ void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::f
 
 void Reconstruction::FillHistoResiduals()
 {
+/*
+ *  Function to fill the residuals histogram
+ * 
+ */
     for(unsigned i=0; i<fConfigs.size(); ++i)
     {
-        //cout<<fVertexesZ[i]<<"\t"<<fConfigs[i][0].z<<endl;
         if (!isnan(fVertexesZ[i]))
             fResiduals->Fill(fVertexesZ[i]-fConfigs[i][0].z);
     }
@@ -224,6 +233,12 @@ void Reconstruction::FillHistoResiduals()
 
 void Reconstruction::FillHistoEff()
 {
+/*
+ *  Function to fill the residuals histogram
+ * 
+ */
+    //Reconstructs the sigma from the data, to count only reconstructed
+    //vertexes less than fSigmaZ away from generated vertex
     TFile* file = TFile::Open(fTreeFileName.c_str());
     TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());
     tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");
@@ -232,7 +247,6 @@ void Reconstruction::FillHistoEff()
     file->Close();
     for(unsigned i=0; i<fConfigs.size(); ++i)
     {
-        //cout<<fVertexesZ[i]<<"\t"<<fConfigs[i][0].z<<"\t"<<TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<<endl;
         if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma)
             pEff->Fill(true,fConfigs[i][0].multiplicity);
         else
