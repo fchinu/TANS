@@ -6,6 +6,7 @@
 #include "TH1D.h"
 #include "MultHandler.h"
 #include "VertexHandler.h"
+#include "DetectorHandler.h"
 #include <vector>
 #include <string>
 
@@ -21,34 +22,20 @@ class Run: public TObject
 public:
     Run() = default;
     Run(TString cfgFileName);
-    ~Run() {for(auto&i : fDetectors) delete i;}
+    //~Run() {for(auto&i : fDetectors) delete i;}
 
 private:
-    void Start(), CreateDetectors();
+    void Start(), TreeSettings();
     YAML::Node fConfigFile;
     string fOutFileName;
     TTree fTreeGen;
     TTree fTreeRec;
     unsigned fNEvents;
     
-    //Multiplicity info
-    MultHandler fMultHandler;
-
-    //Angular distribution settings
-    AngularHandler fAngularHandler;
-
-    //Vertex dispersion info
-    VertexHandler fVertexHandler;
-
-    //Detectors info
-    vector<MaterialBudget*> fDetectors;
-    vector<bool> fIsDetector;
-    vector<double> fRadii, fThickness, fLength;
-    vector<string> fMaterial;
-
-    //Reconstruction & simulation options
-    bool fDoMultScattering, fDoSmearing, fDoNoise;
-    int fMeanNoise;
+    MultHandler fMultHandler;               //!Multiplicity info
+    AngularHandler fAngularHandler;         //!Angular distribution settings
+    VertexHandler fVertexHandler;           //!Vertex dispersion info
+    DetectorHandler fDetectorHandler;       //Detector info
 
     bool fVerbose;
 

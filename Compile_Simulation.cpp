@@ -18,6 +18,7 @@ void Compile_Simulation(TString myopt="run")
     gSystem->CompileMacro("Simulation/MaterialBudget.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/Detector.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/AngularHandler.cpp",opt.Data(),"","Build");
+    gSystem->CompileMacro("Simulation/DetectorHandler.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/Event.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/MultHandler.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/VertexHandler.cpp",opt.Data(),"","Build");
