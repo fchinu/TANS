@@ -31,12 +31,14 @@ private:
     std::vector<MaterialBudget*> fDetectors;                //!
     std::vector<bool> fIsDetector;                          //!
     std::vector<double> fRadii;
-    std::vector<double> fThicknesses, fLengths;             //!
-    std::vector<string> fMaterials;                         //!
+    std::vector<double> fThickness, fLength;             //!
+    std::vector<string> fMaterial;                         //!
 
     //Reconstruction & simulation options
     bool fDoMultScattering, fDoSmearing, fDoNoise;          //!
     int fMeanNoise;                                         //!
+
+    bool fVerbose;
 
 };
 
