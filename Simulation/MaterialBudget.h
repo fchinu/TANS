@@ -44,8 +44,8 @@ public:
 
     //Struct for containing intersections with the material budget
     using fPoint = struct{
-        bool isIntersection=false; double x = 0, y = 0, z = 0, phi = 0;     //no need for theta in cilindrical coordinates
-        void print() {cout<<"isIntersection: "<<isIntersection<<"\tx: "<<x<<"\ty: "<<y<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
+        bool isIntersection=false; double z = 0, phi = 0;     //no need for theta in cilindrical coordinates
+        void print() {cout<<"isIntersection: "<<isIntersection<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
     };
 
     MaterialBudget();                                                       

@@ -131,7 +131,7 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     MaterialBudget::fPoint intersection = GetLastIntersection(part);
     if (intersection.isIntersection)
     {
-        part->SetPoint(intersection.x, intersection.y, intersection.z);
+        part->SetPoint(fRadius*intersection.phi, fRadius*intersection.phi, intersection.z);
         part->SetDirection(newdir);
     }
     return part;
@@ -175,10 +175,10 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
     } 
 
     intersection.isIntersection=true;
-    intersection.x = point[0] + direction[0] * t;
-    intersection.y = point[1] + direction[1] * t;
+    double x = point[0] + direction[0] * t;
+    double y = point[1] + direction[1] * t;
     intersection.z = point[2] + direction[2] * t;
-    intersection.phi = ComputePhi(intersection.x, intersection.y);
+    intersection.phi = ComputePhi(x, y);
     return intersection;
 }
 

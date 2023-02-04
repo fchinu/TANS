@@ -1,5 +1,7 @@
 #include "DetectorHandler.h"
 
+ClassImp(DetectorHandler)
+
 DetectorHandler::DetectorHandler(YAML::Node ConfigFile):
 fConfigFile(ConfigFile),
 fIsDetector(fConfigFile["IsDetector"].as<std::vector<bool> >()),

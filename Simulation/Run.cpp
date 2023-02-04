@@ -20,16 +20,13 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     TStopwatch SimulationTime, WritingTime;
     SimulationTime.Start();
 
-    TFile geomfile("geom.root","recreate");
-    geomfile.WriteObjectAny(&fDetectorHandler, "DetectorHandler", "Detector Radii");
-    geomfile.Close();
-
     TreeSettings();
     Start();
 
     SimulationTime.Stop();
     WritingTime.Start();
     TFile hfile(fOutFileName.c_str(),"recreate");
+    fDetectorHandler.Write("Detectors");
     fTreeGen.Write();
     fTreeRec.Write();
     hfile.Close();

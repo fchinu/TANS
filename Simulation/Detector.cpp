@@ -89,8 +89,6 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection(const MaterialBudget::fP
     }
     else{
         SmearedIntersection.isIntersection=true;
-        SmearedIntersection.x = fRadius*TMath::Cos(SmearedIntersection.phi);
-        SmearedIntersection.y = fRadius*TMath::Sin(SmearedIntersection.phi);
     }
     return SmearedIntersection;
 }
@@ -134,8 +132,6 @@ void Detector::Noise()
         noise.z=(gRandom->Rndm()-0.5)*fLength;
         double phi=gRandom->Rndm()*Twopi;
         noise.phi=phi-pi/2;
-        noise.x=fRadius*TMath::Cos(phi);
-        noise.y=fRadius*TMath::Sin(phi);
         fRecoHit.push_back(noise);
     }
 }

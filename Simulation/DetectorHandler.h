@@ -20,6 +20,7 @@ public:
 
     std::vector<MaterialBudget*> GetDetectors()         {return fDetectors;}
     std::vector<bool> GetIsDetector()                   {return fIsDetector;}
+    std::vector<double> GetRadii()                      {return fRadii;}
 
 
 private:
@@ -30,7 +31,7 @@ private:
     //Detectors info
     std::vector<MaterialBudget*> fDetectors;                //!
     std::vector<bool> fIsDetector;                          //!
-    std::vector<double> fRadii;
+    std::vector<double> fRadii;                             //
     std::vector<double> fThickness, fLength;             //!
     std::vector<string> fMaterial;                         //!
 
@@ -38,8 +39,9 @@ private:
     bool fDoMultScattering, fDoSmearing, fDoNoise;          //!
     int fMeanNoise;                                         //!
 
-    bool fVerbose;
+    bool fVerbose;                                          //!
 
+    ClassDef(DetectorHandler, 1)
 };
 
 #endif
