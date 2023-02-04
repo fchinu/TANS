@@ -89,15 +89,15 @@ void Event::EventVisual(vector<Particle*> particles)
     std::string Trackstr = "Track";
     unsigned count=0;
     
-    top->SetLineColor(kBlue);
-    gGeoManager->SetTopVisible(0); // the TOP is invisible
-    Outer->SetLineColor(kOrange);
+    top->SetLineColor(kBlack);
+    //gGeoManager->SetTopVisible(0); // the TOP is invisible
+    Outer->SetLineColor(kRed);
     top->AddNode(Outer,1);
     Inner->SetLineColor(kBlue);
     top->AddNode(Inner,1);
-    BeamPipe->SetLineColor(kMagenta);
+    BeamPipe->SetLineColor(kGreen+2);
     BeamPipe->SetFillStyle(1001);
-    BeamPipe->SetFillColor(kMagenta);
+    BeamPipe->SetFillColor(kGreen+2);
     //top->SetVisibility(kFALSE);
     top->AddNode(BeamPipe,1);
 
