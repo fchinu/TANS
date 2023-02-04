@@ -57,6 +57,7 @@ NEvents: number of events to be run
 
 
 #### Angular distribution settings
+
 | Setting               | Description                           |
 | -----------           | -----------                           |
 | DistrType             | Angular distribution (possible options: kConst, kCustom and kUniform)             |
@@ -67,6 +68,7 @@ NEvents: number of events to be run
 
 
 ### Vertex dispersion settings
+
 | Setting               | Description                           |
 | -----------           | -----------                           |
 | DistrTypeZ             | Z distribution (possible options: kGaus  and kUniform)             |
