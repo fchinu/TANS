@@ -1,16 +1,21 @@
 ### Simulation
 
+The code available in this repository runs a Monte Carlo (MC) simulation of a vertex detector, i.e. a detector that reconstructs the vertex position. The simulation consists of three parts:
+- Firstly, the vertex is generated, together with all the particles produced in the collision
+- The particles are then transported; they scatter through the beam pipe and the detector's layers and are detected by the detector
+- Lastly, the hits on the detector are smeared and noise is simulated
+
 ### Running the simulation
 To compile the simulation, it is sufficient to run ROOT and execute the following command:
 ```
 .x Compile_Simulation.cpp+
 ```
-To run the simulation launch the simulation function:
+To run the simulation execute the simulation function:
 ```
 Simulation()
 ```
 
-It is possible to add some parameters to the Complile_Simulation.cpp file to activate different options:
+It is possible to add some arguments to the Complile_Simulation.cpp file to activate different options:
 - `.x Compile_Simulation.cpp+("force")` to force the compilation of the different files
 - `.x Compile_Simulation.cpp+("clean")` to delete all the compilation outputs coming from previous compilations before compiling
 - `.x Compile_Simulation.cpp+("run")` to run the simulation after the compilation ends
