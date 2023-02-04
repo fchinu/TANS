@@ -36,9 +36,8 @@ It is possible to configure a simulation using a .yaml file, following these ste
 - Modify the values of the parameters as desired to configure the simulation.
 - Save the .yaml file once you have finished making your changes.
 
+The config file can then be passed to the simulation function: `Simulation("Config_file.yaml")`
+
 [Here](https://github.com/Bizzzio/TANS/blob/main/Config_Run.yaml) CONTROLLARE LINK DOPO PULL REQUEST is an example of settings used to run a simulation.
 
-A description of the settings is available [here](Settings.md#settings-description).
-
-The config file can then be passed to the simulation function: `Simulation("Config_file.yaml")`
-> Be careful: only the parameters included in the example linked above are defined!
+A description of the settings is available [here](Settings.md).

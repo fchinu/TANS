@@ -8,14 +8,14 @@ root -l Run_All.cpp+
 ```
 Congratulations! You just run your first simulation, you can check the results obtained by looking at the `outfile.root` file.
 
-Did not work? Check the results we obtained [here](Results.md#results)
+Did not work? Check the results we obtained [here](Results.md)
 
 ### Page index
 For further explanation of how the code works, you can check these:
-- [Running the simulation](Simulation.md#simulation)
-- [Simulation configuration](Settings.md#settings-description)
-- [Vertex reconstruction](Vertexing.md#vertex-reconstruction)
-- [Results](Results.md#results)
+- [Running the simulation](Simulation.md)
+- [Simulation configuration](Settings.md)
+- [Vertex reconstruction](Vertexing.md)
+- [Results](Results.md)
 
 ### Prerequisites
 The code in this repository requires to have installed:

@@ -1,6 +1,7 @@
 theme: jekyll-theme-cayman
 title: [TANS Project]
 description: ["F. Chinu, M. Di Costanzo"]
+show_downloads: [true]
 collections:
     docs:
       permalink: "/:collection/:path/"
@@ -11,3 +12,5 @@ defaults:
         type: docs
       values:
         layout: docs
+github:
+  home: https://bizzzio.github.io/TANS/
