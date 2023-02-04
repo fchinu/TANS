@@ -5,6 +5,12 @@ The code available in this repository runs a Monte Carlo (MC) simulation of a ve
 - The particles are then transported; they scatter through the beam pipe and the detector's layers and are detected by the detector
 - Lastly, the hits on the detector are smeared and noise is simulated
 
+
+
+|![Event](Figures/Event_visual.png)| 
+|:--:| 
+|Visualisation of generated event| 
+
 ### Running the simulation
 To compile the simulation, it is sufficient to run ROOT and execute the following command:
 ```
