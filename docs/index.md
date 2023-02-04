@@ -42,9 +42,13 @@ It is possible to configure a simulation using a .yaml file, following these ste
 
 [Here](https://github.com/Bizzzio/TANS/blob/main/Config_Run.yaml) CONTROLLARE LINK DOPO PULL REQUEST is an example of settings used to run a simulation.
 
-Following is a description of the settings available.
+A description of the settings is available [here](#settings-description).
+
+### Settings description
+
 OutFileName: address of the output file      
 NEvents: number of events to be run
+
 #### Multiplicity settings
 
 | Setting               | Description                           |
@@ -67,7 +71,7 @@ NEvents: number of events to be run
 
 
 
-### Vertex dispersion settings
+#### Vertex dispersion settings
 
 | Setting               | Description                           |
 | -----------           | -----------                           |
@@ -77,7 +81,7 @@ NEvents: number of events to be run
 | SigmaX              | X dispersion for gaussian distribution            |
 | SigmaY              | Y dispersion for gaussian distribution            |
 
-### Material budgets settings
+#### Material budgets settings
 
 | Setting               | Description                           |
 | -----------           | -----------                           |
