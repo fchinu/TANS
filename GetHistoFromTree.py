@@ -1,0 +1,34 @@
+'''
+Script for producing histograms from TTrees
+'''
+
+import math
+from ROOT import TFile, TTree, gPad # pylint: disable=import-error,no-name-in-module
+import numpy as np
+
+TreeFileName=   ['Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root']
+TreeName=       ['fTreeGen' ,'fTreeGen','fTreeGen','fTreeGen','fTreeGen','fTreeGen' ,'fTreeRec','fTreeRec','fTreeRec','fTreeRec']
+BranchName=['Config.multiplicity','Config.z','GenHits_1.z','GenHits_1.phi','GenHits_2.z','GenHits_2.phi',
+            'RecHits_1.z','RecHits_1.phi','RecHits_2.z','RecHits_2.phi']
+Selections=['','','','','','','','','','']
+
+OutFileDir='Graphs.root'
+
+
+
+outfile=TFile(OutFileDir,'recreate')
+outfile.Close()
+
+for idx, (treefile, name, branch, selection) in enumerate(zip(TreeFileName,TreeName,BranchName,Selections)):
+    infile = TFile(treefile)
+    tree = infile.Get(name)
+    
+    tree.Draw(branch,selection)
+
+    histo=gPad.GetPrimitive("htemp")
+    histo.SetDirectory(0)
+    infile.Close()
+    
+    outfile=TFile(OutFileDir,'update')
+    histo.Write(TreeName[idx]+'/'+BranchName[idx])
+    outfile.Close()
