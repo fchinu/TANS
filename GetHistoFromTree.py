@@ -27,8 +27,9 @@ for idx, (treefile, name, branch, selection) in enumerate(zip(TreeFileName,TreeN
 
     histo=gPad.GetPrimitive("htemp")
     histo.SetDirectory(0)
+    histo.SetName(TreeName[idx]+'_'+BranchName[idx])
     infile.Close()
     
     outfile=TFile(OutFileDir,'update')
-    histo.Write(TreeName[idx]+'/'+BranchName[idx])
+    histo.Write(TreeName[idx]+'_'+BranchName[idx])
     outfile.Close()
