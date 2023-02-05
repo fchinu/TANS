@@ -8,6 +8,21 @@ In our experiment we have a particle beam travelling along a $z$ axis and $3$ cy
 -   cylinder with $r=r_2=7\, cm$ has a thickness $t=0,2\,mm$. It is a silicon detector which interacts with the material  
 
 IMMAGINE SETUP
+### Run full simulation and analysis
+After checking all [prerequisites](#prerequisites) are satisfied, you can run the full simulation by executing the following shell command:
+```
+root -l Run_All.cpp+
+```
+Congratulations! You just run your first simulation, you can check the results obtained by looking at the `outfile.root` file.
+
+Did not work? Check the results we obtained [here](Results.md)
+
+### Page index
+For further explanation of how the code works, you can check these:
+- [Running the simulation](Simulation.md)
+- [Simulation configuration](Settings.md)
+- [Vertex reconstruction](Vertexing.md)
+- [Results](Results.md)
 
 ### Prerequisites
 The code in this repository requires to have installed:
