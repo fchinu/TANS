@@ -1,10 +1,8 @@
 # Simulation of pp collisions
 High energy collisions, such as those that occur in particle accelerators, can produce a wide range of fascinating phenomena, including the creation of new particles and the study of fundamental physical interactions. In this project, we developed a simulation tool to study these collisions and how it is possible to use vertex detectors to reconstruct the primary vertex position. The simulation was built using Monte Carlo techniques and only considered high momentum particles moving in a low-intensity magnetic field, i.e. the particles have a linear trajectory.
 
-## Introduction
-
 ## Experimental setup description
-In our experiment the particle beam travels along a $z$ axis and we have $3$ cylindrical layers with $z$ axis corresponding to the trajectory of particles and radii $r_1,\,r_2,\,r_3$ with $r_1<r_2<r_3$. Geometric features and materials of the $3$ layers can be setted in the configuration file, here we discuss the case in which 
+In our experiment we have a particle beam travelling along a $z$ axis and $3$ cylindrical layers with $z$ axis corresponding to the trajectory of particles and radii $r_1,\,r_2,\,r_3$ with $r_1<r_2<r_3$. Geometric features and materials of the $3$ layers can be setted in the configuration file, here we discuss the case in which 
 -   cylinder with $r=r_1=3\, cm$ has a thickness $t=0,8\,mm$. It is a beam pipe made of Berillium which does not interact with the material  
 -   cylinder with $r=r_2=4\, cm$ has a thickness $t=0,2\,mm$. It is a silicon detector  which interacts with the material  
 -   cylinder with $r=r_2=7\, cm$ has a thickness $t=0,2\,mm$. It is a silicon detector which interacts with the material  
@@ -96,7 +94,7 @@ NEvents: number of events to be run
 | IsDetector             | List for choosing whether the layer detects particles or not             |
 | Radii             | List of radii of the material budgets           |
 | Thickness              | List of thicknesses of the material budgets            |
-| Lenght              | List of lenghts of the material budgets            |
+| Length              | List of lenghts of the material budgets            |
 | Material              | List of materials of the material budgets           |
 | DoMultScattering             | Enables multiple scattering         |
 | DoSmearing              | Enables smearing           |
