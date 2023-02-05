@@ -16,6 +16,7 @@ fRecoDet1Hits(fConfigFile["Input"]["Reconstructed"]["Det1HitsBranch"].as<std::st
 fRecoDet2Hits(fConfigFile["Input"]["Reconstructed"]["Det2HitsBranch"].as<std::string>()),
 fGenTreeName(fConfigFile["Input"]["Generated"]["TreeName"].as<std::string>()),
 fGenConfig(fConfigFile["Input"]["Generated"]["ConfigBranch"].as<std::string>()),
+fDetectorsName(fConfigFile["Input"]["Detectors"].as<std::string>()),
 fMaxPhi(fConfigFile["MaxPhi"].as<double>()),
 fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
 {
@@ -23,6 +24,9 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     ReconstructionTime.Start();
     // Open the file containing the tree.
     TFile* file = TFile::Open(fTreeFileName.c_str());
+
+    fDetectors= *((DetectorHandler*)file->Get(fDetectorsName.c_str()));
+    
     TTreeReader RecReader(fRecoTreeName.c_str(), file);
    
     // The branch "RecHits detector 1" contains MaterialBudget::fPoint.
@@ -111,35 +115,6 @@ void Reconstruction::FindTracklets()
     }
 }
  
-void Reconstruction::VertexReco()
-{
-
-    cout << "Entering VertexReco" << endl;
-    std::vector<double> vertex;
-    for(auto i: fTracklets){
-        double a,b,c; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
-        a = i[0].x - i[1].x;
-        b = i[0].y - i[1].y;
-        c = i[0].z - i[1].z;
- 
-        // value of parameter t for intersection between line and orthogonal plane passing for O
-        double t = -(a*i[1].x + b*i[1].y + c*i[1].z)/(a*a + b*b + c*c);
- 
-        // vertex coordinates
-        double x, y, z;
-        x = i[1].x + a*t;
-        y = i[1].y + b*t;
-        z = i[1].z + c*t;
- 
-        vertex.push_back(x);
-        vertex.push_back(y);
-        vertex.push_back(z);
- 
-        fVertexes.push_back(vertex);
-        vertex.clear();
-    }
-}
-
 void Reconstruction::MinDca()
 {
 /*
@@ -155,7 +130,7 @@ void Reconstruction::MinDca()
             fVertexesZ.push_back(nan(""));
             continue;
         }
-        FillHistoIntersection(histo, i, vertexTemp);
+        FillHistoMinDca(histo, i, vertexTemp);
 
         int histomax(histo->GetMaximumBin()), count(0);
         double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax), mean(0);
@@ -179,12 +154,18 @@ void Reconstruction::FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>
     for (unsigned j=0;j<tracklets.size();j+=2)
     {
         double a,b,c; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
-        a = tracklets[j+1].x - tracklets[j].x;
-        b = tracklets[j+1].y - tracklets[j].y;
+        double x0 = tracklets[j].GetX(fDetectors.GetRadii()[1]);
+        double y0 = tracklets[j].GetY(fDetectors.GetRadii()[1]);
+        double x1 = tracklets[j+1].GetX(fDetectors.GetRadii()[2]);
+        double y1 = tracklets[j+1].GetY(fDetectors.GetRadii()[2]);
+
+
+        a = x1 - x0;
+        b = y1 - y0;
         c = tracklets[j+1].z - tracklets[j].z;
 
         double t;
-        t = - (a*tracklets[j].x + b*tracklets[j].y) / (a*a+b*b);    //t of closest approach
+        t = - (a*x0 + b*y0) / (a*a+b*b);    //t of closest approach
 
         vertextemp.push_back(tracklets[j].z + c*t);
         histo->Fill(vertextemp.back());
@@ -202,8 +183,13 @@ void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::f
     for (unsigned j=0;j<tracklets.size();j+=2)
     {
         double a,b,c,phi,cosphi,sinphi; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
-        a = tracklets[j+1].x - tracklets[j].x;
-        b = tracklets[j+1].y - tracklets[j].y;
+        double x0 = tracklets[j].GetX(fDetectors.GetRadii()[1]);
+        double y0 = tracklets[j].GetY(fDetectors.GetRadii()[1]);
+        double x1 = tracklets[j+1].GetX(fDetectors.GetRadii()[2]);
+        double y1 = tracklets[j+1].GetY(fDetectors.GetRadii()[2]);
+        
+        a = x1 - x0;
+        b = y1 - y0;
         c = tracklets[j+1].z - tracklets[j].z;
         phi=(tracklets[j+1].phi + tracklets[j].phi)/2;
         cosphi=TMath::Cos(phi);
@@ -211,7 +197,7 @@ void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::f
 
         double t;
         //t of intersection between track and plane
-        t = - (cosphi*tracklets[j].x + sinphi*tracklets[j].y) / (a*cosphi+b*sinphi);    
+        t = - (cosphi*x0 + sinphi*y0) / (a*cosphi+b*sinphi);    
 
         vertextemp.push_back(tracklets[j].z + c*t);
         histo->Fill(vertextemp.back());
@@ -290,6 +276,7 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
         //histmultrange->Fit(gaussian, "MR");
         //double c = gaussian->GetParameter(2);
         fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), histmultrange->GetRMS());
+        fResolutionVsMultiplicity->SetBinError(i,histmultrange->GetRMSError());
         //histmultrange->Write();
         histmultrange->Reset();
     }
@@ -307,12 +294,14 @@ void Reconstruction::FillHistoResolutionVsZTrue()
         double LowEdgeMult = fResolutionVsZTrue->GetBinLowEdge(i);
         double UpperEdgeMult = LowEdgeMult + fResolutionVsZTrue->GetBinWidth(i);
     
-        for(int j=0; j<fConfigs.size(); j++){
+        for(vector<vector<Event::fVertMult>>::size_type j=0; j<fConfigs.size(); j++){
             if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
                 histzrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
         }
         fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), histzrange->GetRMS());
+        fResolutionVsZTrue->SetBinError(i,histzrange->GetRMSError());
+
         //histzrange->Write();
         histzrange->Reset();
     }

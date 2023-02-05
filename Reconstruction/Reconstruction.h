@@ -6,6 +6,7 @@
 #include <TTreeReaderValue.h>
 #include <TTreeReaderArray.h>
 #include "TEfficiency.h"
+#include "DetectorHandler.h"
 #include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TStopwatch.h"
 #include "TFile.h"
@@ -33,8 +34,10 @@ public:
  
 private:
     YAML::Node fConfigFile;
-    string fOutFileName, fTreeFileName, fRecoTreeName, fRecoDet1Hits, fRecoDet2Hits, fGenTreeName, fGenConfig;
+    string fOutFileName, fTreeFileName, fRecoTreeName, fRecoDet1Hits, fRecoDet2Hits, fGenTreeName, fGenConfig, fDetectorsName;
     double fMaxPhi, fSigmaZ;
+
+    DetectorHandler fDetectors;
     
     std::vector<std::vector<MaterialBudget::fPoint>> fIntersections1;
     std::vector<std::vector<MaterialBudget::fPoint>> fIntersections2;

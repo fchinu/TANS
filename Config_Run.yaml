@@ -1,5 +1,5 @@
 OutFileName: Tree.root
-NEvents: 1000000
+NEvents: 10000
 
 #Multiplicity settings
 Multiplicity:
@@ -11,7 +11,7 @@ Multiplicity:
 
 #Angular distribution settings
 AngularDistr:
-  DistrType: kCustom              #Possibilities: kConst, kCustom, kUniform
+  DistrType: kUniform              #Possibilities: kConst, kCustom, kUniform
   DistrConst: [0.,1.,0.]          #only if kConst
   DistrFile: Simulation/kinem.root
   DistrHisto: heta2

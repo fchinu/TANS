@@ -9,6 +9,7 @@ Input:
   Generated:
     TreeName: fTreeGen
     ConfigBranch: Config
+  Detectors: Detectors
 
 MaxPhi: 0.001     #Max phi for tracklets reconstruction
 

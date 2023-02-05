@@ -16,6 +16,7 @@ void Compile_Reconstruction(TString myopt="run")
         gSystem->Exec("./clean.sh");
     gSystem->CompileMacro("Simulation/MaterialBudget.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Simulation/Event.cpp",opt.Data(),"","Build");
+        gSystem->CompileMacro("Simulation/DetectorHandler.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Reconstruction/Reconstruction.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Reconstruction/RunAnalysis.cpp",opt.Data(),"","Build");
 
