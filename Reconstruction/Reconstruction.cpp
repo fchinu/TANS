@@ -246,7 +246,7 @@ void Reconstruction::FillHistoEfficiencyVsZTrue()
     TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());  // puntatore al tree dei generati
     tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");  // genero l'istogramma delle fGenConfig.z e lo salvo nella current directory con nome 
                                                             // zgen, non produco grafica grazie a "goff" e con "" non creo l'istogramma temporaneo  
-    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");        // puntatore a zgen
+    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");            // puntatore a zgen
     double sigma = zgen->GetRMS();  // deviazione standard dell'istogramma
     file->Close();
     for(unsigned i=0; i<fConfigs.size(); ++i)
@@ -260,27 +260,39 @@ void Reconstruction::FillHistoEfficiencyVsZTrue()
 
 void Reconstruction::FillHistoResolutionVsMultiplicity()
 {
+    TFile* file = TFile::Open(fTreeFileName.c_str());       // puntatore al file del tree
+    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());  // puntatore al tree dei generati
+    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");  // genero l'istogramma delle fGenConfig.z e lo salvo nella current directory con nome 
+                                                            // zgen, non produco grafica grazie a "goff" e con "" non creo l'istogramma temporaneo  
+    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");            // puntatore a zgen
+    double sigma = zgen->GetRMS();  // deviazione standard dell'istogramma
+    file->Close();
     cout << "Entering FillHIstoResolutionVsMultiplicity " << endl;
-    TH1D* histmultrange = new TH1D("histmultrange", "histmultrange", 500, -0.5, 0.5);
+    TFile ResolutionMultiplicity("ResolutionMultiplicity.root","recreate");
     for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++){
         
         double LowEdgeMult = fResolutionVsMultiplicity->GetBinLowEdge(i);
         double UpperEdgeMult = LowEdgeMult + fResolutionVsMultiplicity->GetBinWidth(i);
+        
+        char title[1024];
+        sprintf(title, "Multiplicity [%2.2f, %2.2f]", LowEdgeMult, UpperEdgeMult);
+        TH1D* histmultrange = new TH1D(title, title, 500, -0.5, 0.5);
     
         for(unsigned j=0; j<fConfigs.size(); j++){
-            if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult){
+            if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult&& TMath::Abs(fVertexesZ[j]-fConfigs[j][0].z)<fSigmaZ*sigma){
                 histmultrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
         }
         //TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
         //histmultrange->Fit(gaussian, "MR");
         //double c = gaussian->GetParameter(2);
-        fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), histmultrange->GetRMS());
-        fResolutionVsMultiplicity->SetBinError(i,histmultrange->GetRMSError());
-        //histmultrange->Write();
-        histmultrange->Reset();
+        fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), TMath::Sqrt((histmultrange->GetRMS()*histmultrange->GetRMS())+(histmultrange->GetMean()*histmultrange->GetMean())));
+        fResolutionVsMultiplicity->SetBinError(i, histmultrange->GetRMSError());
+        histmultrange->Write();
+        //histmultrange->Reset();
+        delete histmultrange;
     }
-    delete histmultrange;
+    ResolutionMultiplicity.Close();
 }
 
 void Reconstruction::FillHistoResolutionVsZTrue()
@@ -288,22 +300,27 @@ void Reconstruction::FillHistoResolutionVsZTrue()
     cout << "Entering FillHistoResolutionVsZTrue " << endl;
     // prendo tutti eventi con z in un certo range, faccio istogramma differenze tra ZTrue e ZReco e prendo come dato per l'istogramma
     // l'RMS di questo istogramma
-    TH1D* histzrange = new TH1D("histzrange", "histzrange", 500, -0.5, 0.5);
+    TFile ResolutionZTrue("ResolutionZTrue.root","recreate");
     for(int i=1; i<=fResolutionVsZTrue->GetNbinsX(); i++){
         
         double LowEdgeMult = fResolutionVsZTrue->GetBinLowEdge(i);
         double UpperEdgeMult = LowEdgeMult + fResolutionVsZTrue->GetBinWidth(i);
+
+        char title[1024];
+        sprintf(title, "ZTrue [%2.2f, %2.2f]", LowEdgeMult, UpperEdgeMult);
+        TH1D* histzrange = new TH1D(title, title, 500, -0.5, 0.5);
     
-        for(vector<vector<Event::fVertMult>>::size_type j=0; j<fConfigs.size(); j++){
+        for(int j=0; j<fConfigs.size(); j++){
             if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
                 histzrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
         }
-        fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), histzrange->GetRMS());
-        fResolutionVsZTrue->SetBinError(i,histzrange->GetRMSError());
-
+        fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), TMath::Sqrt((histzrange->GetRMS()*histzrange->GetRMS())+(histzrange->GetMean()*histzrange->GetMean())));
+        fResolutionVsZTrue->SetBinError(i, histzrange->GetRMSError());
         //histzrange->Write();
-        histzrange->Reset();
+        histzrange->Write();
+        //histzrange->Reset();
+        delete histzrange;
     }
-    delete histzrange;
+    ResolutionZTrue.Close();
 }
