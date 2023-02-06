@@ -27,7 +27,16 @@ In order to study the effects of the multiple scattering, it is possible to stud
 |:--:| 
 |Distribution of the generated z coordinate of the vertex. $\mathrm{RMS}=5.3$ cm| 
 
-|![Multi_comparison](Figures/Run1/fTreeGen_GenHits_comparison.png)| 
+|![Z_comparison](Figures/Run1/fTreeGen_GenHits_comparison.png)| 
 |:--:| 
 |Comparison between the distributions of the hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.7$ cm) and the second layer (in red, $\mathrm{RMS}=7.7$ cm)| 
+
+To study how the smearing affects the reconstruction, it is possible to study the distributions of the reconstructed z coordinates of the hits on each detector's layer:
+
+|![Z_comparison_reco](Figures/Run1/fTreeRec_RecHits_comparison.png)| 
+|:--:| 
+|Comparison between the distributions of the reconstructed (smeared) hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.8$ cm) and the second layer (in red, $\mathrm{RMS}=7.4$ cm)| 
+As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
+
+
 
