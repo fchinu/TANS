@@ -31,6 +31,7 @@ public:
     void VertexReco();
     void FindTracklets();
     void MinDca();
+    void RunningWindow(double& xmin, double& xmax, TH1D* histo);
  
 private:
     YAML::Node fConfigFile;

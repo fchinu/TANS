@@ -132,8 +132,14 @@ void Reconstruction::MinDca()
         }
         FillHistoMinDca(histo, i, vertexTemp);
 
-        int histomax(histo->GetMaximumBin()), count(0);
-        double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax), mean(0);
+        double xmin, xmax;
+        RunningWindow(xmin, xmax, histo);
+
+        int count(0); 
+        double mean(0);
+
+        //int histomax(histo->GetMaximumBin());
+        //double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax), mean(0);
         
         for (auto& i : vertexTemp)
             if (i<xmax && i>xmin)
@@ -147,6 +153,33 @@ void Reconstruction::MinDca()
         vertexTemp.clear();
     }
     delete histo;
+}
+
+void Reconstruction::RunningWindow(double& xmin, double& xmax, TH1D* histo)
+{
+    double binwidth = histo->GetBinWidth(1);
+    double lowerwindowedge = histo->GetBinCenter(1);
+    double upperwindowedge = lowerwindowedge + 0.5;
+    int maxfreq = 0;
+    while(upperwindowedge<=histo->GetBinCenter(histo->GetNbinsX())){  // upper edge minore del valore centrale dell'ultimo bin
+        
+        int freq=0;
+        for(int i=0; i<histo->GetNbinsX(); i++){                      // itero su tutti i bin e ne considero il valore centrale
+            double xbin = histo->GetBinCenter(i);
+            if((xbin>=lowerwindowedge) && (xbin<=upperwindowedge)){   // sommo le frequenze dei bin nella running window
+                freq += histo->GetBinContent(i);
+            }
+        }
+        
+        if(freq>maxfreq){
+            xmin = lowerwindowedge; 
+            xmax = upperwindowedge; 
+            maxfreq = freq;
+        }
+        freq = 0;
+        lowerwindowedge += binwidth;
+        upperwindowedge += binwidth;
+    }
 }
 
 void Reconstruction::FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp)
