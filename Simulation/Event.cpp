@@ -10,15 +10,17 @@ ClassImp(Event)
 Event::Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z,AngularHandler& anglesHandl, TTree& gentree, TTree& rectree):
 fDetectors(detectors)
 {
-
+    fVertMult temp;
     while (fParticles.size()<multiplicity)          //Creates particles
     {
-        Particle* temp = new Particle({x,y,z}, anglesHandl.GetDirection());
-        fParticles.push_back(temp);
+        Particle* part = new Particle({x,y,z}, anglesHandl.GetDirection());
+        fParticles.push_back(part);
+        (temp.eta).push_back(-TMath::Log(TMath::Tan(part->GetPolarDirection()[0]/2)));
+        (temp.phi).push_back(part->GetPolarDirection()[1]);
     }
 
     //Stores event infos
-    fVertMult temp;
+    
     temp.multiplicity = multiplicity;
     temp.x = x;
     temp.y = y;

@@ -31,7 +31,8 @@ public:
     
     //Struct for containing event infos: multiplicity and vertex coordinates
     using fVertMult = struct{
-        unsigned int multiplicity; double x, y, z;     //no need for theta in cilindrical coordinates
+        unsigned int multiplicity; double x, y, z; 
+        std::vector<double> eta, phi;     //no need for theta in cilindrical coordinates
         void print() {cout<<"Multiplicity': "<< multiplicity <<"\t Vertex coordinates: x: "<< x <<", y: "<< y <<", z: "<< z <<endl;}
     };
 
