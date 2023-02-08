@@ -15,6 +15,8 @@ Configuration:
 - Detectors radii: $4$cm, $7$cm
 - Mean noise: 10
 
+##### Simulation
+
 Firstly, this is a comparison between the multiplicity distribution probability and the (normalised) generated multiplicity distribution:
 |![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
 |:--:| 
@@ -38,5 +40,10 @@ To study how the smearing affects the reconstruction, it is possible to study th
 |Comparison between the distributions of the reconstructed (smeared) hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.8$ cm) and the second layer (in red, $\mathrm{RMS}=7.4$ cm)| 
 As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
 
+##### Reconstruction
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate.
 
+|![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
+|:--:| 
+|Detector's resolution as a function of multiplicity.| 
 
