@@ -249,17 +249,9 @@ void Reconstruction::FillHistoEff()
  *  Function to fill the residuals histogram
  * 
  */
-    //Reconstructs the sigma from the data, to count only reconstructed
-    //vertexes less than fSigmaZ away from generated vertex
-    TFile* file = TFile::Open(fTreeFileName.c_str());
-    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());
-    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");
-    TH1F* zgen= (TH1F*)gDirectory->Get("zgen");
-    double sigma=zgen->GetRMS();
-    file->Close();
     for(unsigned i=0; i<fConfigs.size(); ++i)
     {
-        if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma)
+        if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*fResiduals->GetRMS())
             pEff->Fill(true,fConfigs[i][0].multiplicity);
         else
             pEff->Fill(false,fConfigs[i][0].multiplicity);
@@ -268,16 +260,9 @@ void Reconstruction::FillHistoEff()
 
 void Reconstruction::FillHistoEfficiencyVsZTrue()
 {
-    TFile* file = TFile::Open(fTreeFileName.c_str());       // puntatore al file del tree
-    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());  // puntatore al tree dei generati
-    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");  // genero l'istogramma delle fGenConfig.z e lo salvo nella current directory con nome 
-                                                            // zgen, non produco grafica grazie a "goff" e con "" non creo l'istogramma temporaneo  
-    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");            // puntatore a zgen
-    double sigma = zgen->GetRMS();  // deviazione standard dell'istogramma
-    file->Close();
     for(unsigned i=0; i<fConfigs.size(); ++i)
     {
-        if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*sigma)
+        if (!isnan(fVertexesZ[i]) && TMath::Abs(fVertexesZ[i]-fConfigs[i][0].z)<fSigmaZ*fResiduals->GetRMS())
             pEffvsZ->Fill(true,fConfigs[i][0].z);
         else
             pEffvsZ->Fill(false,fConfigs[i][0].z);
@@ -286,13 +271,6 @@ void Reconstruction::FillHistoEfficiencyVsZTrue()
 
 void Reconstruction::FillHistoResolutionVsMultiplicity()
 {
-    TFile* file = TFile::Open(fTreeFileName.c_str());       // puntatore al file del tree
-    TTree* tree = (TTree*)file->Get(fGenTreeName.c_str());  // puntatore al tree dei generati
-    tree->Draw((fGenConfig+".z>>zgen").c_str(),"","goff");  // genero l'istogramma delle fGenConfig.z e lo salvo nella current directory con nome 
-                                                            // zgen, non produco grafica grazie a "goff" e con "" non creo l'istogramma temporaneo  
-    TH1F* zgen = (TH1F*)gDirectory->Get("zgen");            // puntatore a zgen
-    double sigma = zgen->GetRMS();  // deviazione standard dell'istogramma
-    file->Close();
     cout << "Entering FillHIstoResolutionVsMultiplicity " << endl;
     TFile ResolutionMultiplicity("ResolutionMultiplicity.root","recreate");
     for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++){
@@ -305,7 +283,7 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
         TH1D* histmultrange = new TH1D(title, title, 500, -0.5, 0.5);
     
         for(unsigned j=0; j<fConfigs.size(); j++){
-            if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult&& TMath::Abs(fVertexesZ[j]-fConfigs[j][0].z)<fSigmaZ*sigma){
+            if(fConfigs[j][0].multiplicity>LowEdgeMult && fConfigs[j][0].multiplicity<UpperEdgeMult&& TMath::Abs(fVertexesZ[j]-fConfigs[j][0].z)<fSigmaZ*fResiduals->GetRMS()){
                 histmultrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
         }
