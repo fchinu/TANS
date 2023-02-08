@@ -121,7 +121,7 @@ void Reconstruction::MinDca()
  *  Function reconstructs the Z coordinates of the vertex, by averaging the 
  *  Z coordinates of the tracks at their point of closest approach
  */
-    TH1D* histo = new TH1D("vertex", "vertex", 150, -15,15);
+    TH1D* histo = new TH1D("vertex", "vertex", 30, -15,15);
     vector<double> vertexTemp;
     for(auto& i: fTracklets)
     {
