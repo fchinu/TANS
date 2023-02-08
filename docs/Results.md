@@ -18,6 +18,9 @@ Configuration:
 ##### Simulation
 
 Firstly, this is a comparison between the multiplicity distribution probability and the (normalised) generated multiplicity distribution:
+
+<a name="multicomparison"></a>
+
 |![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
 |:--:| 
 |Comparison between the multiplicity distribution probability and the (normalised) generated multiplicity distribution| 
@@ -45,5 +48,19 @@ After the simulation finishes, vertexes are reconstructed and the resolution and
 
 |![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
 |:--:| 
-|Detector's resolution as a function of multiplicity.| 
+|Detector's resolution as a function of multiplicity|
+
+As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
+An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
+
+|![ResVsZ](Figures/Run1/ResolutionVsZTrue.png)| 
+|:--:| 
+|Detector's resolution as a function of the Z coordinate of the generated vertex|
+
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+
+|![EffVsZ](Figures/Run1/EffvsZ.png)| 
+|:--:| 
+|Detector's effuciency as a function of the Z coordinate of the generated vertex|
+
 
