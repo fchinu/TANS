@@ -314,7 +314,7 @@ void Reconstruction::FillHistoResolutionVsZTrue()
         sprintf(title, "ZTrue [%2.2f, %2.2f]", LowEdgeMult, UpperEdgeMult);
         TH1D* histzrange = new TH1D(title, title, 500, -0.5, 0.5);
     
-        for(int j=0; j<fConfigs.size(); j++){
+        for(std::vector<std::vector<Event::<fVertMult> > >::size_type j=0; j<fConfigs.size(); j++){
             if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
                 histzrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
             }
