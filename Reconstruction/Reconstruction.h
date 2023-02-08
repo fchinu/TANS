@@ -31,7 +31,7 @@ public:
     void VertexReco();
     void FindTracklets();
     void MinDca();
-    void RunningWindow(double& xmin, double& xmax, TH1D* histo);
+    double MeanRunningWindow(vector<double> vertexes);
  
 private:
     YAML::Node fConfigFile;

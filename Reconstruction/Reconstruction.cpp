@@ -121,7 +121,7 @@ void Reconstruction::MinDca()
  *  Function reconstructs the Z coordinates of the vertex, by averaging the 
  *  Z coordinates of the tracks at their point of closest approach
  */
-    TH1D* histo = new TH1D("vertex", "vertex", 150, -15,15);
+    TH1D* histo = new TH1D("vertex", "vertex", 30, -15,15);
     vector<double> vertexTemp;
     for(auto& i: fTracklets)
     {
@@ -132,54 +132,47 @@ void Reconstruction::MinDca()
         }
         FillHistoMinDca(histo, i, vertexTemp);
 
-        double xmin, xmax;
-        RunningWindow(xmin, xmax, histo);
+        int histomax(histo->GetMaximumBin());
+        double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax);
 
-        int count(0); 
-        double mean(0);
-
-        //int histomax(histo->GetMaximumBin());
-        //double xmin(histo->GetBinLowEdge(histomax)), xmax=xmin+histo->GetBinWidth(histomax), mean(0);
-        
-        for (auto& i : vertexTemp)
-            if (i<xmax && i>xmin)
-            {
-                mean+=i;
-                ++count;
+        std::vector<double> vertexTemp1;
+         for (auto i : vertexTemp){
+            if (i<xmax && i>xmin){
+                vertexTemp1.push_back(i);
             }
-        fVertexesZ.push_back(mean/count);
+        }
+
+        fVertexesZ.push_back(MeanRunningWindow(vertexTemp1));
         fVertexesZResolutions.push_back(histo->GetRMS());
         histo->Reset();
         vertexTemp.clear();
+        vertexTemp1.clear();
     }
     delete histo;
 }
 
-void Reconstruction::RunningWindow(double& xmin, double& xmax, TH1D* histo)
+double Reconstruction::MeanRunningWindow(vector<double> vertexes)
 {
-    double binwidth = histo->GetBinWidth(1);
-    double lowerwindowedge = histo->GetBinCenter(1);
-    double upperwindowedge = lowerwindowedge + 0.5;
-    int maxfreq = 0;
-    while(upperwindowedge<=histo->GetBinCenter(histo->GetNbinsX())){  // upper edge minore del valore centrale dell'ultimo bin
-        
-        int freq=0;
-        for(int i=0; i<histo->GetNbinsX(); i++){                      // itero su tutti i bin e ne considero il valore centrale
-            double xbin = histo->GetBinCenter(i);
-            if((xbin>=lowerwindowedge) && (xbin<=upperwindowedge)){   // sommo le frequenze dei bin nella running window
-                freq += histo->GetBinContent(i);
+    double windowhalfwidth = 0.25;
+    int maxfreq = 0, freq = 0;
+    double mean, vertex;
+    for (auto i : vertexes){
+        double x1 = i-windowhalfwidth;
+        double x2 = i+windowhalfwidth;
+        for(auto j : vertexes){
+            if(j<x2 && j>x1){
+                freq++;
+                mean+=j;
             }
         }
-        
         if(freq>maxfreq){
-            xmin = lowerwindowedge; 
-            xmax = upperwindowedge; 
             maxfreq = freq;
-        }
+            vertex = mean/freq;
+        }    
         freq = 0;
-        lowerwindowedge += binwidth;
-        upperwindowedge += binwidth;
+        mean = 0.;
     }
+    return vertex;
 }
 
 void Reconstruction::FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp)
