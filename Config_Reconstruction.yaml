@@ -11,6 +11,6 @@ Input:
     ConfigBranch: Config
   Detectors: Detectors
 
-MaxPhi: 0.001     #Max phi for tracklets reconstruction
+MaxPhi: 0.01     #Max phi for tracklets reconstruction
 
 nSigmaZ: 3        #nSigma for efficiency calculations
