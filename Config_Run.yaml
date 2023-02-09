@@ -1,5 +1,5 @@
 OutFileName: Tree.root
-NEvents: 100000
+NEvents: 1000000
 
 #Multiplicity settings
 Multiplicity:
@@ -34,6 +34,6 @@ DoMultScattering: True
 #Detectors only
 DoSmearing: True
 DoNoise: False
-MeanNoise: 10                     #Mean number of noise "hits" per detector
+MeanNoise: 100                     #Mean number of noise "hits" per detector
 
 Verbose: True

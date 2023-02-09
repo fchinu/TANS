@@ -20,7 +20,7 @@ class AngularHandler
 public:
     AngularHandler() = default;
     AngularHandler(YAML::Node ConfigFile);
-    ~AngularHandler() {delete fThetaHisto;}
+    ~AngularHandler() {delete fEtaHisto;}
 
     std::vector<double> GetDirection()                         {return (this->*fDistributionFunction)();}
 
@@ -30,13 +30,19 @@ private:
     std::vector<double> GetConstDistribution()             {return fConstDirection;}
     inline std::vector<double> GetUniformDistribution();
     inline std::vector<double> GetCustomDistribution();
-    void SetThetaFromEta(TH1D* histopseudorap);
+    double GetThetaFromEta(double eta);
+    double GetThetaFromVector(double eta)                  {return fThetas[int((eta-fEtamin)*fNbinsEta/(fEtamax-fEtamin))];}
+    void ComputeThetas();
+
+    double fEtamin,fEtamax;
+    unsigned fNbinsEta=100000;
+    vector<double> fThetas= {};
 
     //Distribution info
     std::vector<double> fConstDirection;
     string fDistributionType,fDistributionFile,fDistributionHistoName;
     vector<unsigned> fDistributionRange;
-    TH1D* fThetaHisto = nullptr;
+    TH1D* fEtaHisto = nullptr;
     std::vector<double> (AngularHandler::*fDistributionFunction)() = &AngularHandler::GetConstDistribution;
 };
 
