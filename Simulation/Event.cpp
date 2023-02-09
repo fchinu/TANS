@@ -15,8 +15,8 @@ fDetectors(detectors)
     {
         Particle* part = new Particle({x,y,z}, anglesHandl.GetDirection());
         fParticles.push_back(part);
-        (temp.eta).push_back(-TMath::Log(TMath::Tan(part->GetPolarDirection()[0]/2)));
-        (temp.phi).push_back(part->GetPolarDirection()[1]);
+        if(anglesHandl.SaveEta()) (temp.eta).push_back(-TMath::Log(TMath::Tan(part->GetPolarDirection()[0]/2)));
+        if(anglesHandl.SavePhi()) (temp.phi).push_back(part->GetPolarDirection()[1]);
     }
 
     //Stores event infos

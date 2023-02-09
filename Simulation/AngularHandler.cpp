@@ -6,7 +6,9 @@ fConfigFile(ConfigFile),
 fDistributionType(fConfigFile["AngularDistr"]["DistrType"].as<std::string>()),
 fConstDirection(fConfigFile["AngularDistr"]["DistrConst"].IsNull() ? std::vector<double>{} : fConfigFile["AngularDistr"]["DistrConst"].as<std::vector<double> >()),
 fDistributionFile(fConfigFile["AngularDistr"]["DistrFile"].as<std::string>()),
-fDistributionHistoName(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>())
+fDistributionHistoName(fConfigFile["AngularDistr"]["DistrHisto"].as<std::string>()),
+fSaveEta(fConfigFile["AngularDistr"]["SaveEta"].as<bool>()),
+fSavePhi(fConfigFile["AngularDistr"]["SavePhi"].as<bool>())
 {
     if (fDistributionType.find("kCustom") != std::string::npos)
     {

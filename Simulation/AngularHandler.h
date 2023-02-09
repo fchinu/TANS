@@ -22,6 +22,8 @@ public:
     AngularHandler(YAML::Node ConfigFile);
     ~AngularHandler() {delete fThetaHisto;}
 
+    bool SaveEta()         {return fSaveEta;}
+    bool SavePhi()         {return fSavePhi;}
     std::vector<double> GetDirection()                         {return (this->*fDistributionFunction)();}
 
 private:
@@ -38,6 +40,7 @@ private:
     vector<unsigned> fDistributionRange;
     TH1D* fThetaHisto = nullptr;
     std::vector<double> (AngularHandler::*fDistributionFunction)() = &AngularHandler::GetConstDistribution;
+    bool fSaveEta, fSavePhi;
 };
 
 
