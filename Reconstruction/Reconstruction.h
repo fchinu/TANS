@@ -28,7 +28,6 @@ public:
     Reconstruction(TString cfgFileName);
     ~Reconstruction(){delete fResiduals; delete fResolutionVsMultiplicity; delete fResolutionVsZTrue; delete pEffvsZ; delete pEff;}
  
-    void VertexReco();
     void FindTracklets();
     void MinDca();
     double MeanRunningWindow(vector<double> vertexes);

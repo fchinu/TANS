@@ -11,7 +11,14 @@ fSigmaY(fConfigFile["Vertex"]["SigmaY"].as<double>()),
 fSigmaZ(fConfigFile["Vertex"]["SigmaZ"].as<double>())
 {
     if (fDistrTypeZ.find("kUniform") != std::string::npos)
+    {
+        if (fRangeZ.size()<2)
+        {
+            cout<<"RangeZ size < 2, setting it to [-20,20]"<<endl;
+            fRangeZ={-20,20};
+        }
         fZFunction=&VertexHandler::GetUniformZ;
+    }
     else 
         fZFunction=&VertexHandler::GetGausZ;
 }

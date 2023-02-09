@@ -28,7 +28,7 @@ private:
     unsigned GetConstMult()             {return fConstMult;}
     unsigned GetUniformMult()           {return gRandom->Integer(fMultRange[1]-fMultRange[0]+1) + fMultRange[0];}
     inline unsigned GetCustomMult();
-    inline bool CheckRange();
+    inline void CheckRange();
 
     //Multiplicity info
     unsigned fConstMult;

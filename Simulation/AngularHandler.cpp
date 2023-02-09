@@ -13,10 +13,12 @@ fSavePhi(fConfigFile["AngularDistr"]["SavePhi"].as<bool>())
     if (fDistributionType.find("kCustom") != std::string::npos)
     {
         TFile* infile = TFile::Open(fDistributionFile.c_str());
-        TH1D* histopseudorap = (TH1D*)infile->Get(fDistributionHistoName.c_str());
-        histopseudorap->SetDirectory(0);
+        fEtaHisto = (TH1D*)infile->Get(fDistributionHistoName.c_str());
+        fEtaHisto->SetDirectory(0);
         infile->Close();
-        SetThetaFromEta(histopseudorap);
+        fEtamax=fEtaHisto->GetXaxis()->GetXmax();
+        fEtamin=fEtaHisto->GetXaxis()->GetXmin();
+        ComputeThetas();
         fDistributionFunction=&AngularHandler::GetCustomDistribution;
     }
     else if (fDistributionType.find("kUniform") != std::string::npos)
@@ -49,26 +51,22 @@ inline std::vector<double> AngularHandler::GetUniformDistribution()
 
 inline std::vector<double> AngularHandler::GetCustomDistribution()
 {
-    double theta=fThetaHisto->GetRandom(), phi=2*TMath::Pi()*gRandom->Rndm();
+    double eta=fEtaHisto->GetRandom(), phi=2*TMath::Pi()*gRandom->Rndm();
+    double theta=GetThetaFromVector(eta);
     return {TMath::Sin(theta)*TMath::Cos(phi),TMath::Sin(theta)*TMath::Sin(phi),TMath::Cos(theta)};
 }
 
-void AngularHandler::SetThetaFromEta(TH1D* histopseudorap)
+double AngularHandler::GetThetaFromEta(double eta)
 {
 /*
 *  Function to transform pseudorapidity distribution to theta distribution
 */
-    double mintheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(histopseudorap->GetNbinsX()) + histopseudorap->GetBinWidth(histopseudorap->GetNbinsX()))));
-    cout<<"Mintetha "<<mintheta<<endl;
-    double maxtheta=2*TMath::ATan(exp(-(histopseudorap->GetBinLowEdge(1))));  
-    cout<<"Maxtetha "<<maxtheta<<endl;
-    fThetaHisto = new TH1D("Theta","Theta",histopseudorap->GetNbinsX(),mintheta,maxtheta);
-    for (int i=1; i<=histopseudorap->GetNbinsX();i++)
-    {
-        double theta=fThetaHisto->GetBinCenter(i);
-        double eta=-TMath::Log(TMath::Tan(theta/2));
-        double etadensity = histopseudorap->GetBinContent(histopseudorap->FindBin(eta));
-        double derivative=TMath::Abs(1/TMath::Cos(theta/2)/TMath::Sin(theta/2));
-        fThetaHisto->Fill(fThetaHisto->GetBinCenter(i),etadensity*derivative);
-    }
+    return 2*TMath::ATan(exp(-eta));
+}
+
+void AngularHandler::ComputeThetas()
+{
+    double step= (fEtamax-fEtamin)/fNbinsEta;
+    for (unsigned i=0;i<fNbinsEta;i++)
+        fThetas.push_back(GetThetaFromEta(fEtamin+step*i));
 }

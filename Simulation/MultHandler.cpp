@@ -40,7 +40,7 @@ inline unsigned MultHandler::GetCustomMult()
     return mult;
 }
 
-inline bool MultHandler::CheckRange()
+inline void MultHandler::CheckRange()
 {
 /*
  *  Function that checks whether MultRange is properly defined
@@ -49,11 +49,6 @@ inline bool MultHandler::CheckRange()
     if (fMultRange.size()<2)
     {
         cout<<"\033[93mWarning: MultRange size < 2, setting it to [0-50]\033[0m \n";
-        fMultRange={0,50};
-    }
-    if (fMultRange[0]<0 || fMultRange[1]<0)
-    {
-        cout<<"\033[93mWarning: MultRange has negative values, setting it to [0-50]\033[0m \n";
         fMultRange={0,50};
     }
     if (fMultRange[0]>fMultRange[1])

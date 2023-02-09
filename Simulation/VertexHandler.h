@@ -28,7 +28,7 @@ private:
     YAML::Node fConfigFile;
     
     double GetGausZ();
-    double GetUniformZ()           {return (gRandom->Rndm()*(fRangeZ[1]-fRangeZ[0]) + fRangeZ[0]);} //TODO: add case MultRange is not defined
+    double GetUniformZ()           {return (gRandom->Rndm()*(fRangeZ[1]-fRangeZ[0]) + fRangeZ[0]);}
 
 
 
