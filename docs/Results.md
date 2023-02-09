@@ -1,6 +1,6 @@
 ### Results
 
-Optimisation has been one of the main aspects we have worked on while developing this project. We wanted to deliver a fast, yet accurate simulation. We think we managed to obtain good results, with a full simulation and reconstruction of 1 million events being run in under 1:30 minutes. (CHECK TIME)
+Optimisation has been one of the main aspects we have worked on while developing this project. We wanted to deliver a fast, yet accurate simulation. We think we managed to obtain good results, with a full simulation and reconstruction of 1 million events being run in under 1:30 minutes.
 
 Following are the results of some simulations that we ran with different configurations. A comparison between them can be found at the end of the page
 
@@ -13,7 +13,7 @@ Configuration:
 - $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
-- Mean noise: 10
+- Noise: no
 
 ##### Simulation
 
@@ -63,4 +63,5 @@ As expected, the resolution reaches its minimum when the vertex is generated at 
 |:--:| 
 |Detector's effuciency as a function of the Z coordinate of the generated vertex|
 
+As expected, the efficieny peaks when the vertex is generated at the center of the detector; it then drops when the particles are generated outside the detector.
 
