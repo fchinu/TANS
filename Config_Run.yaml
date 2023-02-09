@@ -19,7 +19,7 @@ AngularDistr:
 #Vertex dispersion settings
 Vertex:
   DistrTypeZ: kUniform               #Possibilities: kGaus, kUniform
-  RangeZ: null              #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
+  RangeZ: [-30,30]              #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
   SigmaZ: 5.3                     #cm
   SigmaX: 0.01                    #cm
   SigmaY: 0.01                    #cm

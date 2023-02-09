@@ -13,4 +13,4 @@ Input:
 
 MaxPhi: 0.01     #Max phi for tracklets reconstruction
 
-nSigmaZ: 3        #nSigma for efficiency calculations
+nSigmaZ: 1        #nSigma for efficiency calculations
