@@ -12,7 +12,7 @@ To run the reconstruction execute the analysis function:
 RunAnalysis()
 ```
 
-It is possible to add some arguments to the Complile_Reconstruction.cpp file to activate different options:
+It is possible to add some arguments to the Compile_Reconstruction.cpp file to activate different options:
 - `.x Compile_Reconstruction.cpp+("force")` to force the compilation of the different files
 - `.x Compile_Reconstruction.cpp+("clean")` to delete all the compilation outputs coming from previous compilations before compiling
 
