@@ -1,5 +1,5 @@
 OutFileName: Tree.root
-NEvents: 1000000
+NEvents: 100000
 
 #Multiplicity settings
 Multiplicity:
