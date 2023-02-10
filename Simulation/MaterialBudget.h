@@ -44,11 +44,13 @@ public:
 
     //Struct for containing intersections with the material budget
     using fPoint = struct{
-        bool isIntersection=false; double x = 0, y = 0, z = 0, phi = 0;     //no need for theta in cilindrical coordinates
-        void print() {cout<<"isIntersection: "<<isIntersection<<"\tx: "<<x<<"\ty: "<<y<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
+        bool isIntersection=false; double z = 0, phi = 0;     //no need for theta in cilindrical coordinates
+        void print() {cout<<"isIntersection: "<<isIntersection<<"\tz: "<<z<<"\tphi: "<<phi<<endl;}
+        double GetX(double Radius) {return Radius*TMath::Cos(phi);}
+        double GetY(double Radius) {return Radius*TMath::Sin(phi);}
     };
 
-    MaterialBudget();                                                       // default constructor
+    MaterialBudget();                                                       
     MaterialBudget(double thickness, double radius, double length, double density, int z, int a, bool multscat);
     MaterialBudget(double thickness, double radius, double length, string material, bool multscat);
     
@@ -61,6 +63,8 @@ public:
     bool            GetStatus()     const        {return fMultScat;}
 
     virtual fPoint GetIntersection(const Particle* particle);
+    //Used for detector class to not call GetIntersection twice per particle
+    virtual fPoint GetLastIntersection(const Particle* particle)                    {return GetIntersection(particle);}
 
     MaterialBudget& SetStatus(bool multscat)                                        {fMultScat = multscat; return *this;}
     MaterialBudget& SetStatus(vector<bool> status);
@@ -76,6 +80,7 @@ public:
     virtual void ClearData()                                {}
     Particle* MultScattering(Particle* part); 
 
+    //Used to sort the material budgets to properly do multiple scattering
     bool operator<(const MaterialBudget& a)                 {return GetRadius()<a.GetRadius();}
     bool operator>(const MaterialBudget& a)                 {return GetRadius()>a.GetRadius();}
 

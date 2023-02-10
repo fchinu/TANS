@@ -7,18 +7,20 @@
 
 ClassImp(Event)
 
-Event::Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree):
+Event::Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z,AngularHandler& anglesHandl, TTree& gentree, TTree& rectree):
 fDetectors(detectors)
 {
-
+    fVertMult temp;
     while (fParticles.size()<multiplicity)          //Creates particles
     {
-        Particle* temp = new Particle({x,y,z},gRandom);
-        fParticles.push_back(temp);
+        Particle* part = new Particle({x,y,z}, anglesHandl.GetDirection());
+        fParticles.push_back(part);
+        if(anglesHandl.SaveEta()) (temp.eta).push_back(-TMath::Log(TMath::Tan(part->GetPolarDirection()[0]/2)));
+        if(anglesHandl.SavePhi()) (temp.phi).push_back(part->GetPolarDirection()[1]);
     }
 
     //Stores event infos
-    fVertMult temp;
+    
     temp.multiplicity = multiplicity;
     temp.x = x;
     temp.y = y;
@@ -54,10 +56,11 @@ void Event::ProcessEvent(TTree& gentree, TTree& rectree)
         for (vector<Particle*>::size_type i = 0; i<fParticles.size(); i++)
             fDetectors[j]->Interaction(fParticles[i]);
 
-        gentree.Fill();
-        rectree.Fill();
-        fDetectors[j]->ClearData();
     }
+    gentree.Fill();
+    rectree.Fill();
+    for (auto& j : fDetectors)
+        j->ClearData();
 }
 
 void Event::EventVisual(vector<Particle*> particles)
@@ -88,15 +91,15 @@ void Event::EventVisual(vector<Particle*> particles)
     std::string Trackstr = "Track";
     unsigned count=0;
     
-    top->SetLineColor(kBlue);
-    gGeoManager->SetTopVisible(0); // the TOP is invisible
-    Outer->SetLineColor(kOrange);
+    top->SetLineColor(kBlack);
+    //gGeoManager->SetTopVisible(0); // the TOP is invisible
+    Outer->SetLineColor(kRed);
     top->AddNode(Outer,1);
     Inner->SetLineColor(kBlue);
     top->AddNode(Inner,1);
-    BeamPipe->SetLineColor(kMagenta);
+    BeamPipe->SetLineColor(kGreen+2);
     BeamPipe->SetFillStyle(1001);
-    BeamPipe->SetFillColor(kMagenta);
+    BeamPipe->SetFillColor(kGreen+2);
     //top->SetVisibility(kFALSE);
     top->AddNode(BeamPipe,1);
 

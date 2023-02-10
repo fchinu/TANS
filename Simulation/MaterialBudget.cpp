@@ -98,7 +98,6 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     vector<double> PolarDirection=part->GetPolarDirection();
     double sintheta=TMath::Sin(PolarDirection[0]), sinphi=TMath::Sin(PolarDirection[1]);
     double costheta=TMath::Cos(PolarDirection[0]), cosphi=TMath::Cos(PolarDirection[1]);
-
     rotation[0][0] = -sinphi;
     rotation[1][0] = cosphi;
     rotation[2][0] = 0.;
@@ -125,17 +124,16 @@ Particle* MaterialBudget::MultScattering(Particle* part)
     dir[1] = TMath::Sin(thetaapprox)*TMath::Sin(phinew);
     dir[2] = TMath::Cos(thetaapprox);
 
-    vector<double> newdir;                  // New direction in the lab frame
-    double count = 0.;
-    for(int i=0;i<3;i++){
-        count = 0.;
+    vector<double> newdir(3,0);                  // New direction in the lab frame
+    for(int i=0;i<3;i++)
         for(int j=0; j<3; j++)
-            count += rotation[i][j]*dir[j];
-        newdir.push_back(count);
+            newdir[i] += rotation[i][j]*dir[j];
+    MaterialBudget::fPoint intersection = GetLastIntersection(part);
+    if (intersection.isIntersection)
+    {
+        part->SetPoint(fRadius*TMath::Cos(intersection.phi), fRadius*TMath::Sin(intersection.phi), intersection.z);
+        part->SetDirection(newdir);
     }
-    MaterialBudget::fPoint intersection = GetIntersection(part);
-    part->SetPoint(intersection.x, intersection.y, intersection.z);
-    part->SetDirection(newdir);
     return part;
 }
 
@@ -177,10 +175,10 @@ MaterialBudget::fPoint MaterialBudget::GetIntersection(const Particle* particle)
     } 
 
     intersection.isIntersection=true;
-    intersection.x = point[0] + direction[0] * t;
-    intersection.y = point[1] + direction[1] * t;
+    double x = point[0] + direction[0] * t;
+    double y = point[1] + direction[1] * t;
     intersection.z = point[2] + direction[2] * t;
-    intersection.phi = ComputePhi(intersection.x, intersection.y);
+    intersection.phi = ComputePhi(x, y);
     return intersection;
 }
 

@@ -1,0 +1,16 @@
+OutFileName: outfile.root
+
+Input:
+  TreeFileName: Tree.root
+  Reconstructed:
+    TreeName: fTreeRec
+    Det1HitsBranch: RecHits_1
+    Det2HitsBranch: RecHits_2
+  Generated:
+    TreeName: fTreeGen
+    ConfigBranch: Config
+  Detectors: Detectors
+
+MaxPhi: 0.01     #Max phi for tracklets reconstruction
+
+nSigmaZ: 1        #nSigma for efficiency calculations
