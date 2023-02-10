@@ -2,10 +2,12 @@
 
 Detector::Detector() : MaterialBudget() {};
 
-Detector::Detector(double thickness, double radius, double length, string material, bool multscat=1, bool smearing=1, bool noise=0)
-: MaterialBudget(thickness, radius, length, material, multscat)
+Detector::Detector(double thickness, double radius, double length, string material, bool multscat=1, bool smearing=1, bool noise=0, int meannoise=0)
+: MaterialBudget(thickness, radius, length, material, multscat), fMeanNoise(meannoise)
 {
     SetStatus(smearing, noise);
+    if(fNoise)
+        Noise();
 }
 
 Detector& Detector::SetStatus(vector<bool> status)
@@ -33,9 +35,8 @@ void Detector::Interaction(Particle* particle)
  * 
  */
     FillData(particle); 
-    if(fMultScat){
+    if(fMultScat)
         MultScattering(particle);
-    }
 }
 
 void Detector::FillData(Particle* particle)
@@ -88,8 +89,6 @@ MaterialBudget::fPoint Detector::GetSmearedIntersection(const MaterialBudget::fP
     }
     else{
         SmearedIntersection.isIntersection=true;
-        SmearedIntersection.x = fRadius*TMath::Cos(SmearedIntersection.phi);
-        SmearedIntersection.y = fRadius*TMath::Sin(SmearedIntersection.phi);
     }
     return SmearedIntersection;
 }
@@ -108,6 +107,56 @@ void Detector::SetBranchAddress(TTree& gentree,TTree& rectree, unsigned countdet
  *      running count of detectors
  * 
  */
-    gentree.SetBranchAddress((string("GenHits detector ")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
-    rectree.SetBranchAddress((string("RecHits detector ")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
+    gentree.SetBranchAddress((string("GenHits_")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
+    if (fSmearing)
+        rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fRecoHitPtr);
+    else    
+        rectree.SetBranchAddress((string("RecHits_")+std::to_string(countdet)).c_str(), &fTrueHitPtr);
+
+}
+
+void Detector::Noise()
+{
+    /*
+    *  Function that adds noise to the Reconstructed hits vector.
+    *  Noise is distributed according to a Poisson distribution with
+    *  mean value defined in the Config file
+    * 
+    */
+    MaterialBudget::fPoint noise;
+    noise.isIntersection = true;
+    static double  pi=TMath::Pi(), Twopi=2*pi;
+    int noisehits=gRandom->Poisson(fMeanNoise);
+    for (int i=0; i<noisehits;++i)
+    {
+        noise.z=(gRandom->Rndm()-0.5)*fLength;
+        double phi=gRandom->Rndm()*Twopi;
+        noise.phi=phi-pi/2;
+        fRecoHit.push_back(noise);
+    }
+}
+
+
+MaterialBudget::fPoint Detector::GetLastIntersection(const Particle*)
+{
+    /*
+    *  Function that returns the last intersection of the Particle
+    *  if a collision already occurred, no interaction otherwise
+    *  -------------------------
+    *  Parameters:
+    *  Particle*: unused in this clas, only needed for MaterialBudget class
+    * 
+    *  -------------------------
+    *  Returns:
+    *      MaterialBudget::fPoint containing last intersection (in case any occurred)
+    * 
+    */
+    if (fTrueHit.size()>0)
+        return fTrueHit.back();
+    else
+    {
+        MaterialBudget::fPoint temp;
+        temp.isIntersection=false;
+        return temp;
+    }
 }

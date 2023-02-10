@@ -4,3 +4,9 @@
 .vscode
 *.json
 Tree.root
+outfile.root
+Graphs.root
+ResolutionMultiplicity.root
+ResolutionZTrue.root
+eff.root
+TreeRUN1.root

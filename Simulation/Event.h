@@ -6,6 +6,7 @@
 #include <string>
 #include "TStopwatch.h"
 #include "Detector.h"
+#include "AngularHandler.h"
 
 class Event : public TObject
 {
@@ -30,11 +31,12 @@ public:
     
     //Struct for containing event infos: multiplicity and vertex coordinates
     using fVertMult = struct{
-        unsigned int multiplicity; double x, y, z;     //no need for theta in cilindrical coordinates
+        unsigned int multiplicity; double x, y, z; 
+        std::vector<double> eta, phi;     //no need for theta in cilindrical coordinates
         void print() {cout<<"Multiplicity': "<< multiplicity <<"\t Vertex coordinates: x: "<< x <<", y: "<< y <<", z: "<< z <<endl;}
     };
 
-    Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z, TTree& gentree, TTree& rectree);
+    Event(vector<MaterialBudget*> detectors, unsigned multiplicity, double x, double y, double z,AngularHandler& anglesHandl, TTree& gentree, TTree& rectree);
     ~Event();
     void ProcessEvent(TTree&, TTree&);
     void EventVisual(vector<Particle*> particles);

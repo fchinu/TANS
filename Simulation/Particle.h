@@ -5,6 +5,7 @@
 #include "TMath.h"
 #include "Riostream.h"
 #include "TRandom.h"
+#include "TH1D.h"
 #include <vector>
 
 class Particle : public TObject
@@ -14,11 +15,15 @@ class Particle : public TObject
  */
 
 public:
-    Particle ();                                                                    //default constructor
-    Particle (double x, double y, double z, double px, double py, double pz);
-    Particle (double* point, double* direction);                                    //array initialisation
-    Particle (vector<double> point, vector<double> direction);                      //vector initialisation
-    Particle (vector<double> point, TRandom* rndmptr);                              //random initialisation
+    Particle ();                                                                    
+    Particle (double x, double y, double z, double px, double py, double pz);       
+    Particle (double* point, double* direction);                                    
+    Particle (vector<double> point, vector<double> direction);
+    //Creates particles at point with random direction, distributed uniformly
+    Particle (vector<double> point, TRandom* rndmptr);
+    //Creates particles at point with random direction, with phi distributed uniformly while
+    //theta is distributed with the probability distribution described by the TH1D                              
+    Particle (vector<double> point, TH1D* theta);                                  
 
     vector<double> GetDirection()       const             {return {fPx,fPy,fPz};}
     vector<double> GetPolarDirection()  const             {return {fTheta,fPhi};}
