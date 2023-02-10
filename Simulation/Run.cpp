@@ -19,13 +19,15 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
 {
     TStopwatch SimulationTime, WritingTime;
     SimulationTime.Start();
+    TFile hfile(fOutFileName.c_str(),"recreate");
+    fTreeGen.SetDirectory(&hfile);
+    fTreeRec.SetDirectory(&hfile);
 
     TreeSettings();
     Start();
 
     SimulationTime.Stop();
     WritingTime.Start();
-    TFile hfile(fOutFileName.c_str(),"recreate");
     fDetectorHandler.Write("Detectors");
     fTreeGen.Write();
     fTreeRec.Write();
