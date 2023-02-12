@@ -29,8 +29,8 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     SimulationTime.Stop();
     WritingTime.Start();
     fDetectorHandler.Write("Detectors");
-    fTreeGen.Write();
-    fTreeRec.Write();
+    fTreeGen.Write("fTreeGen",kWriteDelete);
+    fTreeRec.Write("fTreeRec",kWriteDelete);
     hfile.Close();
     WritingTime.Stop();
     cout<<"Simulation time: "<<endl;
