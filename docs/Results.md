@@ -17,14 +17,14 @@ Configuration:
 
 ### Simulation
 
-Firstly, this is a comparison between the multiplicity distribution probability and the (normalised) generated multiplicity distribution:
+Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
 
 |![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
 |:--:| 
-|Comparison between the multiplicity distribution probability and the (normalised) generated multiplicity distribution| 
+|Comparison between the multiplicity pdf and the (normalised) generated multiplicity distribution| 
 
 A good between the two distributions is observed.
-In order to study the effects of the multiple scattering, it is possible to study the difference between the z coordinate distributions of the generated hit in the two layers and the distribution of the z coordinate of the vertex:
+In order to study the effects of the multiple scattering, it is possible to study the difference between the z coordinate distribution of the generated hit in the two layers and the z coordinate pdf of the vertex:
 
 |![Z_generated](Figures/Run1/fTreeGen_Config.z.png)| 
 |:--:| 
@@ -40,6 +40,7 @@ To study how the smearing affects the reconstruction, it is possible to study th
 |![Z_comparison_reco](Figures/Run1/fTreeRec_RecHits_comparison.png)| 
 |:--:| 
 |Comparison between the distributions of the reconstructed (smeared) hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.8$ cm) and the second layer (in red, $\mathrm{RMS}=7.4$ cm)| 
+
 As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
 
 ### Reconstruction
@@ -50,7 +51,7 @@ After the simulation finishes, vertexes are reconstructed and the resolution and
 |Detector's resolution as a function of multiplicity|
 
 As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
-An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
+An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity pdf).
 
 |![ResVsZ](Figures/Run1/ResolutionVsZTrue.png)| 
 |:--:| 
@@ -68,18 +69,18 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 Configuration: 
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
-- Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), histogram heta2
-- $Z_{vertex}$ distribution: Uniform
+- Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), heta2 histogram
+- $Z_{vertex}$ distribution: uniform between $-20$ and $20$ cm from the detector's centre
 - $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
-- Mean noise: 10
+- Mean noise per layer: 10
 
 ### Simulation
 
 Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
 
-|![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
+|![Multi_comparison]()| 
 |:--:| 
 |Comparison between the (normalised) simulated $\eta$ distribution and the $\eta$ distribution probability function| 
 
@@ -91,20 +92,20 @@ Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates 
 ### Reconstruction
 After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate.
 
-|![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
+|![ResVsMult]()| 
 |:--:| 
 |Detector's resolution as a function of multiplicity|
 
 As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
 An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
 
-|![ResVsZ](Figures/Run1/ResolutionVsZTrue.png)| 
+|![ResVsZ]()| 
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
 As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
 
-|![EffVsZ](Figures/Run1/EffvsZ.png)| 
+|![EffVsZ]()| 
 |:--:| 
 |Detector's effuciency as a function of the Z coordinate of the generated vertex|
 
