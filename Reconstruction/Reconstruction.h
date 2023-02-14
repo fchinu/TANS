@@ -26,7 +26,11 @@ class Reconstruction: public TObject
 public:
     Reconstruction() = default;
     Reconstruction(TString cfgFileName);
-    ~Reconstruction(){delete fResiduals; delete fResolutionVsMultiplicity; delete fResolutionVsZTrue; delete pEffvsZ; delete pEff;}
+    ~Reconstruction()
+    {
+        delete fResiduals; delete fResolutionVsMultiplicity; delete fResolutionVsZTrue; delete pEffvsZ; delete pEff; delete fVertexhisto;
+        for (auto &i: fHistResVsMult) delete i;
+    }
  
     void FindTracklets();
     void MinDca();
@@ -39,31 +43,35 @@ private:
 
     DetectorHandler fDetectors;
     
-    std::vector<std::vector<MaterialBudget::fPoint>> fIntersections1;
-    std::vector<std::vector<MaterialBudget::fPoint>> fIntersections2;
-    std::vector<std::vector<Event::fVertMult>> fConfigs;
-    std::vector<std::vector<MaterialBudget::fPoint>> fTracklets;
+    std::vector<MaterialBudget::fPoint>* fIntersections1;
+    std::vector<MaterialBudget::fPoint>* fIntersections2;
+    std::vector<Event::fVertMult>* fConfigs;
+    std::vector<MaterialBudget::fPoint> fTracklets;
     //Vector containing 3D vertex reconstruction
-    std::vector<std::vector<double>> fVertexes;
+    std::vector<double> fVertexes;
     //Vector containing Z coordinates of reconstructed vertexes
-    std::vector<double> fVertexesZ;
-    std::vector<double> fVertexesZResolutions;
+    double fVertexesZ;
+    double fVertexesZResolutions;
+    double fSigmaFromSimulation;
+    TH1D* fVertexhisto = new TH1D("vertexhisto", "vertexhisto", 30, -15,15);
     TH1D* fResiduals = new TH1D("Residuals", "Residuals", 500,-0.5,0.5);
     TH1D* fResolutionVsMultiplicity = new TH1D("ResolutionVsMultiplicity", "ResolutionVsMultiplicity", 20, 0., 100.);
     TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 20, -30., 30.);
+    vector<TH1D*> fHistResVsMult;
 
     //Efficiency estimations
     double effvsMultBins[23]={0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,35,40,50,60,70,80,90,100};
     TEfficiency* pEff = new TEfficiency("eff","Efficiency vs Multiplicity;Multiplicity;Efficiency", 22,effvsMultBins);
     TEfficiency* pEffvsZ = new TEfficiency("effvsZ","Efficiency vs ZTrue;ZTrue;Efficiency", 20, -30, 30);
     
-    void FillHistoMinDca(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
-    void FillHistoIntersection(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp);
+    void FillHistoMinDca( vector<double>& vertextemp);
+    void FillHistoIntersection( vector<double>& vertextemp);
     void FillHistoResiduals();
     void FillHistoEff();
     void FillHistoEfficiencyVsZTrue();
     void FillHistoResolutionVsMultiplicity();
     void FillHistoResolutionVsZTrue();
+    void WriteResolutionHistos();
  
     ClassDef(Reconstruction, 1)
 };
