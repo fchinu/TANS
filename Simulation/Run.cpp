@@ -22,6 +22,10 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     TFile hfile(fOutFileName.c_str(),"recreate");
     fTreeGen.SetDirectory(&hfile);
     fTreeRec.SetDirectory(&hfile);
+    fTreeGen.SetAutoSave(0);
+    fTreeRec.SetAutoSave(0);
+    fTreeRec.SetAutoFlush(200000);
+    fTreeGen.SetAutoFlush(200000);
 
     TreeSettings();
     Start();
