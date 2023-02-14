@@ -33,7 +33,7 @@ A description of the settings is available [here](Settings.md).
 ### Program implementation
 Here some details on how the program implements the key steps to implement vertex reconstruction as well as efficiency and resolution evaluation:
 
-- **Tracklet reconstruction:** we consider tracklets all pairs of intersections with first and second detector whose angle difference $ \varphi = |\varphi_1-\varphi_2| < \varphi_{max} $ with $ \varphi_{max} $ to be setted in the configuration file.  
+- **Tracklet reconstruction:** we consider tracklets all pairs of intersections with first and second detector whose angle difference $ \varphi = \lvert \varphi_1-\varphi_2\rvert < \varphi_{max} $ with $ \varphi_{max} $ to be setted in the configuration file.  
 
 - **Tracklet vertex reconstruction:** for each reconstructed tracklet, vertex is reconstructed as the intersection between the track and a plane orthogonal to the track in the $xy$ plane passing through the $ z $ axis. 
 
