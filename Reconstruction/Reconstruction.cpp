@@ -78,6 +78,7 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     
 
     file->Close();
+    WriteResolutionHistos();
 
     cout << "Ending Reco" << endl;
     //FindTracklets();
