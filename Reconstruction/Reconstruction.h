@@ -41,6 +41,8 @@ private:
     string fOutFileName, fTreeFileName, fRecoTreeName, fRecoDet1Hits, fRecoDet2Hits, fGenTreeName, fGenConfig, fDetectorsName;
     double fMaxPhi, fSigmaZ;
 
+    bool fSaveHistoResVsMult, fSaveHistoResVsZTrue;
+
     DetectorHandler fDetectors;
     
     std::vector<MaterialBudget::fPoint>* fIntersections1;
@@ -56,7 +58,7 @@ private:
     TH1D* fVertexhisto = new TH1D("vertexhisto", "vertexhisto", 30, -15,15);
     TH1D* fResiduals = new TH1D("Residuals", "Residuals", 500,-0.5,0.5);
     TH1D* fResolutionVsMultiplicity = new TH1D("ResolutionVsMultiplicity", "ResolutionVsMultiplicity", 20, 0., 100.);
-    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 20, -20., 20.);
+    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 20, -30., 30.);
     vector<TH1D*> fHistResVsMult;
     vector<TH1D*> fHistResVsZTrue;
 

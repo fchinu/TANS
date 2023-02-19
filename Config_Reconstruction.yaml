@@ -11,6 +11,10 @@ Input:
     ConfigBranch: Config
   Detectors: Detectors
 
+SaveHistoResVsMult: False
+SaveHistoResVsZTrue: False
+
+
 MaxPhi: 0.01     #Max phi for tracklets reconstruction
 
-nSigmaZ: 1        #nSigma for efficiency calculations
+nSigmaZ: 3        #nSigma for efficiency calculations

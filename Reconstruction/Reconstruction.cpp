@@ -17,6 +17,8 @@ fRecoDet2Hits(fConfigFile["Input"]["Reconstructed"]["Det2HitsBranch"].as<std::st
 fGenTreeName(fConfigFile["Input"]["Generated"]["TreeName"].as<std::string>()),
 fGenConfig(fConfigFile["Input"]["Generated"]["ConfigBranch"].as<std::string>()),
 fDetectorsName(fConfigFile["Input"]["Detectors"].as<std::string>()),
+fSaveHistoResVsMult(fConfigFile["SaveHistoResVsMult"].as<bool>()),
+fSaveHistoResVsZTrue(fConfigFile["SaveHistoResVsZTrue"].as<bool>()),
 fMaxPhi(fConfigFile["MaxPhi"].as<double>()),
 fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
 {
@@ -139,7 +141,7 @@ void Reconstruction::WriteResolutionHistos()
             double c = gaussian->GetParameter(2);
             fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsMult[i-1]->GetMean()*fHistResVsMult[i-1]->GetMean())));
             fResolutionVsMultiplicity->SetBinError(i, gaussian->GetParError(2));
-            fHistResVsMult[i-1]->Write();
+            if (fSaveHistoResVsMult)  fHistResVsMult[i-1]->Write();
             delete gaussian;
             //histmultrange->Reset();
         }
@@ -158,7 +160,7 @@ void Reconstruction::WriteResolutionZTrueHistos()
             double c = gaussian->GetParameter(2);
             fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsZTrue[i-1]->GetMean()*fHistResVsZTrue[i-1]->GetMean())));
             fResolutionVsZTrue->SetBinError(i, gaussian->GetParError(2));
-            fHistResVsZTrue[i-1]->Write();
+            if (fSaveHistoResVsZTrue) fHistResVsZTrue[i-1]->Write();
             delete gaussian;
             //histmultrange->Reset();
         }
