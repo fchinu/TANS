@@ -7,7 +7,7 @@ from ROOT import TFile, TCanvas, TTree, gPad # pylint: disable=import-error,no-n
 import numpy as np
 
 EffiFileName='outfile.root'
-EffName='eff'   #'effvsZ'  
+EffName='eff' #'effvsZ' #'eff'   #'effvsZ'  
 Options=''
 
 OutFileDir='eff.root'

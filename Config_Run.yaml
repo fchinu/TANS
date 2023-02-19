@@ -15,13 +15,13 @@ AngularDistr:
   DistrConst: [0.,1.,0.]          #only if kConst
   DistrFile: Simulation/kinem.root
   DistrHisto: heta2
-  SaveEta: False
-  SavePhi: False
+  SaveEta: True
+  SavePhi: True
 
 #Vertex dispersion settings
 Vertex:
-  DistrTypeZ: kGaus               #Possibilities: kGaus, kUniform
-  RangeZ: null               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
+  DistrTypeZ: kUniform               #Possibilities: kGaus, kUniform
+  RangeZ: [-30,30]               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
   SigmaZ: 5.3                     #cm
   SigmaX: 0.01                    #cm
   SigmaY: 0.01                    #cm
