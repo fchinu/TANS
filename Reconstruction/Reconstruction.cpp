@@ -30,6 +30,14 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
         string title = "Multiplicity [" + std::to_string(LowEdgeMult) + ", " + std::to_string(UpperEdgeMult) + "]";
         fHistResVsMult.push_back(new TH1D(title.c_str(), title.c_str(), 500, -0.5, 0.5));
     }
+    
+    for(int i=1; i<=fResolutionVsZTrue->GetNbinsX()+1; i++)
+    {
+        double LowEdgeMult = fResolutionVsZTrue->GetBinLowEdge(i);
+        double UpperEdgeMult = LowEdgeMult + fResolutionVsZTrue->GetBinWidth(i);
+        string title = "ZTrue [" + std::to_string(LowEdgeMult) + ", " + std::to_string(UpperEdgeMult) + "]";
+        fHistResVsZTrue.push_back(new TH1D(title.c_str(), title.c_str(), 500, -0.5, 0.5));
+    }
 
     TFile* file = TFile::Open(fTreeFileName.c_str());
 
@@ -62,6 +70,7 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
         FillHistoResiduals();
         FillHistoEff();
         FillHistoEfficiencyVsZTrue();
+        FillHistoResolutionVsZTrue();
         FillHistoResolutionVsMultiplicity();
         delete fIntersections1;
         delete fIntersections2;
@@ -75,10 +84,11 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     }
     delete TreeReco;
     delete TreeGen;
-    
+    cout << "Ciao" << endl;
 
     file->Close();
     WriteResolutionHistos();
+    WriteResolutionZTrueHistos();
 
     cout << "Ending Reco" << endl;
     //FindTracklets();
@@ -90,6 +100,10 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     //FillHistoResolutionVsZTrue();
     TFile outfile("outfile.root","recreate");
     fResiduals->Write();
+    fResolutionVsZTrue->Write();
+    fResolutionVsMultiplicity->Write();
+    pEff->Write();
+    pEffvsZ->Write();
     
     //gStyle->SetErrorX(0.);
 //  //fResolutionVsMultiplicity->SetMarkerStyle(20);
@@ -102,17 +116,54 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     //fResolutionVsZTrue->SetMarkerColor(kBlue);
     //fResolutionVsZTrue->SetLineColor(kRed);
     //fResolutionVsZTrue->SetOption("E1");
-    fResolutionVsZTrue->Write();
     
     //pEff->SetLineColor(kRed);
-    pEff->Write();
     //pEffvsZ->SetLineColor(kRed);
-    pEffvsZ->Write();
     //
     outfile.Close();
     ReconstructionTime.Stop();
     cout<<"Reconstruction time:"<<endl;
     ReconstructionTime.Print("u");
+}
+
+void Reconstruction::WriteResolutionHistos()
+{
+    TFile ResolutionMultiplicity("ResolutionMultiplicity.root","recreate");
+    for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++)
+    {
+        if(fHistResVsMult[i-1]->GetEntries()!=0){
+            TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
+            gaussian->SetParameter(1,0);
+            gaussian->SetParameter(2,0.007);
+            fHistResVsMult[i-1]->Fit(gaussian, "MR");
+            double c = gaussian->GetParameter(2);
+            fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsMult[i-1]->GetMean()*fHistResVsMult[i-1]->GetMean())));
+            fResolutionVsMultiplicity->SetBinError(i, gaussian->GetParError(2));
+            fHistResVsMult[i-1]->Write();
+            delete gaussian;
+            //histmultrange->Reset();
+        }
+    }
+    ResolutionMultiplicity.Close();
+}
+
+void Reconstruction::WriteResolutionZTrueHistos()
+{
+    TFile ResolutionZTrue("ResolutionZTrue.root","recreate");
+    for(int i=1; i<=fResolutionVsZTrue->GetNbinsX(); i++)
+    {
+        if(fHistResVsZTrue[i-1]->GetEntries()!=0){
+            TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
+            fHistResVsZTrue[i-1]->Fit(gaussian, "MR");
+            double c = gaussian->GetParameter(2);
+            fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsZTrue[i-1]->GetMean()*fHistResVsZTrue[i-1]->GetMean())));
+            fResolutionVsZTrue->SetBinError(i, gaussian->GetParError(2));
+            fHistResVsZTrue[i-1]->Write();
+            delete gaussian;
+            //histmultrange->Reset();
+        }
+    }
+    ResolutionZTrue.Close();
 }
  
 void Reconstruction::FindTracklets()
@@ -285,6 +336,13 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
 
 }
 
+void Reconstruction::FillHistoResolutionVsZTrue()
+{
+    if(TMath::Abs((*fConfigs)[0].z)<fSigmaZ*fSigmaFromSimulation)
+        fHistResVsZTrue[fResolutionVsZTrue->FindBin((*fConfigs)[0].z)-1]->Fill(fVertexesZ-(*fConfigs)[0].z);
+
+}
+
 //void Reconstruction::FillHistoResolutionVsZTrue()
 //{
 //    cout << "Entering FillHistoResolutionVsZTrue " << endl;
@@ -318,19 +376,3 @@ void Reconstruction::FillHistoResolutionVsMultiplicity()
 //    ResolutionZTrue.Close();
 //}
 
-void Reconstruction::WriteResolutionHistos()
-{
-    TFile ResolutionZTrue("ResolutionZTrue.root","recreate");
-    for(int i=1; i<=fResolutionVsMultiplicity->GetNbinsX(); i++)
-    {
-        TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
-        fHistResVsMult[i-1]->Fit(gaussian, "MR");
-        double c = gaussian->GetParameter(2);
-        fResolutionVsMultiplicity->Fill(fResolutionVsMultiplicity->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsMult[i-1]->GetMean()*fHistResVsMult[i-1]->GetMean())));
-        fResolutionVsMultiplicity->SetBinError(i, fHistResVsMult[i-1]->GetRMSError());
-        fHistResVsMult[i-1]->Write();
-        delete gaussian;
-        //histmultrange->Reset();
-    }
-    ResolutionZTrue.Close();
-}

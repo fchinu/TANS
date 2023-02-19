@@ -56,8 +56,9 @@ private:
     TH1D* fVertexhisto = new TH1D("vertexhisto", "vertexhisto", 30, -15,15);
     TH1D* fResiduals = new TH1D("Residuals", "Residuals", 500,-0.5,0.5);
     TH1D* fResolutionVsMultiplicity = new TH1D("ResolutionVsMultiplicity", "ResolutionVsMultiplicity", 20, 0., 100.);
-    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 20, -30., 30.);
+    TH1D* fResolutionVsZTrue = new TH1D("ResolutionVsZTrue", "ResolutionVsZTrue", 20, -20., 20.);
     vector<TH1D*> fHistResVsMult;
+    vector<TH1D*> fHistResVsZTrue;
 
     //Efficiency estimations
     double effvsMultBins[23]={0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,35,40,50,60,70,80,90,100};
@@ -72,6 +73,7 @@ private:
     void FillHistoResolutionVsMultiplicity();
     void FillHistoResolutionVsZTrue();
     void WriteResolutionHistos();
+    void WriteResolutionZTrueHistos();
  
     ClassDef(Reconstruction, 1)
 };
