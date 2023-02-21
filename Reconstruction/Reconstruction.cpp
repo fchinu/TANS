@@ -86,7 +86,6 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     }
     delete TreeReco;
     delete TreeGen;
-    cout << "Ciao" << endl;
 
     file->Close();
     WriteResolutionHistos();
