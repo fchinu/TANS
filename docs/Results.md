@@ -126,7 +126,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 
 </details> 
 
-<details markdown="1">
+<details>
 <summary> &#10095; Run3</summary>
 
 Configuration:
@@ -178,7 +178,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 
 </details> 
 
-<details>
+<details markdown="1">
 <summary> &#10095; Comparisons</summary>
 
 ## Comparisons
@@ -186,12 +186,15 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 |![EffComparison](Figures/Comparisons/Eff_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
 |![EffVsZComparison](Figures/Comparisons/EffvsZ_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
 |![ResVsMultComparison](Figures/Comparisons/ResvsMult_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
 |![ResVsZComparison](Figures/Comparisons/ResVsZ_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
