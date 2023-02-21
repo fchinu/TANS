@@ -1,11 +1,11 @@
-OutFileName: Tree.root
+OutFileName: TreeRUN3.root
 AutoFlushOpt: -30000000
 AutoSaveOpt: 0
 NEvents: 1000000
 
 #Multiplicity settings
 Multiplicity:
-  MultType: kCustom              #Possibilities: kConst, kCustom, kUniform
+  MultType: kUniform              #Possibilities: kConst, kCustom, kUniform
   MultConst: 1000                 #only if kConst
   MultFile: Simulation/Multi_ALICE.root
   MultHistoName: Table 3/Hist1D_y1
@@ -17,12 +17,12 @@ AngularDistr:
   DistrConst: [0.,1.,0.]          #only if kConst
   DistrFile: Simulation/kinem.root
   DistrHisto: heta2
-  SaveEta: True
-  SavePhi: True
+  SaveEta: False
+  SavePhi: False
 
 #Vertex dispersion settings
 Vertex:
-  DistrTypeZ: kGaussian               #Possibilities: kGaus, kUniform
+  DistrTypeZ: kGaus               #Possibilities: kGaus, kUniform
   RangeZ: [-30,30]               #Used both for kGaus and kUniform, set to null when using kGaus to use full range 
   SigmaZ: 5.3                     #cm
   SigmaX: 0.01                    #cm

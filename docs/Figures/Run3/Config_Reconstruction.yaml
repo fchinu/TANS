@@ -1,7 +1,7 @@
 OutFileName: outfile.root
 
 Input:
-  TreeFileName: Tree.root
+  TreeFileName: TreeRUN3.root
   Reconstructed:
     TreeName: fTreeRec
     Det1HitsBranch: RecHits_1
@@ -11,8 +11,8 @@ Input:
     ConfigBranch: Config
   Detectors: Detectors
 
-SaveHistoResVsMult: False
-SaveHistoResVsZTrue: False
+SaveHistoResVsMult: True
+SaveHistoResVsZTrue: True
 
 
 MaxPhi: 0.01     #Max phi for tracklets reconstruction

@@ -12,7 +12,7 @@ To run the reconstruction execute the analysis function:
 RunAnalysis()
 ```
 
-It is possible to add some arguments to the Complile_Simulation.cpp file to activate different options:
+It is possible to add some arguments to the Compile_Reconstruction.cpp file to activate different options:
 - `.x Compile_Reconstruction.cpp+("force")` to force the compilation of the different files
 - `.x Compile_Reconstruction.cpp+("clean")` to delete all the compilation outputs coming from previous compilations before compiling
 
@@ -26,14 +26,14 @@ It is possible to configure a reconstruction using a .yaml file, following these
 
 The config file can then be passed to the reconstruction function: `RunAnalysis("Config_file.yaml")`
 
-[Here](https://github.com/Bizzzio/TANS/blob/main/Config_Reconstruction.yaml) CONTROLLARE LINK DOPO PULL REQUEST is an example of settings used to run a reconstruction.
+[Here](https://github.com/Bizzzio/TANS/blob/main/Config_Reconstruction.yaml) is an example of settings used to run a reconstruction.
 
 A description of the settings is available [here](Settings.md).
 
 ### Program implementation
 Here some details on how the program implements the key steps to implement vertex reconstruction as well as efficiency and resolution evaluation:
 
-- **Tracklet reconstruction:** we consider tracklets all pairs of intersections with first and second detector whose angle difference $ \varphi = |\varphi_1-\varphi_2| < \varphi_{max} $ with $ \varphi_{max} $ to be setted in the configuration file.  
+- **Tracklet reconstruction:** we consider tracklets all pairs of intersections with first and second detector whose angle difference $ \varphi = \lvert \varphi_1-\varphi_2\rvert < \varphi_{max} $ with $ \varphi_{max} $ to be setted in the configuration file.  
 
 - **Tracklet vertex reconstruction:** for each reconstructed tracklet, vertex is reconstructed as the intersection between the track and a plane orthogonal to the track in the $xy$ plane passing through the $ z $ axis. 
 

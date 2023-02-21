@@ -11,8 +11,8 @@ import numpy as np
 TreeFileName=   ['Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root','Tree.root']
 TreeName=       ['fTreeGen' ,'fTreeGen','fTreeGen','fTreeGen','fTreeGen','fTreeGen' ,'fTreeRec','fTreeRec','fTreeRec','fTreeRec','fTreeGen','fTreeGen']
 BranchName=['Config.multiplicity','Config.z','GenHits_1.z','GenHits_1.phi','GenHits_2.z','GenHits_2.phi',
-            'RecHits_1.z','RecHits_1.phi','RecHits_2.z','RecHits_2.phi','Config.eta','Config.phi']
-Selections=['','','','','','','','','','','','']
+            'RecHits_1.z','RecHits_1.phi','RecHits_2.z','RecHits_2.phi','Config.eta']
+Selections=['','','','','','','','','','','','','','']
 
 OutFileDir='Graphs.root'
 

@@ -31,6 +31,7 @@ private:
     TTree fTreeGen;
     TTree fTreeRec;
     unsigned fNEvents;
+    int fAutoSaveOpt, fAutoFlushOpt;
     
     MultHandler fMultHandler;               //!Multiplicity info
     AngularHandler fAngularHandler;         //!Angular distribution settings

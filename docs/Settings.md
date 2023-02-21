@@ -21,7 +21,9 @@ NEvents: number of events to be run
 | DistrType             | Angular distribution (possible options: kConst, kCustom and kUniform)             |
 | DistrConst             | Vector containing direction of all the particles created in the simulation (only used if DistrType is set to kConst)             |
 | DistrFile              | Address of the file containing the pseudorapidity distribution (only used if MultType is set to kCustom)            |
-| DistrHisto               | Addres of histogram inside DistrFile            |
+| DistrHisto               | Address of histogram inside DistrFile            |
+| SaveEta               | boolean option to save $ \eta$ distribution of generated particles            |
+| SavePhi               | boolean option to save $ \vartheta$ distribution of generated particles            |
 
 
 

@@ -5,6 +5,8 @@ ClassImp(Run)
 Run::Run(TString cfgFileName) : 
 fConfigFile(YAML::LoadFile(cfgFileName.Data())),
 fOutFileName(fConfigFile["OutFileName"].as<std::string>()),
+fAutoFlushOpt(fConfigFile["AutoFlushOpt"].as<int>()),
+fAutoSaveOpt(fConfigFile["AutoSaveOpt"].as<int>()),
 fTreeGen("fTreeGen","fTreeGen"),
 fTreeRec("fTreeRec","fTreeRec"),
 fNEvents(fConfigFile["NEvents"].as<unsigned>()),
@@ -22,6 +24,10 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     TFile hfile(fOutFileName.c_str(),"recreate");
     fTreeGen.SetDirectory(&hfile);
     fTreeRec.SetDirectory(&hfile);
+    fTreeGen.SetAutoSave(fAutoSaveOpt);
+    fTreeRec.SetAutoSave(fAutoSaveOpt);
+    fTreeRec.SetAutoFlush(fAutoFlushOpt);
+    fTreeGen.SetAutoFlush(fAutoFlushOpt);
 
     TreeSettings();
     Start();
@@ -29,8 +35,8 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     SimulationTime.Stop();
     WritingTime.Start();
     fDetectorHandler.Write("Detectors");
-    fTreeGen.Write();
-    fTreeRec.Write();
+    fTreeGen.Write("fTreeGen",kWriteDelete);
+    fTreeRec.Write("fTreeRec",kWriteDelete);
     hfile.Close();
     WritingTime.Stop();
     cout<<"Simulation time: "<<endl;

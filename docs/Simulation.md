@@ -42,23 +42,29 @@ It is possible to configure a simulation using a .yaml file, following these ste
 
 The config file can then be passed to the simulation function: `Simulation("Config_file.yaml")`
 
-[Here](https://github.com/Bizzzio/TANS/blob/main/Config_Run.yaml) CONTROLLARE LINK DOPO PULL REQUEST is an example of settings used to run a simulation.
+[Here](https://github.com/Bizzzio/TANS/blob/main/Config_Run.yaml) is an example of settings used to run a simulation.
 
 A description of the settings is available [here](Settings.md).
 
 ### Program implementation
 Here we give more details on how the program gets the work done for each run
 
-- **Run construction:** Run class sets multiplicity, direction and angular distributions of particles according to the settings specified in the configuration file via handler classes. The family of detectors with custom features is created at run level and each of them has $ 2 $ vector-type data member where data will be collected. ROOT trees to save data are created and branch structure is defined. Then, Event class constructor is called to process single run events. 
+- **Run construction:** Run class sets multiplicity, direction and angular distributions of particles according to the settings specified in the configuration file via handler classes. The family of detectors with custom features is created at run level and each of them has $ 2 $ vector-type data member where data will be collected. ROOT TTrees to save data are created and branch structure is defined. Then, Event class constructor is called to process single run events. 
 
-- **Event processing:** Event class proceeds generating the particles in the event vertex, each of them with a specific direction. Then, scattering between particles and beam pipe and detectors is implemented according to the configuration options. For each interaction with detectors, coordinates of true hits and reconstructed hits are collected in the respective detector data members. If smearing effect is on, gaussian distributions with custom parameters modify true hits coordinates to give the reconstructed smeared point. If noise option is on, each detector collects noise hits generated from a poissonian distribution. Both in beam pipe and detector, if multiple scattering effect is on, $ \vartheta $ of particle momentum is modified by $ \vartheta^* = 1\, mrad $ while $ \varphi $ is randomized after scattering.
+- **Event processing:** Event class proceeds generating the particles in the event vertex, each of them with a specific direction. Then, scattering between particles and beam pipe and detectors is implemented according to the configuration options. For each interaction with detectors, coordinates of true hits and reconstructed hits are collected in the respective detector data members. If smearing effect is on, gaussian distributions with custom parameters modify true hits coordinates to give the reconstructed smeared point. If noise option is on, each detector collects noise hits generated from a poissonian distribution. Both in beam pipe and detector, if multiple scattering effect is on, $ \vartheta $ of particle momentum is modified according to a gaussian with mean $ \mu = 0 $ witdh equal to $ 1\, mrad $ while scattering along the particle's azimuthal angle is distributed uniformly. 
 
-- **Data collection:** data saving is done at event-level by filling ROOT trees with event data collected in Run detectors vector-type data members. After saving data, vectors are cleared and ready to be filled by data related to the next event. Our goal is to save all particle-detector intersections: according to setup geometry, points on detectors can be described in cylindrical coordinates. The information about radii of detectors is saved at run level exploiting ROOT streamer. As a consequence, ROOT trees only need $ z $ coordinate of intersection and $ \varphi $ angle associated to the interacting particle for each point. The program uses $ 2 $ Trees, fTreeGen and fTreeRec. We take closer look at the Trees and Branches organisation and content:  
+- **Data collection:** data saving is done at event-level by filling ROOT trees with the information contained in the detectors data members. After saving data, vectors are cleared and ready to be filled by data related to the next event. Our goal is to save all particle-detector intersections: according to setup geometry, points on detectors can be described in cylindrical coordinates. The information about radii of detectors is saved at run level exploiting ROOT's streamer, ROOT TTrees only need $ z $ coordinate of intersection and $ \varphi $ angle associated to the interacting particle for each point. TTrees are filled at run-level. The program uses $ 2 $ TTrees, fTreeGen and fTreeRec. We can take closer look at the TTrees' organisation and content:
+    - **fTreeGen**: TTree containing data about generated particles' distribution and events  
 
-| Branch(Tree)          | Content                     |
-| -----------           | -------                     |
-| Config(fTreeGen)      | ciao:                       |
-| TrueHits1(fTreeGen)   | ciao:                       |
-| TrueHits2(fTreeGen)   | ciao:                       |
-| RecHits1(fTreeRec)    | ciao:                       |
-| RecHits2(fTreeRec)    | ciao:                       |
+    | Branch        | Content                     |
+    | -----------           |   -------                     |
+    | Config     | Histograms of $x,y,z,\eta,\varphi$   and multiplicity frequency of generated   particles                       |
+    | TrueHits1  | Generated particles' hits with first     detector                       |
+    | TrueHits2  | Generated particles' hits with second    detector                       |
+
+    - **fTreeRec**: TTree containing reconstructed hits of particles with detectors
+
+    | Branch        | Content                     |
+    | -----------           |   -------                     |
+    | RecHits1    | Reconstructed particles' hits with  first detector                       |
+    | RecHits2    | Reconstructed particles' hits with  second detector                       |
