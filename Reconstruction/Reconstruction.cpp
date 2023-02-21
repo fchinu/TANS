@@ -93,13 +93,6 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     WriteResolutionZTrueHistos();
 
     cout << "Ending Reco" << endl;
-    //FindTracklets();
-    //MinDca();
-    //FillHistoResiduals();
-    //FillHistoEff();
-    //FillHistoEfficiencyVsZTrue();
-    //FillHistoResolutionVsMultiplicity();
-    //FillHistoResolutionVsZTrue();
     TFile outfile("outfile.root","recreate");
     fResiduals->Write();
     fResolutionVsZTrue->Write();
@@ -107,21 +100,6 @@ fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
     pEff->Write();
     pEffvsZ->Write();
     
-    //gStyle->SetErrorX(0.);
-//  //fResolutionVsMultiplicity->SetMarkerStyle(20);
-    //fResolutionVsMultiplicity->SetMarkerColor(kBlue);
-    //fResolutionVsMultiplicity->SetLineColor(kRed);
-    //fResolutionVsMultiplicity->SetOption("histp");
-    //fResolutionVsMultiplicity->Write();
-    
-    //fResolutionVsZTrue->SetMarkerStyle(16);
-    //fResolutionVsZTrue->SetMarkerColor(kBlue);
-    //fResolutionVsZTrue->SetLineColor(kRed);
-    //fResolutionVsZTrue->SetOption("E1");
-    
-    //pEff->SetLineColor(kRed);
-    //pEffvsZ->SetLineColor(kRed);
-    //
     outfile.Close();
     ReconstructionTime.Stop();
     cout<<"Reconstruction time:"<<endl;
@@ -156,6 +134,10 @@ void Reconstruction::WriteResolutionZTrueHistos()
     {
         if(fHistResVsZTrue[i-1]->GetEntries()!=0){
             TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
+            gaussian->SetParameter(0,10000);
+            gaussian->SetParameter(1,0);
+            gaussian->SetParameter(2,0.007);
+            gaussian->SetParLimits(1,-0.12,0.12);
             fHistResVsZTrue[i-1]->Fit(gaussian, "MR");
             double c = gaussian->GetParameter(2);
             fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), TMath::Sqrt((c*c)+(fHistResVsZTrue[i-1]->GetMean()*fHistResVsZTrue[i-1]->GetMean())));

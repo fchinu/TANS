@@ -7,16 +7,12 @@ from ROOT import TFile, TCanvas, TTree, gPad # pylint: disable=import-error,no-n
 import numpy as np
 
 EffiFileName='outfile.root'
-EffName='eff' #'effvsZ' #'eff'   #'effvsZ'  
+EffName='effvsZ' #'effvsZ' #'eff'   #'effvsZ'  
 Options=''
 
 OutFileDir='eff.root'
 
 ############################################
-
-outfile=TFile(OutFileDir,'update')
-outfile.Close()
-
 
 infile = TFile(EffiFileName)
 Eff = infile.Get(EffName)
