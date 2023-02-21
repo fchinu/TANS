@@ -204,3 +204,12 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 
+<details>
+<summary>Example</summary>
+<ul><li>This dropdown contains</li>
+<li>a list!</li></ul>
+
+<p style="text-align: center;">
+<img src="Figures/Run2/Eff.png" width="500"></p>
+<p style="text-align: center;">Text_content</p>
+</details>
