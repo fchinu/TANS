@@ -178,7 +178,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Run3</summary>
+<summary> ## Run 3</summary>
 <br> 
 
 ## Run 3
