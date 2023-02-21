@@ -5,19 +5,13 @@ Optimisation has been one of the main aspects we have worked on while developing
 Following are the results of some simulations that we ran with different configurations. A comparison between them can be found at the end of the page
 
 <details>
+
 <summary> Run1</summary>
-<br> 
+
+<br>
 
 ## Run 1
-Run1 simulation configuration [here](Figures/Run1/Config_Run.yaml)
-- N events: 1 million
-- Multiplicity distribution: [Charged-particle multiplicity measurement in proton-proton collisions at sqrt(s) = 7 TeV with ALICE at LHC](https://www.hepdata.net/record/54832)
-- Angular distribution: Uniform
-- $Z_{vertex}$ distribution: gaussian
-- $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
-- Beam pipe radius: $3$ cm
-- Detectors radii: $4$cm, $7$cm
-- Noise: no
+Run1 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml)
 
 ### Simulation
 
@@ -48,7 +42,7 @@ To study how the smearing affects the reconstruction, it is possible to study th
 As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run1 reconstruction configuration [here](Figures/Run1/Config_Run.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run1 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Reconstruction.yaml)
 
 |![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
 |:--:| 
@@ -80,7 +74,7 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 <br> 
 
 ## Run 2
-Run2 simulation configuration [here](Figures/Run2/Config_Run.yaml)
+Run2 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Run.yaml)
 Configuration: 
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
@@ -105,7 +99,7 @@ Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates 
 
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](Figures/Run2/Config_Reconstruction.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Reconstruction.yaml)
 
 |![ResVsMult](Figures/Run2/ResolutionVsMultiplicity.png)| 
 |:--:| 
@@ -137,7 +131,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 <br> 
 
 ## Run 3
-Run3 simulation configuration [here](Figures/Run3/Config_Run.yaml)
+Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml)
 Configuration: 
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
@@ -162,14 +156,13 @@ Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates 
 
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](Figures/Run3/Config_Reconstruction.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Reconstruction.yaml)
 
 |![ResVsMult](Figures/Run3/ResolutionVsMultiplicity.png)| 
 |:--:| 
 |Detector's resolution as a function of multiplicity|
 
-As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
-An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
+As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities. An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
 
 |![ResVsZ](Figures/Run3/ResolutionVsZTrue.png)| 
 |:--:| 
