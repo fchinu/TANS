@@ -9,4 +9,10 @@ Graphs.root
 ResolutionMultiplicity.root
 ResolutionZTrue.root
 eff.root
+effHistos.root
+Run1/*
+Run2/*
+Run3/*
 TreeRUN1.root
+TreeRUN2.root
+TreeRUN3.root
