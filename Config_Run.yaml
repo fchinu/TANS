@@ -1,5 +1,5 @@
 OutFileName: Tree.root
-AutoFlushOpt: -500000000
+AutoFlushOpt: -50000000
 AutoSaveOpt: 0
 NEvents: 1000000
 
