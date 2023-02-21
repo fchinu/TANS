@@ -7,7 +7,7 @@ Following are the results of some simulations that we ran with different configu
 Here the results for $3$ runs:
 
 <details markdown="1">
-<summary> &#10095; Run1</summary>
+<summary> <a href="">&#10095; Run 1</a></summary>
 
 Configuration:
 - N events: 1 million
@@ -75,7 +75,7 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Run2</summary>
+<summary> <a href="">&#10095; Run 2</a></summary>
 
 Configuration: 
 - N events: 1 million
@@ -127,7 +127,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Run3</summary>
+<summary> <a href="">&#10095; Run 3</a></summary>
 
 Configuration:
 - N events: 1 million
@@ -171,7 +171,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Comparisons</summary>
+<summary> <a href="">&#10095; Comparisons</a></summary>
 
 ## Comparisons
 
