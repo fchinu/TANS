@@ -4,9 +4,9 @@ Optimisation has been one of the main aspects we have worked on while developing
 
 Following are the results of some simulations that we ran with different configurations. A comparison between them can be found at the end of the page
 
-<!--- <details>
+<details>
 <summary> Run1</summary>
-<br> -->
+<br> 
 
 ## Run 1
 Run1 simulation configuration [here](Figures/Run1/Config_Run.yaml)
@@ -72,11 +72,12 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 |![EffVsZ](Figures/Run1/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
-<!--- </details> -->
 
-<!--- <details>
+</details> 
+
+<details>
 <summary>Run2</summary>
-<br> -->
+<br> 
 
 ## Run 2
 Run2 simulation configuration [here](Figures/Run2/Config_Run.yaml)
@@ -128,11 +129,12 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 |![EffVsZ](Figures/Run2/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
-<!--- </details> -->
 
-<!--- <details>
+</details> 
+
+<details>
 <summary>Run3</summary>
-<br> -->
+<br> 
 
 ## Run 3
 Run3 simulation configuration [here](Figures/Run3/Config_Run.yaml)
@@ -184,11 +186,12 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 |![EffVsZ](Figures/Run3/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
-<!--- </details> -->
 
-<!--- <details>
+</details> 
+
+<details>
 <summary>Comparisons</summary>
-<br> -->
+<br> 
 
 ## Comparisons
 
@@ -204,6 +207,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 |![ResVsZComparison](Figures/Comparisons/ResVsZ_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
-<!--- </details> -->
+
+</details> 
 
 
