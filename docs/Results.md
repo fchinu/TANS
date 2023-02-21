@@ -6,67 +6,21 @@ Following are the results of some simulations that we ran with different configu
 
 Here the results for $3$ runs:
 
-<details>
+<details markdown="1">
 <summary> &#10095; Run1</summary>
-<ul><li>Simulation</li>
 
-Run1 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml). Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
-
-<p style="text-align: center;">
-<img src="Figures/Run1/Eff.png" width="500"></p>
-<p style="text-align: center;">Text_content</p>
-
-|![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
-|:--:| 
-|Comparison between the multiplicity pdf and the (normalised) generated multiplicity distribution| 
-
-A good between the two distributions is observed.
-In order to study the effects of the multiple scattering, it is possible to study the difference between the z coordinate distribution of the generated hit in the two layers and the z coordinate pdf of the vertex:
-
-|![Z_generated](Figures/Run1/fTreeGen_Config.z.png)| 
-|:--:| 
-|Distribution of the generated z coordinate of the vertex. $\mathrm{RMS}=5.3$ cm| 
-
-|![Z_comparison](Figures/Run1/fTreeGen_GenHits_comparison.png)| 
-|:--:| 
-|Comparison between the distributions of the hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.7$ cm) and the second layer (in red, $\mathrm{RMS}=7.7$ cm)| 
-
-To study how the smearing affects the reconstruction, it is possible to study the distributions of the reconstructed z coordinates of the hits on each detector's layer:
-
-
-|![Z_comparison_reco](Figures/Run1/fTreeRec_RecHits_comparison.png)| 
-|:--:| 
-|Comparison between the distributions of the reconstructed (smeared) hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.8$ cm) and the second layer (in red, $\mathrm{RMS}=7.4$ cm)| 
-
-As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
-
-<li>Reconstruction</li></ul>
-</details>
-
-<details>
-<summary> &#10095; Run2</summary>
-<ul><li>Simulation</li>
-<li>Reconstruction</li></ul>
-</details>
-
-<details>
-<summary> &#10095; Run3</summary>
-<ul><li>Simulation</li>
-<li>Reconstruction</li></ul>
-</details>
-
-
-
-<details>
-<summary> &#10095; Run1</summary>
-<br>
-
-## Run 1
-Simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml)
+Configuration:
+- N events: 1 million
+- Multiplicity distribution: [Charged-particle multiplicity measurement in proton-proton collisions at sqrt(s) = 7 TeV with ALICE at LHC](https://www.hepdata.net/record/54832)
+- Angular distribution: Uniform
+- $Z_{vertex}$ distribution: gaussian
+- $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
+- Beam pipe radius: $3$ cm
+- Detectors radii: $4$cm, $7$cm
+- Noise: no
 
 ### Simulation
-
-Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
+Simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml). Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
 
 |![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
 |:--:| 
@@ -120,12 +74,9 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 
 </details> 
 
-<details>
+<details markdown="1">
 <summary> &#10095; Run2</summary>
-<br> 
 
-## Run 2
-Run2 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Run.yaml)
 Configuration: 
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
@@ -137,8 +88,7 @@ Configuration:
 - Mean noise per layer: 10
 
 ### Simulation
-
-Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
+Run2 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Run.yaml). Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
 
 |![Multi_comparison](Figures/Run2/eta_comparison.png)| 
 |:--:| 
@@ -147,7 +97,6 @@ Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ dis
 A good between the two distributions is observed.
 
 Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
-
 
 ### Reconstruction
 After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Reconstruction.yaml)
@@ -177,25 +126,21 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 
 </details> 
 
-<details>
+<details markdown="1">
 <summary> &#10095; Run3</summary>
-<br> 
 
-## Run 3
-Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml)
-Configuration: 
+Configuration:
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
 - Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), heta2 histogram
-- $Z_{vertex}$ distribution: uniform between $-20$ and $20$ cm from the detector's centre
+- $Z_{vertex}$ distribution: gaussian
 - $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
-- Mean noise per layer: 10
+- Noise: no
 
 ### Simulation
-
-Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
+Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
 
 |![Multi_comparison](Figures/Run3/fTreeRec_Multi_comparison.png)| 
 |:--:| 
@@ -235,12 +180,6 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 
 <details>
 <summary> &#10095; Comparisons</summary>
-<br>
-
-    - ## markdown list 1
-        - nested list 1
-        - nested list 2
-    - ## markdown list 2    
 
 ## Comparisons
 
@@ -258,18 +197,3 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 |Detector's efficiency as a function of the event multiplicity|
 
 </details> 
-
-
-<details>
-<summary>Example</summary>
-<ul><li>This dropdown contains</li>
-<li>a list!</li></ul>
-
-|![EffComparison](Figures/Comparisons/Eff_comparison_RUNS.png)| 
-|:--:| 
-|Detector's efficiency as a function of the event multiplicity|
-
-<p style="text-align: center;">
-<img src="Figures/Comparisons/Eff_comparison_RUNS.png" width="1000"></p>
-<p style="text-align: center;">Detector's efficiency as a function of the event multiplicity</p>
-</details>
