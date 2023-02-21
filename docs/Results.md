@@ -209,6 +209,10 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 <ul><li>This dropdown contains</li>
 <li>a list!</li></ul>
 
+|![EffComparison](Figures/Comparisons/Eff_comparison_RUNS.png)| 
+|:--:| 
+|Detector's efficiency as a function of the event multiplicity|
+
 <p style="text-align: center;">
 <img src="Figures/Run2/Eff.png" width="500"></p>
 <p style="text-align: center;">Text_content</p>
