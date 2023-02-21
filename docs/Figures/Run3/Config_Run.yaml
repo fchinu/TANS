@@ -1,4 +1,6 @@
 OutFileName: TreeRUN3.root
+AutoFlushOpt: -30000000
+AutoSaveOpt: 0
 NEvents: 1000000
 
 #Multiplicity settings
