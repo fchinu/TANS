@@ -1,4 +1,5 @@
 # Results
+
 Optimisation has been one of the main aspects we have worked on while developing this project. We wanted to deliver a fast, yet accurate simulation. We think we managed to obtain good results, with a full simulation and reconstruction of 1 million events being run in under 2:30 minutes.
 
 Following are the results of some simulations that we ran with different configurations. A comparison between them can be found at the end of the page
@@ -6,7 +7,7 @@ Following are the results of some simulations that we ran with different configu
 Here the results for $3$ runs:
 
 <details markdown="1">
-<summary> <a href="#">&#10095; Run 1</a></summary>
+<summary> &#10095; Run1</summary>
 
 Configuration:
 - N events: 1 million
@@ -74,7 +75,7 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 </details> 
 
 <details markdown="1">
-<summary> <a href="#">&#10095; Run 2</a></summary>
+<summary> &#10095; Run2</summary>
 
 Configuration: 
 - N events: 1 million
@@ -126,7 +127,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> <a href="#">&#10095; Run 3</a></summary>
+<summary> &#10095; Run3</summary>
 
 Configuration:
 - N events: 1 million
@@ -170,7 +171,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> <a href="#">&#10095; Comparisons</a></summary>
+<summary> &#10095; Comparisons</summary>
 
 ## Comparisons
 
