@@ -24,8 +24,8 @@ fVerbose(fConfigFile["Verbose"].as<bool>())
     fTreeRec.SetDirectory(&hfile);
     fTreeGen.SetAutoSave(0);
     fTreeRec.SetAutoSave(0);
-    fTreeRec.SetAutoFlush(200000);
-    fTreeGen.SetAutoFlush(200000);
+    fTreeRec.SetAutoFlush(-80000000);
+    fTreeGen.SetAutoFlush(-80000000);
 
     TreeSettings();
     Start();
