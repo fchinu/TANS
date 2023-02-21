@@ -140,15 +140,7 @@ Configuration:
 - Noise: no
 
 ### Simulation
-Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
-
-|![Multi_comparison](Figures/Run3/fTreeRec_Multi_comparison.png)| 
-|:--:| 
-|Comparison between the (normalised) simulated $\eta$ distribution and the $\eta$ distribution probability function| 
-
-A good between the two distributions is observed.
-
-Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
+Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
 
 
 ### Reconstruction
