@@ -15,5 +15,20 @@ The code in this repository requires to have installed:
 - [ROOT](https://root.cern/)
 
 # Documentation
+### Prerequisites
+The code in this repository requires to have installed:
+- [ROOT](https://root.cern/)
+- [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+    - Ubuntu: it can be installed through 
+        ```
+        sudo apt update 
+        sudo apt install libyaml-cpp-dev
+        ```
+    - MacOs: 
+        - via MacPorts: `sudo port install yaml-cpp`
+        - via Homebrew: `brew install yaml-cpp`
+    - For other OS follow instructions in the [yaml-cpp official github page](https://github.com/jbeder/yaml-cpp)
+
+# Documentation
 The documentation for the project can be found here:
 [https://bizzzio.github.io/TANS/](https://bizzzio.github.io/TANS/)
