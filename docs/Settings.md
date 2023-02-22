@@ -1,7 +1,16 @@
 ### Settings description
 
-OutFileName: address of the output file      
-NEvents: number of events to be run
+| Setting               | Description                           |
+| -----------           | -----------                           |
+| OutFileName           | address of the output file                         |
+| AutoFlushOpt          | option to pass to ROOT TTrees [SetAutoFlush](https://root.cern.ch/doc/master/classTTree.html#ad4c7c7d70caf5657104832bcfbd83a9f) function          |
+| AutoSaveOpt           | option to pass to ROOT TTrees [SetAutoSave](https://root.cern.ch/doc/master/classTTree.html#a583aa74b14c7ac7147a7bb4efbd5fbc5) function         |
+| NEvents               | number of events to be run            |
+
+      
+ 
+
+
 
 #### Multiplicity settings
 
