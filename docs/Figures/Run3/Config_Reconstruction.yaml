@@ -1,7 +1,7 @@
 OutFileName: outfile.root
 
 Input:
-  TreeFileName: TreeRUN3.root
+  TreeFileName: Tree.root
   Reconstructed:
     TreeName: fTreeRec
     Det1HitsBranch: RecHits_1

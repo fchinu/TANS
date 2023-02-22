@@ -1,4 +1,4 @@
-OutFileName: TreeRUN3.root
+OutFileName: Tree.root
 AutoFlushOpt: -30000000
 AutoSaveOpt: 0
 NEvents: 1000000
