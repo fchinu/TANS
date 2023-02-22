@@ -2,7 +2,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-void Compile_Reconstruction(TString myopt="run")
+void Compile_Reconstruction(TString myopt="")
 {
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Simulation").c_str());
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Reconstruction").c_str());
@@ -19,6 +19,6 @@ void Compile_Reconstruction(TString myopt="run")
         gSystem->CompileMacro("Simulation/DetectorHandler.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Reconstruction/Reconstruction.cpp",opt.Data(),"","Build");
     gSystem->CompileMacro("Reconstruction/RunAnalysis.cpp",opt.Data(),"","Build");
-
-    gROOT->ProcessLine("RunAnalysis()");
+    if (myopt.Contains("run"))
+        gROOT->ProcessLine("RunAnalysis()");
 }
