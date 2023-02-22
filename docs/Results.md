@@ -183,22 +183,43 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 <details markdown="1">
 <summary> &#10095; Comparisons</summary>
 
-## Comparisons
 
+The results obtained from the different simulations were compared, in order to observe how the different configurations affect the detector's performance.
+
+### Efficiency
+
+Firstly, the efficiencies as a function of the event multiplicity are compared:
 |![EffComparison](Figures/Comparisons/Eff_comparison_RUNS.png)| 
 |:--:| 
-|Detector's efficiency as a function of the event multiplicity|
+|Detector's efficiency vs event multiplicity comparison|
+
+As expected, since the first and the third simulations only differ in the multiplicity distribution, their efficiency distributions overlap. In contrast, since the second simulation has a different $Z_{vertex}$ distribution (uniformly distributed throughout the detector), and since the detector's efficiency is lower at the edges than at the center, the efficiency for the second simulation is lower.
+
+The comparison between the efficiencies as a function of the $Z_{vertex}$ is reported here:
 
 |![EffVsZComparison](Figures/Comparisons/EffvsZ_comparison_RUNS.png)| 
 |:--:| 
-|Detector's efficiency as a function of the event multiplicity|
+|Detector's efficiency vs $Z_{vertex}$ comparison|
+
+As expected, since the first simulation has a multiplicity distribution which is peaked a low multiplicities, where the detector's efficiency is lower, the resulting efficiency vs $Z_{vertex}$ distribution is lower than the other two simulations. Furthermore, the efficiency drop at the edges of the detector is more significant for this simulation since the probability of multiple particles hitting the detectors is lower (due to the low multiplicity distribution). 
+The efficiencies for the other two simulations are quite similar; with the one for the second simulation being slightly greater due to the fact that the third simulation has a uniform angular distribution, thus forward and backward particles, which will not be detected, are generated. In contrast, with the custom distribution, only particles with $-2 < \eta < 2$ are produced. 
+
+### Resolution
 
 |![ResVsMultComparison](Figures/Comparisons/ResvsMult_comparison_RUNS.png)| 
 |:--:| 
-|Detector's efficiency as a function of the event multiplicity|
+|Detector's resolution vs event multiplicity comparison|
+
+As expected, the resolution for the second simulation is worse, since more particles are produced close to the detector edges, where the resolution is worse.
+Since the $Z_{vertex}$ distribution of the other two simulations is the same, their resolution vs $Z_{vertex}$ distribution is similar. We observe a slight difference in the first bins, which is likely due to the gradient of the custom multiplicity distribution within each bin, resulting in a more significant contribution of the low multiplicities in the bins range.
+The differences observed at higher multiplicities are instead likely due to fluctuations of the first simulation's stastics, which is limited in this range.
+
+The comparison of the detector's efficiency vs $Z_{vertex}$ is reported in this graph:
 
 |![ResVsZComparison](Figures/Comparisons/ResVsZ_comparison_RUNS.png)| 
 |:--:| 
-|Detector's efficiency as a function of the event multiplicity|
+|Detector's efficiency vs $Z_{vertex}$ comparison|
 
+As presumed, the resolution for the first simulation is worse since the multiplicity distribution is peaked at low multiplicities, so the number of trackets available to reconstruct the vertex is lower, leading to a worse resolution. 
+The difference between the second and the third simulations is due to the noise, which is activated in the second simulation. The variation of the gap between the two distributions in the different $Z_{vertex}$ bins can be attributed to the fact that the noise is more relevant at the detector's edges, where the number of particles being detected is lower with respect to events where the collisions happen in the detector's centre
 </details> 

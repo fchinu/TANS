@@ -239,38 +239,6 @@ void Reconstruction::FillHistoMinDca(vector<double>& vertextemp)
     }
 }
 
-//void Reconstruction::FillHistoIntersection(TH1D* histo, vector<MaterialBudget::fPoint>& tracklets, vector<double>& vertextemp)
-//{
-///*
-// *  Function that reconstructs the vertex, by averaging the interstections
-// *  between each track and a plane orthogonal to the track in the xy plane  
-// *  and passing through the Z axis
-// * 
-// */
-//    for (unsigned j=0;j<tracklets.size();j+=2)
-//    {
-//        double a,b,c,phi,cosphi,sinphi; // parameters for line connecting two intersections of the same tracklet from detector 2 to detector 1
-//        double x0 = tracklets[j].GetX(fDetectors.GetRadii()[1]);
-//        double y0 = tracklets[j].GetY(fDetectors.GetRadii()[1]);
-//        double x1 = tracklets[j+1].GetX(fDetectors.GetRadii()[2]);
-//        double y1 = tracklets[j+1].GetY(fDetectors.GetRadii()[2]);
-//        
-//        a = x1 - x0;
-//        b = y1 - y0;
-//        c = tracklets[j+1].z - tracklets[j].z;
-//        phi=(tracklets[j+1].phi + tracklets[j].phi)/2;
-//        cosphi=TMath::Cos(phi);
-//        sinphi=TMath::Sin(phi);
-//
-//        double t;
-//        //t of intersection between track and plane
-//        t = - (cosphi*x0 + sinphi*y0) / (a*cosphi+b*sinphi);    
-//
-//        vertextemp.push_back(tracklets[j].z + c*t);
-//        histo->Fill(vertextemp.back());
-//    }
-//}
-//
 void Reconstruction::FillHistoResiduals()
 {
 /*
@@ -325,37 +293,3 @@ void Reconstruction::FillHistoResolutionVsZTrue()
         fHistResVsZTrue[fResolutionVsZTrue->FindBin((*fConfigs)[0].z)-1]->Fill(fVertexesZ-(*fConfigs)[0].z);
 
 }
-
-//void Reconstruction::FillHistoResolutionVsZTrue()
-//{
-//    cout << "Entering FillHistoResolutionVsZTrue " << endl;
-//    // prendo tutti eventi con z in un certo range, faccio istogramma differenze tra ZTrue e ZReco e prendo come dato per l'istogramma
-//    // l'RMS di questo istogramma
-//    TFile ResolutionZTrue("ResolutionZTrue.root","recreate");
-//    for(int i=1; i<=fResolutionVsZTrue->GetNbinsX(); i++){
-//        
-//        double LowEdgeMult = fResolutionVsZTrue->GetBinLowEdge(i);
-//        double UpperEdgeMult = LowEdgeMult + fResolutionVsZTrue->GetBinWidth(i);
-//
-//        char title[1024];
-//        sprintf(title, "ZTrue [%2.2f, %2.2f]", LowEdgeMult, UpperEdgeMult);
-//        TH1D* histzrange = new TH1D(title, title, 500, -0.5, 0.5);
-//    
-//        for(std::vector<std::vector<Event::fVertMult> >::size_type j=0; j<fConfigs.size(); j++){
-//            if(fConfigs[j][0].z>LowEdgeMult && fConfigs[j][0].z<UpperEdgeMult){
-//                histzrange->Fill(fVertexesZ[j]-fConfigs[j][0].z);
-//            }
-//        }
-//        TF1* gaussian = new TF1("gaus", "gaus(0)", -0.5, 0.5); 
-//        histzrange->Fit(gaussian, "MR");
-//        double c = gaussian->GetParameter(2);
-//        fResolutionVsZTrue->Fill(fResolutionVsZTrue->GetBinCenter(i), TMath::Sqrt((c*c)+(histzrange->GetMean()*histzrange->GetMean())));
-//        fResolutionVsZTrue->SetBinError(i, histzrange->GetRMSError());
-//        //histzrange->Write();
-//        histzrange->Write();
-//        //histzrange->Reset();
-//        delete histzrange;
-//    }
-//    ResolutionZTrue.Close();
-//}
-
