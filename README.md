@@ -13,11 +13,6 @@ Did not work? Check the results we obtained [here](Results.md)
 ### Prerequisites
 The code in this repository requires to have installed:
 - [ROOT](https://root.cern/)
-
-# Documentation
-### Prerequisites
-The code in this repository requires to have installed:
-- [ROOT](https://root.cern/)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
     - Ubuntu: it can be installed through 
         ```
