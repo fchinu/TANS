@@ -64,7 +64,7 @@ An increase in resolution is observed at the highest multiplicity bin, but this 
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
-As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows while the efficiency drops as it is observed in this graph:
 
 |![EffVsZ](Figures/Run1/EffvsZ.png)| 
 |:--:| 
@@ -119,7 +119,7 @@ As expected, the resolution decreases as multiplicity grows since more tracklets
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
-As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows while the efficiency drops as it is observed in this graph:
 
 |![EffVsZ](Figures/Run2/EffvsZ.png)| 
 |:--:| 
@@ -169,7 +169,7 @@ As expected, the resolution decreases as multiplicity grows since more tracklets
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
-As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows while the efficiency drops as it is observed in this graph:
 
 |![EffVsZ](Figures/Run3/EffvsZ.png)| 
 |:--:| 
