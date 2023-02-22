@@ -10,7 +10,7 @@ Following are the results of $3$ simulations that we ran with different configur
 ### Configuration:
 - N events: 1 million
 - Multiplicity distribution: [Charged-particle multiplicity measurement in proton-proton collisions at sqrt(s) = 7 TeV with ALICE at LHC](https://www.hepdata.net/record/54832)
-- Angular distribution: Uniform
+- Angular distribution: uniform
 - $Z_{vertex}$ distribution: gaussian
 - $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
 - Beam pipe radius: $3$ cm
@@ -28,16 +28,16 @@ Firstly, this is a comparison between the multiplicity probability density funct
 |:--:| 
 |Comparison between the multiplicity pdf and the (normalised) generated multiplicity distribution| 
 
-A good between the two distributions is observed.
-In order to study the effects of the multiple scattering, it is possible to study the difference between the z coordinate distribution of the generated hit in the two layers and the z coordinate pdf of the vertex:
+A good agreement between the two distributions is observed.
+In order to study the effects of the multiple scattering, it is possible to study the difference between the $z$ coordinate distribution of the generated hit in the two layers and the $z$ coordinate pdf of the vertex:
 
 |![Z_generated](Figures/Run1/fTreeGen_Config.z.png)| 
 |:--:| 
-|Distribution of the generated z coordinate of the vertex. $\mathrm{RMS}=5.3$ cm| 
+|Distribution of the generated $z$ coordinate of the vertex. $\mathrm{RMS}=5.3$ cm| 
 
 |![Z_comparison](Figures/Run1/fTreeGen_GenHits_comparison.png)| 
 |:--:| 
-|Comparison between the distributions of the hits' z coordinate for the first layer (in blue, $\mathrm{RMS}=6.7$ cm) and the second layer (in red, $\mathrm{RMS}=7.7$ cm)| 
+|Comparison between the distributions of the hits' $z$ coordinate for the first layer (in blue, $\mathrm{RMS}=6.7$ cm) and the second layer (in red, $\mathrm{RMS}=7.7$ cm)| 
 
 To study how the smearing affects the reconstruction, it is possible to study the distributions of the reconstructed z coordinates of the hits on each detector's layer:
 
@@ -55,7 +55,7 @@ After the simulation finishes, vertexes are reconstructed and the resolution and
 |:--:| 
 |Detector's resolution as a function of multiplicity|
 
-As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
+As expected, the resolution decreases as multiplicity grows since more tracklets are available to reconstruct the vertex, getting lower then 100 $\mu $m at the highest multiplicities.
 An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity pdf).
 
 |![ResVsZ](Figures/Run1/ResolutionVsZTrue.png)| 
@@ -73,6 +73,8 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 |![EffVsZ](Figures/Run1/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
+As expected, efficiency grows with increasing multiplicity since more tracklets are available to reconstruct the vertex.
 
 </details> 
 
@@ -98,37 +100,36 @@ Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ dis
 
 |![Multi_comparison](Figures/Run2/eta_comparison.png)| 
 |:--:| 
-|Comparison between the (normalised) simulated $\eta$ distribution and the $\eta$ distribution probability function| 
+|Comparison between the simulated $\eta$ distribution and the $\eta$ distribution probability function| 
 
-A good between the two distributions is observed.
-
-Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
+The simulated $\eta$ distribution is scaled with respect to the events of the run. A good agreement between the two distributions is observed. Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
+After the simulation finishes, vertexes are reconstructed and the resolution and efficiency of the detector are evaluated as a function of the event multiplicity and of the event's vertex $Z$ coordinate. 
 
 |![ResVsMult](Figures/Run2/ResolutionVsMultiplicity.png)| 
 |:--:| 
 |Detector's resolution as a function of multiplicity|
 
-As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities.
-An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
+As expected, the resolution decreases as multiplicity grows since more tracklets are available to reconstruct the vertex, getting lower then 100 $\mu $m at the highest multiplicities.
 
 |![ResVsZ](Figures/Run2/ResolutionVsZTrue.png)| 
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
-As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
 
 |![EffVsZ](Figures/Run2/EffvsZ.png)| 
 |:--:| 
-|Detector's efficiency as a function of the Z coordinate of the generated vertex|
+|Detector's efficiency as a function of the $Z$ coordinate of the generated vertex|
 
-As expected, the efficieny peaks when the vertex is generated at the center of the detector; it then drops when the particles are generated outside the detector.
+As expected, the efficiency peaks when the vertex is generated at the center of the detector; it then drops when the particles are generated outside the detector.
 
 |![EffVsZ](Figures/Run2/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
+As expected, efficiency grows with increasing multiplicity since more tracklets are available to reconstruct the vertex.
 
 </details> 
 
@@ -138,7 +139,7 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 ### Configuration:
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
-- Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), heta2 histogram
+- Angular distribution: uniform
 - $Z_{vertex}$ distribution: gaussian
 - $\sigma_{x}=0.01$ cm, $\sigma_{y}=0.01$ cm, $\sigma_{z}=5.3$ cm
 - Beam pipe radius: $3$ cm
@@ -150,33 +151,35 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 Simulation configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Reconstruction configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Reconstruction.yaml).
 
 ### Simulation
-Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
+Multiplicity, angular and $Z_{vertex}$ distributions' settings differ from the previous runs to cover another case with the aim of comparing the obtained results.
 
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex $Z$ coordinate. 
 
 |![ResVsMult](Figures/Run3/ResolutionVsMultiplicity.png)| 
 |:--:| 
 |Detector's resolution as a function of multiplicity|
 
-As expected, the resolution decreases with the growing of the multiplicity, getting lower then 100 $\mu $m at the highest multiplicities. An increase in resolution is observed at the highest multiplicity bin, but this is due to fluctuations in the simulation (the number of generated events at such multiplicity is very low, as described by the multiplicity distribution).
+As expected, the resolution decreases as multiplicity grows since more tracklets are available to reconstruct the vertex, getting lower then 100 $\mu $m at the highest multiplicities.
 
 |![ResVsZ](Figures/Run3/ResolutionVsZTrue.png)| 
 |:--:| 
 |Detector's resolution as a function of the Z coordinate of the generated vertex|
 
-As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows by 20% up to the point where the vertex is generated outside the detector. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
+As expected, the resolution reaches its minimum when the vertex is generated at the center of the detector, then it grows then it grows as vertexes are generated closer to the detectors' edges. In these cases, the resolution grows exponentially and the efficiency drops as it is observed in this graph:
 
 |![EffVsZ](Figures/Run3/EffvsZ.png)| 
 |:--:| 
 |Detector's efficiency as a function of the Z coordinate of the generated vertex|
 
-As expected, the efficieny peaks when the vertex is generated at the center of the detector; it then drops when the particles are generated outside the detector.
+As expected, the efficiency peaks when the vertex is generated at the center of the detector; it then drops when the particles are generated outside the detector. Lastly, we evaluate efficiency as a function of generated multiplicity:
 
 |![EffVsZ](Figures/Run3/Eff.png)| 
 |:--:| 
 |Detector's efficiency as a function of the event multiplicity|
+
+As expected, efficiency grows with increasing multiplicity since more tracklets are available to reconstruct the vertex.
 
 </details> 
 
@@ -189,6 +192,7 @@ The results obtained from the different simulations were compared, in order to o
 ### Efficiency
 
 Firstly, the efficiencies as a function of the event multiplicity are compared:
+
 |![EffComparison](Figures/Comparisons/Eff_comparison_RUNS.png)| 
 |:--:| 
 |Detector's efficiency vs event multiplicity comparison|
