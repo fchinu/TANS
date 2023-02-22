@@ -49,7 +49,9 @@ To study how the smearing affects the reconstruction, it is possible to study th
 As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's $Z_{vertex}$ coordinate. 
+The efficiency is evaluated as the ratio between the number of reconstructed vertexes and the total number of events; its error is obtained through binomial propagation. 
+The resolution is evaluated as the sum in quadrature of the $\sigma$ of the gaussian function obtained with a maximum likelihood fit of the residuals histogram and the shift from 0 (estimated as the mean of the residuals distribution) in the studied $Z_{vertex}$ and multiplicity range. Its uncertainty is given by the uncertainty on the $\sigma$ parameter of the fitted gaussian. It is needed to take into account the shift of the distribution since for events generated near the detector's edges a significant shift from 0 was observed.
 
 |![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
 |:--:| 

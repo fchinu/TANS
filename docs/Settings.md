@@ -1,11 +1,13 @@
-### Settings description
+## Settings description
+
+### Simulation
 
 | Setting               | Description                           |
 | -----------           | -----------                           |
-| OutFileName           | address of the output file                         |
-| AutoFlushOpt          | option to pass to ROOT TTrees [SetAutoFlush](https://root.cern.ch/doc/master/classTTree.html#ad4c7c7d70caf5657104832bcfbd83a9f) function          |
-| AutoSaveOpt           | option to pass to ROOT TTrees [SetAutoSave](https://root.cern.ch/doc/master/classTTree.html#a583aa74b14c7ac7147a7bb4efbd5fbc5) function         |
-| NEvents               | number of events to be run            |
+| OutFileName           | Address of the output file                         |
+| AutoFlushOpt          | Option to pass to ROOT TTrees [SetAutoFlush](https://root.cern.ch/doc/master/classTTree.html#ad4c7c7d70caf5657104832bcfbd83a9f) function          |
+| AutoSaveOpt           | Option to pass to ROOT TTrees [SetAutoSave](https://root.cern.ch/doc/master/classTTree.html#a583aa74b14c7ac7147a7bb4efbd5fbc5) function         |
+| NEvents               | Number of events to be run            |
 
       
  
@@ -31,8 +33,8 @@
 | DistrConst            | Vector containing direction of all the particles created in the simulation (only used if DistrType is set to kConst)              |
 | DistrFile             | Address of the file containing the pseudorapidity distribution (only used if MultType is set to kCustom)                |
 | DistrHisto            | Address of histogram inside DistrFile            |
-| SaveEta               | boolean option to save $ \eta$ distribution of generated particles            |
-| SavePhi               | boolean option to save $ \vartheta$ distribution of generated particles            |
+| SaveEta               | Boolean option to save $ \eta$ distribution of generated particles            |
+| SavePhi               | Boolean option to save $ \vartheta$ distribution of generated particles            |
 
 
 
@@ -62,3 +64,18 @@
 
 
 Verbose: Sets verbosity
+
+### Reconstruction
+
+| Setting               | Description                           |
+| -----------           | -----------                           |
+| OutFileName           | Address of the output file                         |
+| TreeFileName             | Name of the TTree with the simulation output           |
+| Det1HitsBranch              | Name of the branch with reconstructed hits on first layer            |
+| Det2HitsBranch              | Name of the branch with reconstructed hits on second layer            |
+| ConfigBranch              | Name of the branch containing the events informations  |
+| Detectors              | Name of the Detectors object|
+| SaveHistoResVsMult             | Boolean option to save histograms from which resolution vs multiplicity is evaluated           |
+| SaveHistoResVsZTrue             | Boolean option to save histograms from which resolution vs $Z_{vertex}$ is evaluated           |
+| MaxPhi             | Maximum phi interval for reconstructing the tracklets      |
+| nSigmaZ              | Only candidates generated within nSigmaZ $\sigma_{Z}$ from the detector's centre are used to evalaute the efficiency and the resolution|
