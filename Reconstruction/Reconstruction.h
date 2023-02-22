@@ -7,7 +7,7 @@
 #include <TTreeReaderArray.h>
 #include "TEfficiency.h"
 #include "DetectorHandler.h"
-#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
+#include "../yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TStopwatch.h"
 #include "TFile.h"
 #include "TTree.h"

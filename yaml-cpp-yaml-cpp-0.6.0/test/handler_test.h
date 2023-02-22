@@ -1,5 +1,5 @@
 #include "mock_event_handler.h"
-#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"  // IWYU pragma: keep
+#include "../yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"  // IWYU pragma: keep
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

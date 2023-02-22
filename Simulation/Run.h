@@ -2,7 +2,7 @@
 #define RUN_H
 
 #include "Event.h"
-#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
+#include "../yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include "MultHandler.h"
 #include "VertexHandler.h"

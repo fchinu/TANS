@@ -2,7 +2,7 @@
 #define MULTHANDLER_H
 
 #include "Riostream.h"
-#include "yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
+#include "../yaml-cpp-yaml-cpp-0.6.0/include/yaml-cpp/yaml.h"
 #include "TH1D.h"
 #include "TRandom.h"
 #include "TFile.h"
