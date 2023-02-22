@@ -7,9 +7,9 @@ Following are the results of some simulations that we ran with different configu
 Here the results for $3$ runs:
 
 <details markdown="1">
-<summary> &#10095; Run1</summary>
+<summary> &#10095; Run 1</summary>
 
-Configuration:
+### Configuration:
 - N events: 1 million
 - Multiplicity distribution: [Charged-particle multiplicity measurement in proton-proton collisions at sqrt(s) = 7 TeV with ALICE at LHC](https://www.hepdata.net/record/54832)
 - Angular distribution: Uniform
@@ -18,9 +18,13 @@ Configuration:
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
 - Noise: no
+- MaxPhi: 0.01 mrad
+- nSigmaZ: 3
+
+Simulation configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml). Reconstruction configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Reconstruction.yaml).
 
 ### Simulation
-Simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Run.yaml). Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
+Firstly, this is a comparison between the multiplicity probability density function (pdf) and the (normalised) generated multiplicity distribution:
 
 |![Multi_comparison](Figures/Run1/fTreeRec_Multi_comparison.png)| 
 |:--:| 
@@ -47,7 +51,7 @@ To study how the smearing affects the reconstruction, it is possible to study th
 As expected, smearing does not have any effects on the shape of the distributions, nor does it affects the distributions widths as much as the multiple scattering does.
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run1 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run1/Config_Reconstruction.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
 
 |![ResVsMult](Figures/Run1/ResolutionVsMultiplicity.png)| 
 |:--:| 
@@ -75,9 +79,9 @@ As expected, the efficiency peaks when the vertex is generated at the center of 
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Run2</summary>
+<summary> &#10095; Run 2</summary>
 
-Configuration: 
+### Configuration: 
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
 - Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), heta2 histogram
@@ -86,9 +90,13 @@ Configuration:
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
 - Mean noise per layer: 10
+- MaxPhi: 0.01 mrad
+- nSigmaZ: 1
+
+Simulation configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Run.yaml). Reconstruction configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Reconstruction.yaml).
 
 ### Simulation
-Run2 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Run.yaml). Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
+Firstly, the simulated $\eta$ distribution is compared to the desired $\eta$ distribution:
 
 |![Multi_comparison](Figures/Run2/eta_comparison.png)| 
 |:--:| 
@@ -99,7 +107,7 @@ A good between the two distributions is observed.
 Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run2/Config_Reconstruction.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
 
 |![ResVsMult](Figures/Run2/ResolutionVsMultiplicity.png)| 
 |:--:| 
@@ -127,9 +135,9 @@ As expected, the efficieny peaks when the vertex is generated at the center of t
 </details> 
 
 <details markdown="1">
-<summary> &#10095; Run3</summary>
+<summary> &#10095; Run 3</summary>
 
-Configuration:
+### Configuration:
 - N events: 1 million
 - Multiplicity distribution: uniform between 0 and 100
 - Angular distribution: [http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root](http://personalpages.to.infn.it/~masera/tans/tans2018/miscellanea/kinem.root), heta2 histogram
@@ -138,13 +146,17 @@ Configuration:
 - Beam pipe radius: $3$ cm
 - Detectors radii: $4$cm, $7$cm
 - Noise: no
+- MaxPhi: 0.01 mrad
+- nSigmaZ: 3
+
+Simulation configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Reconstruction configuration file [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Reconstruction.yaml).
 
 ### Simulation
-Run3 simulation configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Run.yaml). Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
+Major differeces between the $Z_{vertex}$ distributions and the $Z$ coordinates of the hits on the layers due to multiple scattering are not observed.
 
 
 ### Reconstruction
-After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. Run2 reconstruction configuration [here](https://github.com/Bizzzio/TANS/tree/main/docs/Figures/Run3/Config_Reconstruction.yaml)
+After the simulation finishes, vertexes are reconstructed and the resolution and effeciency of the detector are evaluated as a function of the event multiplicity and of the event's vertex Z coordinate. 
 
 |![ResVsMult](Figures/Run3/ResolutionVsMultiplicity.png)| 
 |:--:| 
