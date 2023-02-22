@@ -3,6 +3,7 @@
 #include "TH1D.h"
 #include "TF1.h"
 #include "TCanvas.h"
+#include "TROOT.h"
 #include <cmath>
  
 ClassImp(Reconstruction)
@@ -22,6 +23,7 @@ fSaveHistoResVsZTrue(fConfigFile["SaveHistoResVsZTrue"].as<bool>()),
 fMaxPhi(fConfigFile["MaxPhi"].as<double>()),
 fSigmaZ(fConfigFile["nSigmaZ"].as<double>())
 {
+    gROOT->SetBatch();
     TStopwatch ReconstructionTime;
     ReconstructionTime.Start();
 
