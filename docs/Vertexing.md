@@ -37,7 +37,7 @@ Here some details on how the program implements the key steps to implement verte
 
 - **Tracklet vertex reconstruction:** for each reconstructed tracklet, vertex is reconstructed as the intersection between the track and a plane orthogonal to the track in the $xy$ plane passing through the $ z $ axis. 
 
-- **Event vertex reconstruction:** for each event, $ z $ vertex coordinates of all tracklets are collected in an histogram. Then, the program considers the range of values defined by lower and upper edge of the bin with highest frequency: the event vertex is estimated averaging vertexes with value of $ z $ in this range. This ensures combinatorial tracklets do not contribute to the estimated value.
+- **Event vertex reconstruction:** for each event, $ z $ vertex coordinates of all tracklets are collected in an histogram. Then, the program considers the range of values defined by lower and upper edge of the bin with highest frequency: the event vertex is estimated with the running window technique. This ensures combinatorial tracklets do not contribute to the estimated value.
 
 - **Setup performance evaluation:** after processing all events of the run, the program saves the following plots in an output file
     + Residuals
