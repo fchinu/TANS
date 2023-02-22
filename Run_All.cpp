@@ -2,7 +2,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-void Run_All(TString myopt="run")
+void Run_All(TString myopt="")
 {
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Simulation").c_str());
     gSystem->AddIncludePath((string("-I ")+gSystem->GetWorkingDirectory()+"/Reconstruction").c_str());
