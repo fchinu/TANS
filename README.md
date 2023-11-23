@@ -26,4 +26,4 @@ The code in this repository requires to have installed:
 
 # Documentation
 The documentation for the project can be found here:
-[https://bizzzio.github.io/TANS/](https://bizzzio.github.io/TANS/)
+[https://fchinu.github.io/TANS/](https://fchinu.github.io/TANS/)
